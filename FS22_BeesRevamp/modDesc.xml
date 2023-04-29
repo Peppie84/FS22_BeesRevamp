@@ -1,24 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="73">
-    <author>Peppie84</author>
-    <version>1.0.0</version>
-    <title>
-        <de>RealBees</de>
-    </title>
-    <description>
-        <de>
-            <![CDATA[
+  <author>Peppie84</author>
+  <version>1.0.0.0</version>
+  <title>
+    <de>RealBees</de>
+  </title>
+  <description>
+    <de><![CDATA[
                 Es gibt noch keine Beschreibung
-            ]]>
-        </de>
-    </description>
-    <iconFilename>mod_icon.dds</iconFilename>
-
-    <multiplayer supported="true"/>
-
-    <extraSourceFiles>
-        <sourceFile filename="main.lua" />
-    </extraSourceFiles>
-
-    <l10n filenamePrefix="translations/translation" />
+            ]]></de>
+  </description>
+  <iconFilename>mod_icon.dds</iconFilename>
+  <multiplayer supported="true" />
+  <extraSourceFiles>
+    <sourceFile filename="src/main.lua" />
+  </extraSourceFiles>
+  <l10n filenamePrefix="translations/translation" />
 </modDesc>
