@@ -7,7 +7,7 @@
 -- Copyright (c) Peppie84, 2023
 --
 SpecializationPatcher = {
-    MOD_NAME = g_currentModName or "unknown"
+    MOD_NAME = g_currentModName or 'unknown'
 }
 
 ---Install and initialize the new specializations and patch the placeables.
@@ -16,8 +16,8 @@ SpecializationPatcher = {
 ---@param modDirectory string
 ---@param placeableTypeManager table
 function SpecializationPatcher.installSpecializations(modBaseName, specializationManager, modDirectory, placeableTypeManager)
-    specializationManager:addSpecialization('beehiveextended', 'PlaceableBeehiveExtended', Utils.getFilename('src/placeablebeehiveextended.lua', modDirectory), "")
-    specializationManager:addSpecialization('beecare', 'BeeCare', Utils.getFilename('src/beecare.lua', modDirectory), "")
+    specializationManager:addSpecialization('beehiveextended', 'PlaceableBeehiveExtended', Utils.getFilename('src/placeablebeehiveextended.lua', modDirectory), '')
+    specializationManager:addSpecialization('beecare', 'BeeCare', Utils.getFilename('src/beecare.lua', modDirectory), '')
     SpecializationPatcher.patchPlacablesWithNewSpec(modBaseName, placeableTypeManager)
 end
 

@@ -10,7 +10,9 @@ StoreItemPatcher = {
 }
 
 ---TODO
+---@param modName string
 ---@param storeManager table (StoreManager)
+---@param patchMeta table array<string, array<any>>
 function StoreItemPatcher:patchItems(modName, storeManager, patchMeta)
     for storeItemIndex = 1, #storeManager.items do
         local storeItem = storeManager.items[storeItemIndex]

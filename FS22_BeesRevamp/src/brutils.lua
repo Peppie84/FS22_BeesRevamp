@@ -1,7 +1,7 @@
 --
--- MeUtils
+-- BrUtils
 --
--- MultifruitEverywhere utils table. Just some helper functions.
+-- BeesRevamp utils table. Just some helper functions.
 --
 -- Copyright (c) Peppie84, 2023
 --
@@ -68,6 +68,12 @@ end
 ---@param ... any
 function BrUtils:logWarning(messageFormat, ...)
     self:log(BrUtils.SERVERITY.WARNING, messageFormat, ...)
+end
+
+---comment
+---@return string
+function BrUtils:getCurrentDayYearString()
+    return 'Y'..g_currentMission.environment.currentYear..'M'..g_currentMission.environment.currentPeriod..'D0'
 end
 
 

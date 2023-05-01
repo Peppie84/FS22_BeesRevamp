@@ -93,10 +93,10 @@ local function load(mission)
     -- overwrite the current beehivesystem with our new one
     mission.beehiveSystem = modEnvironment
 
-    FillTypePatcher:patchTypes(modName, g_fillTypeManager)
+    FillTypePatcher:patchBasePrice(g_fillTypeManager)
     StoreItemPatcher:patchItems(modName, g_storeManager, beehivePatchMeta)
     SpecializationPatcher.patchPlacablesWithNewSpec(modName, g_placeableTypeManager)
-    FruitTypePatcher:patchTypes(modName, g_fruitTypeManager, beehivePatchMeta)
+    FruitTypePatcher:patchFruitsBeeYieldBonus(g_fruitTypeManager, beehivePatchMeta.PATCHLIST_YIELD_BONUS)
 end
 
 ---Mission00 is unloading

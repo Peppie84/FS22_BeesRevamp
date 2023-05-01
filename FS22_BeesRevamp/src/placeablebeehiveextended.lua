@@ -98,7 +98,6 @@ function PlaceableBeehiveExtended:onLoad(savegame)
     self.spec_beehiveextended = self[("spec_%s."):format(PlaceableBeehiveExtended.MOD_NAME) .. 'beehiveextended']
 
     local xmlFile = self.xmlFile
-    local specBeehive = self.spec_beehive
     local spec = self.spec_beehiveextended
 
     local hiveCount = xmlFile:getFloat("placeable.beehive#hiveCount", -1)
@@ -163,9 +162,10 @@ end
 function PlaceableBeehiveExtended:getHoneyAmountToSpawn(superFunc)
     g_brUtils:logDebug('PlaceableBeehiveExtended.getHoneyAmountToSpawn')
     local specBeeHive = self.spec_beehive
+    local specBeeCare = self.spec_beecare
     local spec = self.spec_beehiveextended
 
-	if specBeeHive.isProductionActive then
+	if specBeeHive.isProductionActive and specBeeCare.status == BeeCare.STATES.ECONOMIC_HIVE then
         local deltaTimeInHoursOfLastSpawn =  (specBeeHive.environment.dayTime - specBeeHive.lastDayTimeHoneySpawned) / 1000
 		local minHoursOfLastSpawn = math.min(math.abs(deltaTimeInHoursOfLastSpawn / 3600), 1)
         local grothFactor = g_currentMission.beehiveSystem:getGrothFactor(specBeeHive.environment.currentPeriod);

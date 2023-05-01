@@ -67,7 +67,7 @@ Feb=-0.5
  - Im FieldInfo Hud anzeigen wie viel Hives influenced sind und wie viel %Bonus es gibt
 	- Muss irgendwie gecached werden, da es sonst zu oft aufgerufen wird!
 	- oder bei nicht influenced fruits direkt ein defualt raushauen
-	- eventuell wenn man auf dme Feld läuft, alle 10pixel oder so
+	- eventuell wenn man auf dem Feld läuft, alle 10pixel oder so
  - An den Fruchtkalender könnte man neben dem Fruchtnamen eine kleine Biene einblenden, damit man weiß welche Frucht von Bienen profitiert.
  - Hilfe-system für Real-Bees mod einplanen
 

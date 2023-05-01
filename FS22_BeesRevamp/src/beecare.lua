@@ -7,7 +7,13 @@
 --
 BeeCare = {
     MOD_NAME = g_currentModName or "unknown",
-    DEFAULT_BEE_VALUE = 14000
+    DEFAULT_BEE_VALUE = 14000,
+    DEFAULT_BEE_VALUE_MAX = 14000,
+    DEFAULT_BEE_VALUE_MIN = 7000,
+    STATES = {
+        ECONOMIC_HIVE = 1,
+        YOUNG_HIVE = 2
+    }
 }
 
 ---comment
@@ -27,6 +33,7 @@ function BeeCare.registerFunctions(placeableType)
     g_brUtils:logDebug('BeeCare.registerFunctions')
     SpecializationUtil.registerFunction(placeableType, "getBeehiveStatus", BeeCare.getBeehiveStatus)
     SpecializationUtil.registerFunction(placeableType, "getBeePopulation", BeeCare.getBeePopulation)
+    SpecializationUtil.registerFunction(placeableType, "updateInfoTables", BeeCare.updateInfoTables)
 end
 
 ---registerEventListeners
@@ -35,7 +42,7 @@ function BeeCare.registerEventListeners(placeableType)
     g_brUtils:logDebug('BeeCare.registerEventListeners')
     SpecializationUtil.registerEventListener(placeableType, "onLoad", BeeCare)
     SpecializationUtil.registerEventListener(placeableType, "onDelete", BeeCare)
-    -- SpecializationUtil.registerEventListener(placeableType, "onFinalizePlacement", BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, "onFinalizePlacement", BeeCare)
 	-- SpecializationUtil.registerEventListener(placeableType, "onReadStream", BeeCare)
 	-- SpecializationUtil.registerEventListener(placeableType, "onWriteStream", BeeCare)
 	-- SpecializationUtil.registerEventListener(placeableType, "onReadUpdateStream", BeeCare)
@@ -142,8 +149,10 @@ function BeeCare.registerSavegameXMLPaths(schema, basePath)
 	schema:setXMLSpecializationType("BeeCare")
 	schema:register(XMLValueType.INT, basePath .. "#bees", "TODO")
     schema:register(XMLValueType.STRING, basePath .. "#lastOxucare", "TODO")
+    schema:register(XMLValueType.STRING, basePath .. "#placedDay", "TODO")
     schema:register(XMLValueType.BOOL, basePath .. "#schwarmed", "TODO")
-    schema:register(XMLValueType.BOOL, basePath .. "#schwarmee", "TODO")
+    schema:register(XMLValueType.BOOL, basePath .. "#schwarmPressure", "TODO")
+    schema:register(XMLValueType.INT, basePath .. "#state", "TODO")
 	schema:setXMLSpecializationType()
 end
 
@@ -153,8 +162,11 @@ function BeeCare:loadFromXMLFile(xmlFile, key)
 
 	spec.bees = xmlFile:getInt(key .. "#bees", spec.bees)
     spec.lastOxucare = xmlFile:getValue(key .. "#lastOxucare", spec.lastOxucare)
+    spec.placedDay = xmlFile:getValue(key .. "#placedDay", spec.placedDay)
     spec.schwarmed = xmlFile:getBool(key .. "#schwarmed", spec.schwarmed)
-    spec.schwarmee = xmlFile:getBool(key .. "#schwarmee", spec.schwarmee)
+    spec.schwarmPressure = xmlFile:getBool(key .. "#schwarmPressure", spec.schwarmPressure)
+    spec.state = xmlFile:getInt(key .. "#state", spec.state)
+    spec:updateInfoTables()
 end
 
 function BeeCare:saveToXMLFile(xmlFile, key, usedModNames)
@@ -163,58 +175,102 @@ function BeeCare:saveToXMLFile(xmlFile, key, usedModNames)
 
 	xmlFile:setInt(key .. "#bees", spec.bees)
     xmlFile:setValue(key .. "#lastOxucare", spec.lastOxucare)
+    xmlFile:setValue(key .. "#placedDay", spec.placedDay)
     xmlFile:setBool(key .. "#schwarmed", spec.schwarmed)
-    xmlFile:setBool(key .. "#schwarmee", spec.schwarmee)
+    xmlFile:setBool(key .. "#schwarmPressure", spec.schwarmPressure)
+    xmlFile:setInt(key .. "#state", spec.state)
 end
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
+---comment
+function BeeCare:updateInfoTables()
+    g_brUtils:logDebug('BeeCare.updateInfoTables')
+
+    local spec = self.spec_beecare
+    spec.infoTablePopulation = {
+        title = 'Bee population',
+        text = g_i18n:formatNumber(self:getBeePopulation()) .. ' Bees'
+    }
+    spec.infoTableSwarm = {
+        title = 'Schwarmlustig',
+        text = tostring(spec.schwarmPressure)
+    }
+    spec.infoTableOxuSim = {
+        title = g_i18n:getText("realbees_oxusim", BeeCare.MOD_NAME),
+        text = 'Nein'
+    }
+
+    local statusHive = 'Jungvolk';
+    if spec.state == BeeCare.STATES.ECONOMIC_HIVE then
+        statusHive = 'Wirtschaftsvolk'
+    end
+
+    spec.infoTableState = {
+        title = 'Status',
+        text = statusHive
+    }
+end
+
+function BeeCare:onFinalizePlacement()
+    g_brUtils:logDebug('BeeCare.onFinalizePlacement')
+
+	local spec = self.spec_beecare
+
+    spec.bees = math.random(BeeCare.DEFAULT_BEE_VALUE_MIN, BeeCare.DEFAULT_BEE_VALUE_MAX)
+    spec.placedDay = BrUtils:getCurrentDayYearString()
+    spec.state = BeeCare.STATES.YOUNG_HIVE
+    spec:updateInfoTables()
+end
 
 ---TODO
 ---@param savegame table
 function BeeCare:onLoad(savegame)
     g_brUtils:logDebug('BeeCare.onLoad')
 
-    self.spec_beecare = self[("spec_%s.beecare"):format(BeeCare.MOD_NAME)]
-    self.spec_beehiveextended = self[("spec_%s.beehiveextended"):format(PlaceableBeehiveExtended.MOD_NAME)]
+    self.spec_beecare = self[('spec_%s.beecare'):format(BeeCare.MOD_NAME)]
+    self.spec_beehiveextended = self[('spec_%s.beehiveextended'):format(PlaceableBeehiveExtended.MOD_NAME)]
 
     local spec = self.spec_beecare
 
     spec.environment = g_currentMission.environment
     spec.bees = BeeCare.DEFAULT_BEE_VALUE
     spec.lastOxucare = ''
+    spec.placedDay = ''
+    spec.state = BeeCare.STATES.YOUNG_HIVE
     spec.schwarmed = false
-    spec.schwarmee = false
+    spec.schwarmPressure = false
 
-    spec.infoTablePopulation = {
-        title = "Bee population",
-        text = g_i18n:formatNumber(self:getBeePopulation()) .. " Bees"
-    }
-    spec.infoTableSwarm = {
-        title = "Schwarmlustig",
-        text = tostring(spec.schwarmee)
-    }
-    spec.infoTableOxuSim = {
-        title = g_i18n:getText("realbees_oxusim", BeeCare.MOD_NAME),
-        text = "Nein"
-    }
+    spec.infoTablePopulation = {}
+    spec.infoTableSwarm = {}
+    spec.infoTableOxuSim = {}
+    spec.infoTableState = {}
+    spec:updateInfoTables()
 
     spec.dirtyFlag = self:getNextDirtyFlag()
 
-    g_messageCenter:subscribe(MessageType.YEAR_CHANGED, BeeCare.onYearChanged, self)
+    g_messageCenter:subscribe(MessageType.PERIOD_CHANGED, BeeCare.onPeriodChanged, self)
 end
 
 ---TODO
-function BeeCare:onYearChanged()
-    g_brUtils:logDebug('BeeCare.onYearChanged')
+function BeeCare:onPeriodChanged()
+    g_brUtils:logDebug('BeeCare.onPeriodChanged')
     local spec = self.spec_beecare
     local specBeeHiveExtended = self.spec_beehiveextended
 
-    local currentYear = spec.environment.currentYear - 1
+    -- Soft new year! Not on Aug, but Mar!!
+    local currentPeriod = spec.environment.currentPeriod
+    if currentPeriod ~= 1 then
+        return
+    end
+    -- becaus the vanilla year changes on aug, we
+    -- don't have to subtract one year if we are on mar
+    -- local currentYear = spec.environment.currentYear - 1
+    local currentYear = spec.environment.currentYear
 
-    local oxuCareOnNov = currentYear .. '-9'
-    local oxuCareOnDec = currentYear .. '-10'
+    local oxuCareOnNov = 'Y'..currentYear..'M9D0'
+    local oxuCareOnDec = 'Y'..currentYear..'M10D0'
 
     if spec.lastOxucare == nil or
         spec.lastOxucare == '' or
@@ -223,7 +279,13 @@ function BeeCare:onYearChanged()
         -- died!
         spec.bees = 0
         specBeeHiveExtended:updateActionRadius(0)
+    else
+        -- will transform to a full hive
+        spec.bees = BeeCare.DEFAULT_BEE_VALUE
+        spec.state = BeeCare.STATES.ECONOMIC_HIVE
     end
+
+    spec:updateInfoTables()
 end
 
 ---TODO
@@ -242,7 +304,7 @@ function BeeCare:onDelete()
     g_brUtils:logDebug('BeeCare.onDelete')
 	local spec = self.spec_beecare
 
-    g_messageCenter:unsubscribe(MessageType.YEAR_CHANGED, self)
+    g_messageCenter:unsubscribe(MessageType.PERIOD_CHANGED, self)
 end
 
 ---TODO
@@ -261,7 +323,7 @@ function BeeCare:updateBeehiveState(superFunc)
     superFunc(self)
 
     local beePopulation = spec:getBeePopulation()
-    spec.infoTablePopulation.text = g_i18n:formatNumber(beePopulation) .. " Bees"
+    spec:updateInfoTables()
 
     if beePopulation <= 0 then
         specBeeHive.isFxActive = false
@@ -276,6 +338,8 @@ end
 ---@param infoTable table
 function BeeCare:updateInfo(superFunc, infoTable)
     local spec = self.spec_beecare
+
+    table.insert(infoTable, spec.infoTableState)
 	table.insert(infoTable, spec.infoTablePopulation)
     table.insert(infoTable, spec.infoTableSwarm)
     table.insert(infoTable, spec.infoTableOxuSim)

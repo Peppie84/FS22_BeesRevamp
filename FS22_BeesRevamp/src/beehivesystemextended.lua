@@ -20,6 +20,7 @@ local BeehiveSystemExtended_mt = Class(BeehiveSystemExtended, BeehiveSystem)
 ---@return table (BeehiveSystemExtended) returns BeehiveSystemExtended instance
 function BeehiveSystemExtended.new(mission, beehivePatchMeta, customMt)
     local self = BeehiveSystemExtended:superClass().new(mission, customMt or BeehiveSystemExtended_mt)
+
     self.beehiveInfluenceFactorAtHiveCount = 0
     self.fieldUpdateCache = FruitType.UNKNOWN
     self.beehivePatchMeta = beehivePatchMeta
