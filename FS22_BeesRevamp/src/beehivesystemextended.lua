@@ -8,7 +8,7 @@
 --
 BeehiveSystemExtended = {
     MOD_NAME = g_currentModName or "unknown",
-    MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD = { 0.75, 1.25, 1.50, 2.00, 1.50, 1.25, 0.75, 0.50, -0.5, -0.5, -0.5, -0.5 },
+    MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD = { 0.75, 1.25, 1.50, 2.00, 2.50, 1.50, 1.25, 0.75, -0.5, -0.5, -0.5, -0.5 },
     DEBUG = true
 }
 
@@ -62,7 +62,6 @@ end
 ---@return number
 function BeehiveSystemExtended:getGrothFactor(period)
     ---TODO Rename to groth factor
-    g_brUtils:logDebug('BeehiveSystemExtended.getGrothFactor')
     return self.MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD[period]
 end
 

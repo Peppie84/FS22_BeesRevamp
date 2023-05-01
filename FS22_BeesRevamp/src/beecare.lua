@@ -7,12 +7,13 @@
 --
 BeeCare = {
     MOD_NAME = g_currentModName or "unknown",
+    DEFAULT_BEE_VALUE_MAX = 20000,
     DEFAULT_BEE_VALUE = 14000,
-    DEFAULT_BEE_VALUE_MAX = 14000,
-    DEFAULT_BEE_VALUE_MIN = 7000,
+    DEFAULT_BEE_VALUE_MIN = 8000,
     STATES = {
-        ECONOMIC_HIVE = 1,
-        YOUNG_HIVE = 2
+        YOUNG_HIVE = 1,
+        ECONOMIC_HIVE = 2,
+        DEAD = 3
     }
 }
 
@@ -193,19 +194,31 @@ function BeeCare:updateInfoTables()
         title = 'Bee population',
         text = g_i18n:formatNumber(self:getBeePopulation()) .. ' Bees'
     }
-    spec.infoTableSwarm = {
-        title = 'Schwarmlustig',
-        text = tostring(spec.schwarmPressure)
-    }
+    if spec.schwarmPressure then
+        spec.infoTableSwarm = {
+            title = 'Schwarmlustig',
+            text = tostring(spec.schwarmPressure)
+        }
+    end
     spec.infoTableOxuSim = {
         title = g_i18n:getText("realbees_oxusim", BeeCare.MOD_NAME),
         text = 'Nein'
     }
 
-    local statusHive = 'Jungvolk';
+    local statusHive = ''
     if spec.state == BeeCare.STATES.ECONOMIC_HIVE then
         statusHive = 'Wirtschaftsvolk'
+    elseif spec.state == BeeCare.STATES.YOUNG_HIVE then
+        statusHive = 'Jungvolk'
+    elseif spec.state == BeeCare.STATES.DEAD then
+        statusHive = 'Dead'
     end
+
+    if spec.schwarmed then
+        statusHive = statusHive .. ' (abgeschwärmt)'
+    end
+
+    g_brUtils:logDebug(' State, %s', tostring(statusHive))
 
     spec.infoTableState = {
         title = 'Status',
@@ -213,12 +226,18 @@ function BeeCare:updateInfoTables()
     }
 end
 
+---comment
 function BeeCare:onFinalizePlacement()
     g_brUtils:logDebug('BeeCare.onFinalizePlacement')
 
 	local spec = self.spec_beecare
 
-    spec.bees = math.random(BeeCare.DEFAULT_BEE_VALUE_MIN, BeeCare.DEFAULT_BEE_VALUE_MAX)
+    -- skip onFinalizePlacement if we're just in loading
+    if spec.placedDay ~= '' then
+        return
+    end
+
+    spec.bees = math.random(BeeCare.DEFAULT_BEE_VALUE_MIN, BeeCare.DEFAULT_BEE_VALUE)
     spec.placedDay = BrUtils:getCurrentDayYearString()
     spec.state = BeeCare.STATES.YOUNG_HIVE
     spec:updateInfoTables()
@@ -242,32 +261,23 @@ function BeeCare:onLoad(savegame)
     spec.schwarmed = false
     spec.schwarmPressure = false
 
-    spec.infoTablePopulation = {}
-    spec.infoTableSwarm = {}
-    spec.infoTableOxuSim = {}
-    spec.infoTableState = {}
+    spec.infoTablePopulation = nil
+    spec.infoTableSwarm = nil
+    spec.infoTableOxuSim = nil
+    spec.infoTableState = nil
     spec:updateInfoTables()
 
     spec.dirtyFlag = self:getNextDirtyFlag()
 
     g_messageCenter:subscribe(MessageType.PERIOD_CHANGED, BeeCare.onPeriodChanged, self)
+    g_messageCenter:subscribe(MessageType.YEAR_CHANGED, BeeCare.onYearChanged, self)
 end
 
----TODO
-function BeeCare:onPeriodChanged()
-    g_brUtils:logDebug('BeeCare.onPeriodChanged')
+function BeeCare:onYearChanged()
+    g_brUtils:logDebug('BeeCare.onYearChanged')
     local spec = self.spec_beecare
     local specBeeHiveExtended = self.spec_beehiveextended
-
-    -- Soft new year! Not on Aug, but Mar!!
-    local currentPeriod = spec.environment.currentPeriod
-    if currentPeriod ~= 1 then
-        return
-    end
-    -- becaus the vanilla year changes on aug, we
-    -- don't have to subtract one year if we are on mar
-    -- local currentYear = spec.environment.currentYear - 1
-    local currentYear = spec.environment.currentYear
+    local currentYear = spec.environment.currentYear - 1
 
     local oxuCareOnNov = 'Y'..currentYear..'M9D0'
     local oxuCareOnDec = 'Y'..currentYear..'M10D0'
@@ -276,16 +286,43 @@ function BeeCare:onPeriodChanged()
         spec.lastOxucare == '' or
         not (spec.lastOxucare == oxuCareOnNov or
         spec.lastOxucare == oxuCareOnDec) then
-        -- died!
+        -- dead!!
         spec.bees = 0
         specBeeHiveExtended:updateActionRadius(0)
+        spec.state = BeeCare.STATES.DEAD
+        g_brUtils:logDebug('Dead!')
     else
         -- will transform to a full hive
-        spec.bees = BeeCare.DEFAULT_BEE_VALUE
+        spec.bees = math.random(BeeCare.DEFAULT_BEE_VALUE, BeeCare.DEFAULT_BEE_VALUE_MAX)
         spec.state = BeeCare.STATES.ECONOMIC_HIVE
+        g_brUtils:logDebug('ECONOMIC_HIVE!')
     end
 
+    spec.schwarmed = false
+    spec.schwarmPressure = false
+
     spec:updateInfoTables()
+end
+
+---TODO
+function BeeCare:onPeriodChanged()
+    g_brUtils:logDebug('BeeCare.onPeriodChanged')
+    local spec = self.spec_beecare
+
+    if spec.schwarmPressure then
+        spec.schwarmed = true
+        spec.schwarmPressure = false
+        spec.bees = spec.bees * 0.5
+    end
+
+    local currentPeriod = spec.environment.currentPeriod
+    if currentPeriod >= 1 and currentPeriod <= 6 and not spec.schwarmed and spec.state == BeeCare.STATES.ECONOMIC_HIVE then
+        local random = math.random()
+        if random > 0.75 then
+            spec.schwarmPressure = true
+        end
+        spec:updateInfoTables()
+    end
 end
 
 ---TODO
@@ -295,8 +332,9 @@ function BeeCare:getBeePopulation()
     local spec = self.spec_beecare
 
     local grothFactor = g_currentMission.beehiveSystem:getGrothFactor(spec.environment.currentPeriod);
+    local beePopulation = spec.bees * math.abs(grothFactor)
 
-    return (specBeeHiveExtended:getBeehiveHiveCount() * (spec.bees * grothFactor))
+    return (specBeeHiveExtended:getBeehiveHiveCount() * beePopulation)
 end
 
 ---TODO
@@ -305,6 +343,7 @@ function BeeCare:onDelete()
 	local spec = self.spec_beecare
 
     g_messageCenter:unsubscribe(MessageType.PERIOD_CHANGED, self)
+    g_messageCenter:unsubscribe(MessageType.YEAR_CHANGED, self)
 end
 
 ---TODO
@@ -339,9 +378,16 @@ end
 function BeeCare:updateInfo(superFunc, infoTable)
     local spec = self.spec_beecare
 
-    table.insert(infoTable, spec.infoTableState)
-	table.insert(infoTable, spec.infoTablePopulation)
-    table.insert(infoTable, spec.infoTableSwarm)
+    if spec.infoTableState ~= nil then
+        table.insert(infoTable, spec.infoTableState)
+    end
+
+    table.insert(infoTable, spec.infoTablePopulation)
+
+    if spec.infoTableSwarm then
+        table.insert(infoTable, spec.infoTableSwarm)
+    end
+
     table.insert(infoTable, spec.infoTableOxuSim)
 
 	superFunc(self, infoTable)
