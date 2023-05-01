@@ -318,7 +318,7 @@ function BeeCare:onPeriodChanged()
     local currentPeriod = spec.environment.currentPeriod
     if currentPeriod >= 1 and currentPeriod <= 6 and not spec.schwarmed and spec.state == BeeCare.STATES.ECONOMIC_HIVE then
         local random = math.random()
-        if random > 0.75 then
+        if random <= 0.75 then
             spec.schwarmPressure = true
         end
         spec:updateInfoTables()
