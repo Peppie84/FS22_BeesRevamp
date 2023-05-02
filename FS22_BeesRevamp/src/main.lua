@@ -112,6 +112,21 @@ local function startMission(mission)
     modEnvironment:onMissionStart(mission)
 end
 
+---comment
+---@param self table
+---@param overwrittenFunc function
+---@param ... any
+---@return boolean
+local function loadBeesRevampHelpLine(self, overwrittenFunc, ...)
+    local ret = overwrittenFunc(self, ...)
+    if ret then
+        self:loadFromXML(Utils.getFilename("gui/helpLine.xml", modDirectory))
+        return true
+    end
+    return false
+end
+
+
 --- Initialize the mod
 local function init()
 
@@ -120,6 +135,8 @@ local function init()
     Mission00.load = Utils.prependedFunction(Mission00.load, load)
     Mission00.delete = Utils.appendedFunction(FSBaseMission.delete, unload)
     Mission00.onStartMission = Utils.appendedFunction(Mission00.onStartMission, startMission)
+
+    HelpLineManager.loadMapData = Utils.overwrittenFunction(HelpLineManager.loadMapData, loadBeesRevampHelpLine)
 
     FSDensityMapUtil.cutFruitArea = Utils.overwrittenFunction(FSDensityMapUtil.cutFruitArea, Test.cutFruitArea)
     FSBaseMission.setHarvestScaleRatio = Utils.overwrittenFunction(FSBaseMission.setHarvestScaleRatio, Test.getHarvestScaleMultiplier)

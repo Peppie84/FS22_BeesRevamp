@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<helpLines>
+  <category title="Categorie1">
+    <page title="Page1">
+      <paragraph>
+        <text text="Text1" />
+      </paragraph>
+      <paragraph>
+        <text text="Text2" />
+      </paragraph>
+      <paragraph>
+        <text text="Text3" />
+      </paragraph>
+      <paragraph>
+        <text text="Text4" />
+      </paragraph>
+      <paragraph>
+        <text text="Text5" />
+      </paragraph>
+    </page>
+  </category>
+</helpLines>
