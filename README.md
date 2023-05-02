@@ -7,7 +7,7 @@
 <br />
 <div align="center">
 
-<img src="documents/x.jpg" style="width: 128px;">
+<img src="documents/mod_icon.jpg" style="width: 128px;">
 
 <h3 align="center"><u>FS22_BeesRevamp</u></h3>
 
