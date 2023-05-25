@@ -7,7 +7,7 @@
 
 ### PlaceableBeehiveExtended
 - [] Nektar soll produziert werden aufgrund der Anzahl der Bienen
-- [] Nekrar soll nur produziert werden wenn die flugFX aktiv ist
+- [] Nektar soll nur produziert werden wenn die flugFX aktiv ist
 - [] Durch Nektar wird Honig, nachgelagert, produziert
 - [x] Honig wird nur im Wirtschaftsvolk produziert
 - [x] Reichweite erhöhen, 15m-150m sind zu wenig!
