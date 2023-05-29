@@ -8,7 +8,7 @@
 --
 BeehiveSystemExtended = {
     MOD_NAME = g_currentModName or "unknown",
-    MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD = { 0.75, 1.25, 1.50, 2.00, 2.50, 1.50, 1.25, 0.75, -0.5, -0.5, -0.5, -0.5 },
+    MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD = { 0.75, 1.50, 2.25, 3.20, 2.80, 2.00, 1.50, 0.75, -0.5, -0.5, -0.5, -0.5 },
     DEBUG = true
 }
 

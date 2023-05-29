@@ -6,9 +6,11 @@
 - [] Im Winter wird der Verbrauch negativ
 
 ### PlaceableBeehiveExtended
-- [] Nektar soll produziert werden aufgrund der Anzahl der Bienen
-- [] Nektar soll nur produziert werden wenn die flugFX aktiv ist
-- [] Durch Nektar wird Honig, nachgelagert, produziert
+- [x] Nektar soll produziert werden aufgrund der Anzahl der Bienen
+- [x] Nektar soll nur produziert werden wenn die flugFX aktiv ist
+- [x] Durch Nektar wird Honig, nachgelagert, produziert
+- [x] Nectar/Honig wird stündlich konsumiert vom Nectar
+    - [] Wenn Nektar=0 muss noch der Verbrauch vom Spawner eingebaut werden
 - [x] Honig wird nur im Wirtschaftsvolk produziert
 - [x] Reichweite erhöhen, 15m-150m sind zu wenig!
 
@@ -24,7 +26,7 @@
 - [] Wenn der Honig auf 0 fällt im Winter müssen die Bienen sterben
 - [x] Beim platzieren der Bienen soll ein Random-Faktor für die anzahl der Bienen benutzt werden.
 - [x] Im ersten Jahr ist es nur ein Ableger? Bedeutet, es gibt das erste Jahr kein Honig. Aufgefüttert muss trotzdem im Okt und im Winter wird Honig verbraucht. Schwärmen tun Jungvölker nicht!
-- [x] Jedes neue Jahr wird eine neue Bee-Max populaion ermittelt, damit es etwas variiert.
+- [x] Jedes neue Jahr wird eine neue Bee-Max population ermittelt, damit es etwas variiert.
 
 ### Other
 - [x] StoreItemPatcher, damit Preise von storeItems angepasst werden können
@@ -54,3 +56,9 @@
 - [] Entfernungsberechnung prüfen
 - [] Vor der ersten Stunde, nach aktivieren der Mod, ist der Verkaufspreis-Chart falsch, weil er den alten Wert anzeigt. Hier sollte man mal prüfen ob man ein refresh Table auslösen kann
 - [] Alle Zeichenketten in Singlequotes
+
+
+
+
+### Texte
+- Get realistic beekeeping into farming simulator

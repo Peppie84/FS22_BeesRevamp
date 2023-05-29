@@ -334,7 +334,7 @@ function BeeCare:getBeePopulation()
     local grothFactor = g_currentMission.beehiveSystem:getGrothFactor(spec.environment.currentPeriod);
     local beePopulation = spec.bees * math.abs(grothFactor)
 
-    return (specBeeHiveExtended:getBeehiveHiveCount() * beePopulation)
+    return (specBeeHiveExtended:getBeehiveHiveCount() * beePopulation) - 1 -- minus the queen :P
 end
 
 ---TODO
@@ -353,13 +353,13 @@ function BeeCare:getBeehiveStatus()
 end
 
 ---TODO
----@param superFunc function
-function BeeCare:updateBeehiveState(superFunc)
+---@param overwrittenFunc function
+function BeeCare:updateBeehiveState(overwrittenFunc)
     g_brUtils:logDebug('BeeCare.updateBeehiveState')
     local spec = self.spec_beecare
     local specBeeHive = self.spec_beehive
 
-    superFunc(self)
+    overwrittenFunc(self)
 
     local beePopulation = spec:getBeePopulation()
     spec:updateInfoTables()
