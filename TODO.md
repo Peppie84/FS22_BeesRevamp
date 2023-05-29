@@ -2,7 +2,7 @@
 
 ### BeehiveSystemExtended
 - [x] Bienen fxFliegen < 10 Grad aufhören
-- [] Variable Produktion an Honig je nach Monat
+- [x] Variable Produktion an Honig je nach Monat
 - [] Im Winter wird der Verbrauch negativ
 
 ### PlaceableBeehiveExtended
