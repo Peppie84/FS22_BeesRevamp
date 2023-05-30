@@ -14,7 +14,7 @@ PlaceableBeehiveExtended = {
         ["aa843f40070ca949ed4e4461d15d89ef"] = 10,    -- Stock lvl 4
         ["9375e364a873f2614c7f30c716781051"] = 33,    -- Stock lvl 5
     },
-    NECTAR_PER_BEE_IN_MILLILITER = 0.05, -- 50um
+    NECTAR_PER_BEE_IN_MILLILITER = 0.05, -- 50ul (mikroliter)
     BEE_FLIGHTS_PER_HOUR = 2.0,
     BEE_HONEY_CONSUMATION_PER_MONTH = 0.000433,
     FLYING_BEES_PERCENTAGE = 0.66,

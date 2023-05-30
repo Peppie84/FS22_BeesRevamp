@@ -7,9 +7,16 @@
 
 ### PlaceableBeehiveExtended
 - [x] Nektar soll produziert werden aufgrund der Anzahl der Bienen
+    - [x] Nektar wird nur von 2/3 der Bienen generiert
+    - [x] Im Schnitt dauert eine Flugphase 20 Minuten
+    - [x] Jede Flugbiene sammelt 50ul (Mikroliter) Nektar
 - [x] Nektar soll nur produziert werden wenn die flugFX aktiv ist
-- [x] Durch Nektar wird Honig, nachgelagert, produziert
-- [x] Nectar/Honig wird stündlich konsumiert vom Nectar
+- [x] Durch Nektar wird Honig nachgelagert produziert
+    - [x] Tagsüber sind es nur die restluchen 1/3 Bienen die Honig produzieren
+        - [x] Nachts sind es aber volle 3/3
+    - [x] Umgewandelt werden auch hier pro Stunde 50ul (Mikroliter) pro Biene
+    - [x] Nektar zu Honig ist 3:1
+- [x] Nektar/Honig wird stündlich konsumiert vom Nektar
     - [] Wenn Nektar=0 muss noch der Verbrauch vom Spawner eingebaut werden
 - [x] Honig wird nur im Wirtschaftsvolk produziert
 - [x] Reichweite erhöhen, 15m-150m sind zu wenig!
