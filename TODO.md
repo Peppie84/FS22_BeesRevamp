@@ -5,7 +5,7 @@
 - [x] Variable Produktion an Honig je nach Monat
 - [] Im Winter wird der Verbrauch negativ
 
-### PlaceableBeehiveExtended
+### Spec:PlaceableBeehiveExtended
 - [x] Nektar soll produziert werden aufgrund der Anzahl der Bienen
     - [x] Nektar wird nur von 2/3 der Bienen generiert
     - [x] Im Schnitt dauert eine Flugphase 20 Minuten
@@ -16,12 +16,14 @@
         - [x] Nachts sind es aber volle 3/3
     - [x] Umgewandelt werden auch hier pro Stunde 50ul (Mikroliter) pro Biene
     - [x] Nektar zu Honig ist 3:1
-- [x] Nektar/Honig wird stündlich konsumiert vom Nektar
+- [x] Nektar/Honig wird stündlich konsumiert pro Biene
+    - [x] Konsum entspricht etwa 16kg auf 5000 Bienen für 6 Monate. (Für die Winterphase)
+        - [] Aktuelle Umsetzung nochmal prüfen!
     - [] Wenn Nektar=0 muss noch der Verbrauch vom Spawner eingebaut werden
 - [x] Honig wird nur im Wirtschaftsvolk produziert
 - [x] Reichweite erhöhen, 15m-150m sind zu wenig!
 
-### BeeCare
+### Spec:BeeCare
 - [x] Bienen können sterben - der Hive muss dann ersetzt werden. Effekt: es kommt kein Honig mehr + Infohud die Info ausgeben
 - [] Zwischen März und Juni muss man einmal pro Period an den Kasten und einen Aktionsknopf drücken = Schwarmkontrolle. Macht man das nicht, wird der `Bees` halbiert für das aktuelle Jahr. Im neuen Jahr wird dieser Wert wieder zurückgesetzt.
     - [x] Halbieren der Bienen
