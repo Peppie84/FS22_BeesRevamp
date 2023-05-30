@@ -6,13 +6,13 @@
 -- Copyright (c) Peppie84, 2023
 --
 PlaceableBeehiveExtended = {
-    MOD_NAME = g_currentModName or "unknown",
+    MOD_NAME = g_currentModName or 'unknown',
     PATCHLIST_HIVE_COUNT_ON_RUNTIME = {
-        ["d7294ff6f5e42e624c40a2df4eeec060"] = 1,     -- Stock lvl 1
-        ["215ebd1eab110e0bf84b958df9cf6695"] = 1,     -- Stock lvl 2
-        ["5f1492c2fa8a3535890ab4edf04e5912"] = 1,     -- Stock lvl 3
-        ["aa843f40070ca949ed4e4461d15d89ef"] = 10,    -- Stock lvl 4
-        ["9375e364a873f2614c7f30c716781051"] = 33,    -- Stock lvl 5
+        ['d7294ff6f5e42e624c40a2df4eeec060'] = 1,     -- Stock lvl 1
+        ['215ebd1eab110e0bf84b958df9cf6695'] = 1,     -- Stock lvl 2
+        ['5f1492c2fa8a3535890ab4edf04e5912'] = 1,     -- Stock lvl 3
+        ['aa843f40070ca949ed4e4461d15d89ef'] = 10,    -- Stock lvl 4
+        ['9375e364a873f2614c7f30c716781051'] = 33,    -- Stock lvl 5
     },
     NECTAR_PER_BEE_IN_MILLILITER = 0.05, -- 50ul (mikroliter)
     BEE_FLIGHTS_PER_HOUR = 2.0,
@@ -37,29 +37,29 @@ end
 ---TODO
 ---@param placeableType any
 function PlaceableBeehiveExtended.registerFunctions(placeableType)
-	SpecializationUtil.registerFunction(placeableType, "getBeehiveHiveCount", PlaceableBeehiveExtended.getBeehiveHiveCount)
-    SpecializationUtil.registerFunction(placeableType, "updateActionRadius", PlaceableBeehiveExtended.updateActionRadius)
-    SpecializationUtil.registerFunction(placeableType, "updateNectar", PlaceableBeehiveExtended.updateNectar)
+	SpecializationUtil.registerFunction(placeableType, 'getBeehiveHiveCount', PlaceableBeehiveExtended.getBeehiveHiveCount)
+    SpecializationUtil.registerFunction(placeableType, 'updateActionRadius', PlaceableBeehiveExtended.updateActionRadius)
+    SpecializationUtil.registerFunction(placeableType, 'updateNectar', PlaceableBeehiveExtended.updateNectar)
 end
 
 ---registerEventListeners
 ---@param placeableType table
 function PlaceableBeehiveExtended.registerEventListeners(placeableType)
     g_brUtils:logDebug('PlaceableBeehiveExtended.registerEventListeners')
-    SpecializationUtil.registerEventListener(placeableType, "onLoad", PlaceableBeehiveExtended)
-    SpecializationUtil.registerEventListener(placeableType, "onDelete", PlaceableBeehiveExtended)
+    SpecializationUtil.registerEventListener(placeableType, 'onLoad', PlaceableBeehiveExtended)
+    SpecializationUtil.registerEventListener(placeableType, 'onDelete', PlaceableBeehiveExtended)
 end
 
 function PlaceableBeehiveExtended.registerOverwrittenFunctions(placeableType)
-	SpecializationUtil.registerOverwrittenFunction(placeableType, "getHoneyAmountToSpawn", PlaceableBeehiveExtended.getHoneyAmountToSpawn)
-    --SpecializationUtil.registerOverwrittenFunction(placeableType, "getBeehiveInfluenceFactor", PlaceableBeehiveExtended.getBeehiveInfluenceFactor)
-    SpecializationUtil.registerOverwrittenFunction(placeableType, "updateInfo", PlaceableBeehiveExtended.updateInfo)
+	SpecializationUtil.registerOverwrittenFunction(placeableType, 'getHoneyAmountToSpawn', PlaceableBeehiveExtended.getHoneyAmountToSpawn)
+    --SpecializationUtil.registerOverwrittenFunction(placeableType, 'getBeehiveInfluenceFactor', PlaceableBeehiveExtended.getBeehiveInfluenceFactor)
+    SpecializationUtil.registerOverwrittenFunction(placeableType, 'updateInfo', PlaceableBeehiveExtended.updateInfo)
 end
 
 
 function PlaceableBeehiveExtended.registerXMLPaths(schema, basePath)
-	schema:setXMLSpecializationType("Beehive")
-	schema:register(XMLValueType.FLOAT, basePath .. ".beehive#hiveCount", "The number of hives on this beehive")
+	schema:setXMLSpecializationType('Beehive')
+	schema:register(XMLValueType.FLOAT, basePath .. '.beehive#hiveCount', 'The number of hives on this beehive')
 	schema:setXMLSpecializationType()
 end
 
@@ -74,8 +74,8 @@ function PlaceableBeehiveExtended.registerSavegameXMLPaths(schema, basePath)
     g_brUtils:logDebug('PlaceableBeehiveExtended.registerSavegameXMLPaths')
     -- basePath = placeables.placeable(?).FS22_BeesRevamp.placeablebeehiveextended
 
-	schema:setXMLSpecializationType("PlaceableBeehiveExtended")
-	schema:register(XMLValueType.FLOAT, basePath .. ".nectar", "TODO")
+	schema:setXMLSpecializationType('PlaceableBeehiveExtended')
+	schema:register(XMLValueType.FLOAT, basePath .. '.nectar', 'TODO')
 	schema:setXMLSpecializationType()
 end
 
@@ -84,14 +84,14 @@ function PlaceableBeehiveExtended:loadFromXMLFile(xmlFile, key)
     -- key = placeables.placeable(?).FS22_BeesRevamp.placeablebeehiveextended
 	local spec = self.spec_beehiveextended
 
-	spec.nectar = xmlFile:getFloat(key .. ".nectar", spec.nectar)
+	spec.nectar = xmlFile:getFloat(key .. '.nectar', spec.nectar)
 end
 
 function PlaceableBeehiveExtended:saveToXMLFile(xmlFile, key, usedModNames)
     g_brUtils:logDebug('PlaceableBeehiveExtended.saveToXMLFile')
 	local spec = self.spec_beehiveextended
 
-	xmlFile:setFloat(key .. ".nectar", spec.nectar)
+	xmlFile:setFloat(key .. '.nectar', spec.nectar)
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,16 +103,16 @@ end
 function PlaceableBeehiveExtended:onLoad(savegame)
     g_brUtils:logDebug('PlaceableBeehiveExtended.onLoad')
 
-    self.spec_beehiveextended = self[("spec_%s."):format(PlaceableBeehiveExtended.MOD_NAME) .. 'beehiveextended']
+    self.spec_beehiveextended = self[('spec_%s.'):format(PlaceableBeehiveExtended.MOD_NAME) .. 'beehiveextended']
 
     local xmlFile = self.xmlFile
     local spec = self.spec_beehiveextended
 
-    local hiveCount = xmlFile:getFloat("placeable.beehive#hiveCount", -1)
+    local hiveCount = xmlFile:getFloat('placeable.beehive#hiveCount', -1)
     if hiveCount == -1 then
         hiveCount = 1 -- default
         -- Patch to runtime
-        local i3dMd5HashFilename = getMD5(xmlFile:getValue("placeable.base.filename", "no-i3d-filename"))
+        local i3dMd5HashFilename = getMD5(xmlFile:getValue('placeable.base.filename', 'no-i3d-filename'))
         if PlaceableBeehiveExtended.PATCHLIST_HIVE_COUNT_ON_RUNTIME[i3dMd5HashFilename] ~= nil then
             hiveCount = PlaceableBeehiveExtended.PATCHLIST_HIVE_COUNT_ON_RUNTIME[i3dMd5HashFilename]
         end
@@ -125,11 +125,11 @@ function PlaceableBeehiveExtended:onLoad(savegame)
     spec:updateActionRadius(500);
 
     spec.infoTableNectar = {
-        title = "Nektar",
-        text = g_i18n:formatNumber(spec.nectar, 0) .. "l"
+        title = 'Nektar',
+        text = g_i18n:formatNumber(spec.nectar, 0) .. 'l'
     }
     spec.infoTableHives = {
-        title = "Hives",
+        title = 'Hives',
         text = spec.hiveCount
     }
 
@@ -142,7 +142,7 @@ function PlaceableBeehiveExtended:updateActionRadius(radius)
 
     specBeehive.actionRadius = radius
     specBeehive.actionRadiusSquared = (specBeehive.actionRadius * 0.5) ^ 2
-    specBeehive.infoTableRange.text = g_i18n:formatNumber(specBeehive.actionRadius, 0) .. "m"
+    specBeehive.infoTableRange.text = g_i18n:formatNumber(specBeehive.actionRadius, 0) .. 'm'
 end
 
 ---TODO
@@ -256,7 +256,7 @@ function PlaceableBeehiveExtended:updateNectar(nectar)
     end
 
     spec.nectar = spec.nectar + nectar
-    spec.infoTableNectar.text= g_i18n:formatNumber(spec.nectar, 0) .. "l"
+    spec.infoTableNectar.text= g_i18n:formatNumber(spec.nectar, 0) .. 'l'
 end
 
 ---TODO
