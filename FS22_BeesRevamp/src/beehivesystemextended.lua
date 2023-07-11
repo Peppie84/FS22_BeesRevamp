@@ -262,7 +262,6 @@ function BeehiveSystemExtended:fieldAddFruit(data, box)
 end
 
 ---TODO
----@param superFunc function
 ---@param posX number
 ---@param posZ number
 ---@param rotY number

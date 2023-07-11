@@ -176,7 +176,7 @@ Registrierte Methoden:
 ### BeehiveSystemExtended
 
 # Copyright
-Copyright (c) 2023 [Dennis Schmitt](https://github.com/peppie23).
+Copyright (c) 2023 [Dennis Schmitt](https://github.com/peppie84).
 All rights reserved.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

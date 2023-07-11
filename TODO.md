@@ -74,3 +74,4 @@
 
 ### Texte
 - Get realistic beekeeping into farming simulator
+- a bit more challenging to keep the bees alive
