@@ -19,7 +19,7 @@ function StoreItemPatcher:patchItems(modName, storeManager, patchMeta)
         if storeItem.categoryName == patchMeta.CATEGORY and storeItem.species == patchMeta.SPECIES then
             local xmlFile = loadXMLFile("storeItemXML", storeItem.xmlFilename)
             local baseXMLName = getXMLRootName(xmlFile)
-	        local baseXMLKey = baseXMLName .. ".base"
+            local baseXMLKey = baseXMLName .. ".base"
             delete(xmlFile)
 
             xmlFile = XMLFile.load("storeManagerLoadItemXml", storeItem.xmlFilename, storeItem.xmlSchema)
@@ -34,7 +34,6 @@ function StoreItemPatcher:patchItems(modName, storeManager, patchMeta)
                     StoreItemPatcher:patchPrice(storeManager, storeItemIndex, patchMeta, i3dMd5HashFilename)
                     g_brUtils:logInfo('Info: StoreItemPatcher patched: \'%s\'', tostring(storeItem.name))
                 end
-
             end
 
             xmlFile:delete()

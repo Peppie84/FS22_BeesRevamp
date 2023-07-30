@@ -10,7 +10,7 @@
 FruitTypePatcher = {
 }
 
----Patch the beeYieldBonusPercentage for eatch fruit on the g_fruitTypeManager if the
+---Patch the beeYieldBonusPercentage for each fruit on the g_fruitTypeManager if the
 ---Fruitname is on the patchMeta list.
 ---@param fruitTypeManager table (g_fruitTypeManager)
 ---@param patchMeta table (array<string, array<string,number>>)
@@ -19,7 +19,11 @@ function FruitTypePatcher:patchFruitsBeeYieldBonus(fruitTypeManager, patchMeta)
         local fruitType = fruitTypeManager:getFruitTypeByName(patchFruitTypeName)
         if fruitType ~= nil then
             fruitType.beeYieldBonusPercentage = patchFruitTypeDesc.yieldBonus
-            g_brUtils:logInfo('FruitType \'%s\' set beeYieldBonusPercentage to \'%s\'!', tostring(patchFruitTypeName), tostring(fruitType.beeYieldBonusPercentage))
+            g_brUtils:logInfo(
+                'FruitType \'%s\' set beeYieldBonusPercentage to \'%s\'!',
+                tostring(patchFruitTypeName),
+                tostring(fruitType.beeYieldBonusPercentage)
+            )
         end
     end
 end

@@ -15,9 +15,20 @@ SpecializationPatcher = {
 ---@param specializationManager table
 ---@param modDirectory string
 ---@param placeableTypeManager table
-function SpecializationPatcher.installSpecializations(modBaseName, specializationManager, modDirectory, placeableTypeManager)
-    specializationManager:addSpecialization('beehiveextended', 'PlaceableBeehiveExtended', Utils.getFilename('src/placeablebeehiveextended.lua', modDirectory), '')
-    specializationManager:addSpecialization('beecare', 'BeeCare', Utils.getFilename('src/beecare.lua', modDirectory), '')
+function SpecializationPatcher.installSpecializations(modBaseName, specializationManager, modDirectory,
+                                                      placeableTypeManager)
+    specializationManager:addSpecialization(
+        'beehiveextended',
+        'PlaceableBeehiveExtended',
+        Utils.getFilename('src/placeablebeehiveextended.lua', modDirectory),
+        ''
+    )
+    specializationManager:addSpecialization(
+        'beecare',
+        'BeeCare',
+        Utils.getFilename('src/beecare.lua', modDirectory),
+        ''
+    )
     SpecializationPatcher.patchPlacablesWithNewSpec(modBaseName, placeableTypeManager)
 end
 
@@ -25,15 +36,26 @@ end
 ---@param modBaseName string
 ---@param placeableTypeManager table
 function SpecializationPatcher.patchPlacablesWithNewSpec(modBaseName, placeableTypeManager)
-    SpecializationPatcher.patchPlaceableBeehives(modBaseName, placeableTypeManager, 'beehiveextended', PlaceableBeehiveExtended)
-    SpecializationPatcher.patchPlaceableBeehives(modBaseName, placeableTypeManager, 'beecare', BeeCare)
+    SpecializationPatcher.patchPlaceableBeehives(
+        modBaseName,
+        placeableTypeManager,
+        'beehiveextended',
+        PlaceableBeehiveExtended
+    )
+    SpecializationPatcher.patchPlaceableBeehives(
+        modBaseName,
+        placeableTypeManager,
+        'beecare',
+        BeeCare
+    )
 end
 
 ---Patch the given spec into all placeables.
 ---@param modBaseName string
 ---@param placeableTypeManager table
 ---@param patchNewSpec string
-function SpecializationPatcher.patchPlaceableBeehives(modBaseName, placeableTypeManager, patchNewSpec, patchNewSpecTableName)
+function SpecializationPatcher.patchPlaceableBeehives(modBaseName, placeableTypeManager, patchNewSpec,
+                                                      patchNewSpecTableName)
     for placeableName, placeableType in pairs(placeableTypeManager.types) do
         if SpecializationUtil.hasSpecialization(PlaceableBeehive, placeableType.specializations)
             and not SpecializationUtil.hasSpecialization(patchNewSpecTableName, placeableType.specializations) then
@@ -41,4 +63,3 @@ function SpecializationPatcher.patchPlaceableBeehives(modBaseName, placeableType
         end
     end
 end
-

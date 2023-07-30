@@ -41,8 +41,8 @@ function BeehiveSystemExtended:updateState()
     g_brUtils:logDebug('BeehiveSystemExtended.updateState')
 
     local environment = self.mission.environment
-	self.isFxActive = true
-	self.isProductionActive = true
+    self.isFxActive = true
+    self.isProductionActive = true
 
     local isRaining = environment.weather:getIsRaining()
     local isTemperaturToFly = environment.weather:getCurrentTemperature() > 10
@@ -76,22 +76,22 @@ end
 function BeehiveSystemExtended:updateBeehivesOutput(farmId)
     g_brUtils:logDebug('BeehiveSystemExtended.updateBeehivesOutput')
     if self.mission:getIsServer() then
-		for i = 1, #self.beehivesSortedRadius do
-			local beehive = self.beehivesSortedRadius[i]
-			local beehiveOwner = beehive:getOwnerFarmId()
+        for i = 1, #self.beehivesSortedRadius do
+            local beehive = self.beehivesSortedRadius[i]
+            local beehiveOwner = beehive:getOwnerFarmId()
 
-			if farmId == nil or farmId == beehiveOwner then
-				local palletSpawner = BeehiveSystemExtended:superClass().getFarmBeehivePalletSpawner(self, beehiveOwner)
+            if farmId == nil or farmId == beehiveOwner then
+                local palletSpawner = BeehiveSystemExtended:superClass().getFarmBeehivePalletSpawner(self, beehiveOwner)
 
-				if palletSpawner ~= nil then
-					local honeyAmount = beehive:getHoneyAmountToSpawn()
+                if palletSpawner ~= nil then
+                    local honeyAmount = beehive:getHoneyAmountToSpawn()
                     g_brUtils:logDebug('- honeyAmount: %s', tostring(honeyAmount))
 
-					palletSpawner:addFillLevel(honeyAmount)
-				end
-			end
-		end
-	end
+                    palletSpawner:addFillLevel(honeyAmount)
+                end
+            end
+        end
+    end
 end
 
 ---TODO
@@ -99,16 +99,16 @@ end
 ---@param wz number
 ---@return number
 function BeehiveSystemExtended:getBeehiveInfluenceHiveCountAt(wx, wz)
-	local beehiveInfluenceCounter = 0
+    local beehiveInfluenceCounter = 0
 
-	for i = 1, #self.beehivesSortedRadius do
-		local beehive = self.beehivesSortedRadius[i]
-		if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 then
+    for i = 1, #self.beehivesSortedRadius do
+        local beehive = self.beehivesSortedRadius[i]
+        if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 then
             beehiveInfluenceCounter = beehiveInfluenceCounter + beehive:getBeehiveHiveCount()
         end
-	end
+    end
 
-	return beehiveInfluenceCounter
+    return beehiveInfluenceCounter
 end
 
 -------------------------------------------------------------------------------
@@ -117,17 +117,33 @@ function BeehiveSystemExtended:addFieldInfoExtension()
     if g_modIsLoaded["FS22_precisionFarming"] then
         local precisionFarmingMod = FS22_precisionFarming.g_precisionFarming
         if precisionFarmingMod ~= nil then
-            precisionFarmingMod.fieldInfoDisplayExtension:addFieldInfo("Influenced by Bees", self, self.updateFieldInfoDisplay2, 4, nil)
-            precisionFarmingMod.fieldInfoDisplayExtension:addFieldInfo("Bee Bonus", self, self.updateFieldInfoDisplay, 4, nil)
+            precisionFarmingMod.fieldInfoDisplayExtension:addFieldInfo(
+                "Influenced by Bees",
+                self,
+                self.updateFieldInfoDisplay2,
+                4,
+                nil
+            )
+            precisionFarmingMod.fieldInfoDisplayExtension:addFieldInfo(
+                "Bee Bonus",
+                self,
+                self.updateFieldInfoDisplay,
+                4,
+                nil
+            )
         end
 
-        PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFruit,
+        PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(
+            PlayerHUDUpdater.fieldAddFruit,
             function(updater, data, box)
                 self.fieldUpdateCache = data.fruitTypeMax or FruitType.UNKNOWN
             end
         )
     else -- OR simply add Crop Rotation Info to standard HUDs
-        PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFruit, BeehiveSystemExtended.fieldAddFruit)
+        PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(
+            PlayerHUDUpdater.fieldAddFruit,
+            BeehiveSystemExtended.fieldAddFruit
+        )
     end
 end
 
@@ -140,16 +156,26 @@ end
 ---@param heightWorldX any
 ---@param heightWorldZ any
 ---@param isColorBlindMode any
-function BeehiveSystemExtended:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, isColorBlindMode)
+function BeehiveSystemExtended:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ,
+                                                      heightWorldX, heightWorldZ, isColorBlindMode)
     if g_farmlandManager:getOwnerIdAtWorldPosition(startWorldX, startWorldZ) ~= self.mission.player.farmId then
         return nil
     end
 
     local player = g_currentMission.player
 
-    local beeHiveYieldBonusAtPlayerPosition = g_currentMission.beehiveSystem:getBeehiveInfluenceFactorAt(player.baseInformation.lastPositionX, player.baseInformation.lastPositionZ)
-    local beeHiveInfluencedHiveCount = g_currentMission.beehiveSystem:getBeehiveInfluenceHiveCountAt(startWorldX, startWorldZ)
-    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(player.baseInformation.lastPositionX, player.baseInformation.lastPositionZ)
+    local beeHiveYieldBonusAtPlayerPosition = g_currentMission.beehiveSystem:getBeehiveInfluenceFactorAt(
+        player.baseInformation.lastPositionX,
+        player.baseInformation.lastPositionZ
+    )
+    local beeHiveInfluencedHiveCount = g_currentMission.beehiveSystem:getBeehiveInfluenceHiveCountAt(
+        startWorldX,
+        startWorldZ
+    )
+    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(
+        player.baseInformation.lastPositionX,
+        player.baseInformation.lastPositionZ
+    )
 
     local totalFieldArea = farmLand.totalFieldArea
     if totalFieldArea == nil then
@@ -176,10 +202,16 @@ function BeehiveSystemExtended:updateFieldInfoDisplay(fieldInfo, startWorldX, st
     fieldInfo.beeYieldBonus = fruitTypeYieldBonus
     fieldInfo.fruitName = fruitType.name:upper()
 
-    local factor = beeHiveInfluencedHiveCount/(totalFieldArea*fruitTypeYieldBonus.hivesPerHa) * fruitTypeYieldBonus.yieldBonus
+    local factor = beeHiveInfluencedHiveCount / (totalFieldArea * fruitTypeYieldBonus.hivesPerHa) *
+        fruitTypeYieldBonus.yieldBonus
 
-    local value = string.format( "+ %s %% %s %s", g_i18n:formatNumber( factor * 100, 2), tostring(fieldInfo.totalFieldArea), tostring(fieldInfo.beeFactor))
-    local color = {1.0, 1.0, 1.0, 1}
+    local value = string.format(
+        "+ %s %% %s %s",
+        g_i18n:formatNumber(factor * 100, 2),
+        tostring(fieldInfo.totalFieldArea),
+        tostring(fieldInfo.beeFactor)
+    )
+    local color = { 1.0, 1.0, 1.0, 1 }
 
     -- value, color, additionalValue
     return value, color, nil
@@ -194,20 +226,25 @@ end
 ---@param heightWorldX any
 ---@param heightWorldZ any
 ---@param isColorBlindMode any
-function BeehiveSystemExtended:updateFieldInfoDisplay2(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, isColorBlindMode)
+function BeehiveSystemExtended:updateFieldInfoDisplay2(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ,
+                                                       heightWorldX, heightWorldZ, isColorBlindMode)
     if g_farmlandManager:getOwnerIdAtWorldPosition(startWorldX, startWorldZ) ~= self.mission.player.farmId then
         return nil
     end
 
-    local beeHiveInfluencedHiveCount = g_currentMission.beehiveSystem:getBeehiveInfluenceHiveCountAt(startWorldX, startWorldZ)
+    local beeHiveInfluencedHiveCount = g_currentMission.beehiveSystem:getBeehiveInfluenceHiveCountAt(
+        startWorldX,
+        startWorldZ
+    )
     fieldInfo.beeHiveInfluencedHiveCount = beeHiveInfluencedHiveCount
 
-    local value = string.format( "%s Hives", g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0))
+    local value = string.format(
+        "%s Hives",
+        g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)
+    )
 
-    return value, {1.0, 1.0, 1.0, 1}, nil, nil
+    return value, { 1.0, 1.0, 1.0, 1 }, nil, nil
 end
-
-
 
 ---TODO
 ---@param fieldInfo any
@@ -226,7 +263,8 @@ function BeehiveSystemExtended:yieldChangeFunc(fieldInfo)
     --fieldInfo.beeYieldBonus               = patchObj.hivesPerHa
 
     local beeFactor = (fieldInfo.beeFactor * fieldInfo.beeYieldBonus) or 0
-    local factor = (fieldInfo.beeHiveInfluencedHiveCount/(fieldInfo.totalFieldArea * fieldInfo.beeYieldBonus.hivesPerHa)) * fieldInfo.beeYieldBonus
+    local factor = (fieldInfo.beeHiveInfluencedHiveCount / (fieldInfo.totalFieldArea * fieldInfo.beeYieldBonus.hivesPerHa)) *
+        fieldInfo.beeYieldBonus
     local maxFactor = math.min(factor, beeFactor)
 
     --- factor, proportion, _yieldPotential, _yieldPotentialToHa
@@ -246,19 +284,28 @@ function BeehiveSystemExtended:fieldAddFruit(data, box)
     local fruitType = g_fruitTypeManager:getFruitTypeByIndex(fruitTypeIndex)
     local player = g_currentMission.player
 
-    local beeHiveYieldBonusAtPlayerPosition = g_currentMission.beehiveSystem:getBeehiveInfluenceFactorAt(player.baseInformation.lastPositionX, player.baseInformation.lastPositionZ) * fruitType.beeYieldBonusPercentage;
-    local beeHiveInfluencedHiveCount = g_currentMission.beehiveSystem:getBeehiveInfluenceHiveCountAt(player.baseInformation.lastPositionX, player.baseInformation.lastPositionZ)
-    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(player.baseInformation.lastPositionX, player.baseInformation.lastPositionZ)
+    local beeHiveYieldBonusAtPlayerPosition = g_currentMission.beehiveSystem:getBeehiveInfluenceFactorAt(
+        player.baseInformation.lastPositionX,
+        player.baseInformation.lastPositionZ
+    ) * fruitType.beeYieldBonusPercentage;
+
+    local beeHiveInfluencedHiveCount = g_currentMission.beehiveSystem:getBeehiveInfluenceHiveCountAt(
+        player.baseInformation.lastPositionX,
+        player.baseInformation.lastPositionZ
+    )
+    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(
+        player.baseInformation.lastPositionX,
+        player.baseInformation.lastPositionZ
+    )
 
     local totalFieldArea = farmLand.totalFieldArea
     if totalFieldArea == nil then
         totalFieldArea = 0
     end
 
-    box:addLine("Influenced by Bees", string.format( "%s Hives", g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)))
-    box:addLine("Bee Bonus", string.format( "+ %s %%", g_i18n:formatNumber(beeHiveYieldBonusAtPlayerPosition * 100, 2)))
+    box:addLine("Influenced by Bees", string.format("%s Hives", g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)))
+    box:addLine("Bee Bonus", string.format("+ %s %%", g_i18n:formatNumber(beeHiveYieldBonusAtPlayerPosition * 100, 2)))
     box:addLine("Field area", g_i18n:formatNumber(totalFieldArea, 0))
-
 end
 
 ---TODO
