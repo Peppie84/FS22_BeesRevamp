@@ -24,11 +24,12 @@
 - [x] Reichweite erhöhen, 15m-150m sind zu wenig!
 
 ### Spec:BeeCare
+- [x] Bienen Anzahl wird dem Hive hinzugefügt
 - [x] Bienen können sterben - der Hive muss dann ersetzt werden. Effekt: es kommt kein Honig mehr + Infohud die Info ausgeben
-- [] Zwischen März und Juni muss man einmal pro Period an den Kasten und einen Aktionsknopf drücken = Schwarmkontrolle. Macht man das nicht, wird der `Bees` halbiert für das aktuelle Jahr. Im neuen Jahr wird dieser Wert wieder zurückgesetzt.
+- [x] Zwischen März und Juni muss man einmal pro Period an den Kasten und einen Aktionsknopf drücken = Schwarmkontrolle. Macht man das nicht, wird der `Bees` halbiert für das aktuelle Jahr. Im neuen Jahr wird dieser Wert wieder zurückgesetzt.
     - [x] Halbieren der Bienen
     - [x] Schwarmlustig Wahrscheinlichkeit mit 75% pro Monat
-    - [] Aktionsknopf einbauen
+    - [x] Aktionsknopf einbauen
 - [] Im Okt muss mit Oxalsäure behandelt werden, sonst sterben die Bienen im März. Name der Oxsalsäure: Oxu SIM 22
     - [x] Sterben der Bienen im März
     - [] Mit Oxalsäure behandeln

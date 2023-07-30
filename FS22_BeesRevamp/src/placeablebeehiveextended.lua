@@ -8,13 +8,13 @@
 PlaceableBeehiveExtended = {
     MOD_NAME = g_currentModName or 'unknown',
     PATCHLIST_HIVE_COUNT_ON_RUNTIME = {
-        ['d7294ff6f5e42e624c40a2df4eeec060'] = 1,     -- Stock lvl 1
-        ['215ebd1eab110e0bf84b958df9cf6695'] = 1,     -- Stock lvl 2
-        ['5f1492c2fa8a3535890ab4edf04e5912'] = 1,     -- Stock lvl 3
-        ['aa843f40070ca949ed4e4461d15d89ef'] = 10,    -- Stock lvl 4
-        ['9375e364a873f2614c7f30c716781051'] = 33,    -- Stock lvl 5
+        ['d7294ff6f5e42e624c40a2df4eeec060'] = 1,  -- Stock lvl 1
+        ['215ebd1eab110e0bf84b958df9cf6695'] = 1,  -- Stock lvl 2
+        ['5f1492c2fa8a3535890ab4edf04e5912'] = 1,  -- Stock lvl 3
+        ['aa843f40070ca949ed4e4461d15d89ef'] = 10, -- Stock lvl 4
+        ['9375e364a873f2614c7f30c716781051'] = 33, -- Stock lvl 5
     },
-    NECTAR_PER_BEE_IN_MILLILITER = 0.05, -- 50ul (mikroliter)
+    NECTAR_PER_BEE_IN_MILLILITER = 0.05,           -- 50ul (mikroliter)
     BEE_FLIGHTS_PER_HOUR = 2.0,
     BEE_HONEY_CONSUMATION_PER_MONTH = 0.000433,
     FLYING_BEES_PERCENTAGE = 0.66,
@@ -37,7 +37,8 @@ end
 ---TODO
 ---@param placeableType any
 function PlaceableBeehiveExtended.registerFunctions(placeableType)
-	SpecializationUtil.registerFunction(placeableType, 'getBeehiveHiveCount', PlaceableBeehiveExtended.getBeehiveHiveCount)
+    SpecializationUtil.registerFunction(placeableType, 'getBeehiveHiveCount',
+        PlaceableBeehiveExtended.getBeehiveHiveCount)
     SpecializationUtil.registerFunction(placeableType, 'updateActionRadius', PlaceableBeehiveExtended.updateActionRadius)
     SpecializationUtil.registerFunction(placeableType, 'updateNectar', PlaceableBeehiveExtended.updateNectar)
 end
@@ -51,16 +52,16 @@ function PlaceableBeehiveExtended.registerEventListeners(placeableType)
 end
 
 function PlaceableBeehiveExtended.registerOverwrittenFunctions(placeableType)
-	SpecializationUtil.registerOverwrittenFunction(placeableType, 'getHoneyAmountToSpawn', PlaceableBeehiveExtended.getHoneyAmountToSpawn)
+    SpecializationUtil.registerOverwrittenFunction(placeableType, 'getHoneyAmountToSpawn',
+        PlaceableBeehiveExtended.getHoneyAmountToSpawn)
     --SpecializationUtil.registerOverwrittenFunction(placeableType, 'getBeehiveInfluenceFactor', PlaceableBeehiveExtended.getBeehiveInfluenceFactor)
     SpecializationUtil.registerOverwrittenFunction(placeableType, 'updateInfo', PlaceableBeehiveExtended.updateInfo)
 end
 
-
 function PlaceableBeehiveExtended.registerXMLPaths(schema, basePath)
-	schema:setXMLSpecializationType('Beehive')
-	schema:register(XMLValueType.FLOAT, basePath .. '.beehive#hiveCount', 'The number of hives on this beehive')
-	schema:setXMLSpecializationType()
+    schema:setXMLSpecializationType('Beehive')
+    schema:register(XMLValueType.FLOAT, basePath .. '.beehive#hiveCount', 'The number of hives on this beehive')
+    schema:setXMLSpecializationType()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,24 +75,24 @@ function PlaceableBeehiveExtended.registerSavegameXMLPaths(schema, basePath)
     g_brUtils:logDebug('PlaceableBeehiveExtended.registerSavegameXMLPaths')
     -- basePath = placeables.placeable(?).FS22_BeesRevamp.placeablebeehiveextended
 
-	schema:setXMLSpecializationType('PlaceableBeehiveExtended')
-	schema:register(XMLValueType.FLOAT, basePath .. '.nectar', 'TODO')
-	schema:setXMLSpecializationType()
+    schema:setXMLSpecializationType('PlaceableBeehiveExtended')
+    schema:register(XMLValueType.FLOAT, basePath .. '.nectar', 'TODO')
+    schema:setXMLSpecializationType()
 end
 
 function PlaceableBeehiveExtended:loadFromXMLFile(xmlFile, key)
     g_brUtils:logDebug('PlaceableBeehiveExtended.loadFromXMLFile')
     -- key = placeables.placeable(?).FS22_BeesRevamp.placeablebeehiveextended
-	local spec = self.spec_beehiveextended
+    local spec = self.spec_beehiveextended
 
-	spec.nectar = xmlFile:getFloat(key .. '.nectar', spec.nectar)
+    spec.nectar = xmlFile:getFloat(key .. '.nectar', spec.nectar)
 end
 
 function PlaceableBeehiveExtended:saveToXMLFile(xmlFile, key, usedModNames)
     g_brUtils:logDebug('PlaceableBeehiveExtended.saveToXMLFile')
-	local spec = self.spec_beehiveextended
+    local spec = self.spec_beehiveextended
 
-	xmlFile:setFloat(key .. '.nectar', spec.nectar)
+    xmlFile:setFloat(key .. '.nectar', spec.nectar)
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -125,11 +126,14 @@ function PlaceableBeehiveExtended:onLoad(savegame)
     spec:updateActionRadius(500);
 
     spec.infoTableNectar = {
-        title = 'Nektar',
-        text = g_i18n:formatNumber(spec.nectar, 0) .. 'l'
+        title = BrUtils:getModText('realbees_placeablebeehiveextended_info_title_nectar'),
+        text = string.format(
+            BrUtils:getModText('realbees_placeablebeehiveextended_info_nectar_format'),
+            g_i18n:formatNumber(spec.nectar)
+        )
     }
     spec.infoTableHives = {
-        title = 'Hives',
+        title = BrUtils:getModText('realbees_placeablebeehiveextended_info_title_hives'),
         text = spec.hiveCount
     }
 
@@ -150,13 +154,14 @@ function PlaceableBeehiveExtended:onHourChanged()
     g_brUtils:logDebug('PlaceableBeehiveExtended.onHourChanged')
     local specBeeHive = self.spec_beehive
     local specBeeCare = self.spec_beecare
-	local spec = self.spec_beehiveextended
+    local spec = self.spec_beehiveextended
 
     ---
     --- Produce Nectar!
-    if  specBeeHive.isFxActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
+    if specBeeHive.isFxActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
         local flyingBees = specBeeCare:getBeePopulation() * PlaceableBeehiveExtended.FLYING_BEES_PERCENTAGE
-        local nectarInMlPerHour = flyingBees * PlaceableBeehiveExtended.NECTAR_PER_BEE_IN_MILLILITER * PlaceableBeehiveExtended.BEE_FLIGHTS_PER_HOUR
+        local nectarInMlPerHour = flyingBees * PlaceableBeehiveExtended.NECTAR_PER_BEE_IN_MILLILITER *
+            PlaceableBeehiveExtended.BEE_FLIGHTS_PER_HOUR
         local nectarInLiterPerHour = nectarInMlPerHour / 1000
 
         g_brUtils:logDebug('Produce.Nectar: ' .. nectarInLiterPerHour)
@@ -167,7 +172,8 @@ function PlaceableBeehiveExtended:onHourChanged()
     ---
     --- Consume Nectar/Honey!
     local bees = specBeeCare:getBeePopulation()
-    local honeyForBeesPerMonth = (bees * PlaceableBeehiveExtended.BEE_HONEY_CONSUMATION_PER_MONTH) / PlaceableBeehiveExtended.RATIO_HONEY_LITER_TO_NECTAR
+    local honeyForBeesPerMonth = (bees * PlaceableBeehiveExtended.BEE_HONEY_CONSUMATION_PER_MONTH) /
+        PlaceableBeehiveExtended.RATIO_HONEY_LITER_TO_NECTAR
     local honeyForBeesPerHour = honeyForBeesPerMonth / 24
 
     g_brUtils:logDebug('Consume.Nectar: ' .. honeyForBeesPerHour)
@@ -184,7 +190,7 @@ end
 ---TODO
 function PlaceableBeehiveExtended:onDelete()
     g_brUtils:logDebug('PlaceableBeehiveExtended.onDelete')
-	local spec = self.spec_beehiveextended
+    local spec = self.spec_beehiveextended
 
     g_messageCenter:unsubscribe(MessageType.WEATHER_CHANGED, self)
 end
@@ -200,7 +206,7 @@ function PlaceableBeehiveExtended:getHoneyAmountToSpawn(superFunc)
 
     ---
     --- Nektar into Honey!
-	if specBeeHive.isProductionActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
+    if specBeeHive.isProductionActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
         if spec.nectar > 0 then
             local houseBees = specBeeCare:getBeePopulation() * PlaceableBeehiveExtended.HOUSE_BEES_PERCENTAGE
             if spec.environment.isSunOn == false then
@@ -219,9 +225,9 @@ function PlaceableBeehiveExtended:getHoneyAmountToSpawn(superFunc)
 
             return nectarInLiterPerHour / PlaceableBeehiveExtended.RATIO_HONEY_LITER_TO_NECTAR
         end
-	end
+    end
 
-	return 0
+    return 0
 end
 
 ---TODO
@@ -236,14 +242,14 @@ end
 ---@param wz number
 ---@return number
 function PlaceableBeehiveExtended:getBeehiveInfluenceFactor(superFunc, wx, wz)
-	local spec = self.spec_beehive
-	local distanceToPointSquared = MathUtil.getPointPointDistanceSquared(spec.wx, spec.wz, wx, wz)
+    local spec = self.spec_beehive
+    local distanceToPointSquared = MathUtil.getPointPointDistanceSquared(spec.wx, spec.wz, wx, wz)
 
-	if distanceToPointSquared <= spec.actionRadiusSquared then
-		return 1 - distanceToPointSquared * 0.85 / spec.actionRadiusSquared
-	end
+    if distanceToPointSquared <= spec.actionRadiusSquared then
+        return 1 - distanceToPointSquared * 0.85 / spec.actionRadiusSquared
+    end
 
-	return 0
+    return 0
 end
 
 ---TODO
@@ -256,7 +262,10 @@ function PlaceableBeehiveExtended:updateNectar(nectar)
     end
 
     spec.nectar = spec.nectar + nectar
-    spec.infoTableNectar.text= g_i18n:formatNumber(spec.nectar, 0) .. 'l'
+    spec.infoTableNectar.text = string.format(
+        BrUtils:getModText('realbees_placeablebeehiveextended_info_nectar_format'),
+        g_i18n:formatNumber(spec.nectar)
+    )
 end
 
 ---TODO
@@ -265,8 +274,8 @@ end
 function PlaceableBeehiveExtended:updateInfo(superFunc, infoTable)
     local spec = self.spec_beehiveextended
 
-	table.insert(infoTable, spec.infoTableNectar)
+    table.insert(infoTable, spec.infoTableNectar)
     table.insert(infoTable, spec.infoTableHives)
 
-	superFunc(self, infoTable)
+    superFunc(self, infoTable)
 end

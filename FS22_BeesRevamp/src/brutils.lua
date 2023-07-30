@@ -7,11 +7,12 @@
 --
 BrUtils = {
     DEBUG_MODE = false,
+    MOD_NAME = g_currentModName or "unknown",
     SERVERITY = {
-        INFO=1,
-        ERROR=2,
-        WARNING=3,
-        DEBUG=4
+        INFO = 1,
+        ERROR = 2,
+        WARNING = 3,
+        DEBUG = 4
     }
 }
 
@@ -70,11 +71,17 @@ function BrUtils:logWarning(messageFormat, ...)
     self:log(BrUtils.SERVERITY.WARNING, messageFormat, ...)
 end
 
----comment
+---TODO
 ---@return string
 function BrUtils:getCurrentDayYearString()
-    return 'Y'..g_currentMission.environment.currentYear..'M'..g_currentMission.environment.currentPeriod..'D0'
+    return 'Y' .. g_currentMission.environment.currentYear .. 'M' .. g_currentMission.environment.currentPeriod .. 'D0'
 end
 
+---TODO
+---@param text string
+---@return string
+function BrUtils:getModText(text)
+    return g_i18n:getText(text, BrUtils.MOD_NAME)
+end
 
 g_brUtils = BrUtils;
