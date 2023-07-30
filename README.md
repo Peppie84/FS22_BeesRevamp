@@ -1,11 +1,9 @@
-# Real-Bees
 <a name="readme-top"></a>
 
-[![FarmingSimulator-22](https://img.shields.io/badge/FarmingSimulator-22-blue?style=plastic)](https://www.farming-simulator.com/)
-[![GitHub issues](https://img.shields.io/github/issues/Peppie84/FS22_BeesRevamp?style=plastic)](https://github.com/Peppie84/FS22_BeesRevamp/issues)
-
-<br />
 <div align="center">
+
+[![FarmingSimulator-22](https://img.shields.io/badge/FarmingSimulator-22-blue?style=flat-square)](https://www.farming-simulator.com/)
+[![GitHub issues](https://img.shields.io/github/issues/Peppie84/FS22_BeesRevamp?style=plastic)](https://github.com/Peppie84/FS22_BeesRevamp/issues)
 
 <img src="documents/mod_icon.jpg" style="width: 128px;">
 
@@ -73,9 +71,7 @@ Feb=-0.5
 
 
  ## Aktuelle Umsetzung:
- - [x] Variable Produktion an Honig je nach Monat
- - [x] Im Winter wird der Verbrauch negativ
- - [ ] Wenn der Honig auf 0 fällt im Winter müssen die Bienen sterben
+ Siehe TODO.md
 
 ---
 
@@ -162,14 +158,18 @@ g_currentMission.beehiveSystem
 ### PlaceableBeehiveExtended
 Registrierte Methoden:
  - getBeehiveHiveCount
+ - updateActionRadius
+ - updateNectar
 
 ### BeeCare
 In der BeeCare Spezialisierung geht um das Wohl der Bienen. Hier wird gesteuert ob Schwarmkontrolle gemacht werden muss, die Aktion wird hier gesteuert, die Winterbehandlung, die Anzahl der Binen pro Volk (Hive).
 Registrierte Methoden:
  - getBeehiveStatus
  - getBeePopulation
-
-
+ - updateInfoTables
+ - getCanInteract
+ - doSwarmControl
+ - getSwarmControleNeeded
 
 ## Manager
 

@@ -37,10 +37,21 @@ end
 ---TODO
 ---@param placeableType any
 function PlaceableBeehiveExtended.registerFunctions(placeableType)
-    SpecializationUtil.registerFunction(placeableType, 'getBeehiveHiveCount',
-        PlaceableBeehiveExtended.getBeehiveHiveCount)
-    SpecializationUtil.registerFunction(placeableType, 'updateActionRadius', PlaceableBeehiveExtended.updateActionRadius)
-    SpecializationUtil.registerFunction(placeableType, 'updateNectar', PlaceableBeehiveExtended.updateNectar)
+    SpecializationUtil.registerFunction(
+        placeableType,
+        'getBeehiveHiveCount',
+        PlaceableBeehiveExtended.getBeehiveHiveCount
+    )
+    SpecializationUtil.registerFunction(
+        placeableType,
+        'updateActionRadius',
+        PlaceableBeehiveExtended.updateActionRadius
+    )
+    SpecializationUtil.registerFunction(
+        placeableType,
+        'updateNectar',
+        PlaceableBeehiveExtended.updateNectar
+    )
 end
 
 ---registerEventListeners
