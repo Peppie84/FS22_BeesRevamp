@@ -12,7 +12,7 @@
     - [x] Jede Flugbiene sammelt 50ul (Mikroliter) Nektar
 - [x] Nektar soll nur produziert werden wenn die flugFX aktiv ist
 - [x] Durch Nektar wird Honig nachgelagert produziert
-    - [x] Tagsüber sind es nur die restluchen 1/3 Bienen die Honig produzieren
+    - [x] Tagsüber sind es nur die restlichen 1/3 Bienen die Honig produzieren
         - [x] Nachts sind es aber volle 3/3
     - [x] Umgewandelt werden auch hier pro Stunde 50ul (Mikroliter) pro Biene
     - [x] Nektar zu Honig ist 3:1
@@ -46,11 +46,11 @@
 - [] FilltypePatcher, FruitTypePatcher, StoreItemPatcher, SpecializationPatcher sollte alles in eine Art `Bootstrap.lua` (main?) gebaut werden
 - [] HilfeSystem für Real-Bees mod einplanen
 - [x] PricePerLiter Honig 13.15€ pro Liter = 15€ pro Kilo
-- [] Im FieldInfo Hud anzeigen wie viel Hives influenced sind und wie viel %Bonus es gibt
+- [x] Im FieldInfo Hud anzeigen wie viel Hives influenced sind und wie viel %Bonus es gibt
 	 - Muss irgendwie gecached werden, da es sonst zu oft aufgerufen wird!
 	 - oder bei nicht influenced fruits direkt ein defualt raushauen
 	 - eventuell wenn man auf dem Feld läuft, alle 10pixel oder so
-- [] An den Fruchtkalender könnte man neben dem Fruchtnamen eine kleine Biene einblenden, damit man weiß welche Frucht von Bienen profitiert.
+- [] An den Fruchtkalender könnte man neben dem Fruchtnamen eine kleine Biene einblenden, damit man weiß welche Frucht von Bienen profitiert
 - [] Alle Werte aus Tabellen in eine XML auslagern
 - [x] Im Info-Hud anzeigen wie viele Hives(Völker) im Beehive drin sind
 - [x] Im Info-Hud anzeigen wie viele Bienen im Beehive drin sind
@@ -59,14 +59,14 @@
     - [x] Es wird jetzt 'YXMYD0' - X und Y mit dem current ersetzt.
     - [x] Status des Volkes wird bei onYearChanged immer auf Wirtschaftsvolk gesetzt, so muss nichts berechnet werden
     - [x] Der Status wird mit abgespeichert
-- [] BeeBonus muss eventuell beim ernten neu eingerechnet werden, wegen den Hives/ha. - Muss geprüft werden
+- [x] BeeBonus muss eventuell beim ernten neu eingerechnet werden, wegen den Hives/ha. - Muss geprüft werden
 
 
 ### Todos gewachsen durch die Entwicklung
-- [] Entfernungsberechnung prüfen
+- [x] Entfernungsberechnung prüfen
 - [] Vor der ersten Stunde, nach aktivieren der Mod, ist der Verkaufspreis-Chart falsch, weil er den alten Wert anzeigt. Hier sollte man mal prüfen ob man ein refresh Table auslösen kann
 - [] Alle Zeichenketten in Singlequotes
-- [] Sollen große Hives (10+) auch das 10 fache an Schwärme haben?
+- [x] Sollen große Hives (10+) auch das 10 fache an Schwärme haben? - Nein
     - Dann müsste man 10 fach Schwarmkontrolle machen
     - Dann müsste 10 fach behandelt werden
     - Dann könnte auch nur ein einzelnes Volk von 10 sterben, usw..

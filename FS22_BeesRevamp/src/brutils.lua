@@ -81,7 +81,7 @@ end
 ---@param text string
 ---@return string
 function BrUtils:getModText(text)
-    return g_i18n:getText(text, BrUtils.MOD_NAME)
+    return g_i18n:getText(text, self.MOD_NAME)
 end
 
 g_brUtils = BrUtils;

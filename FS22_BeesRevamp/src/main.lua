@@ -48,41 +48,38 @@ local function load(mission)
             ["5f1492c2fa8a3535890ab4edf04e5912"] = 1,  -- Stock lvl 3
             ["aa843f40070ca949ed4e4461d15d89ef"] = 10, -- Stock lvl 4
             ["9375e364a873f2614c7f30c716781051"] = 33, -- Stock lvl 5
+            ["c4011d0e68dc43435cd5ba4c042365ce"] = 4,  -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
         },
         PATCHLIST_YIELD_BONUS = {
-            ["CANOLA"]     = {
+            ["CANOLA"]    = {
                 ["yieldBonus"] = 0.3,
                 ["hivesPerHa"] = 3
             },
-            ["SUNFLOWER"]  = {
+            ["SUNFLOWER"] = {
                 ["yieldBonus"] = 0.8,
                 ["hivesPerHa"] = 4
             },
-            ["POTATO"]     = {
-                ["yieldBonus"] = 0.05,
-                ["hivesPerHa"] = 3
+            ["POTATO"]    = {
+                ["yieldBonus"] = 0,
+                ["hivesPerHa"] = 0
             },
-            ["ALFALFA"]    = {
+            ["ALFALFA"]   = {
                 ["yieldBonus"] = 0.15,
                 ["hivesPerHa"] = 10
             },
-            ["CLOVER"]     = {
+            ["CLOVER"]    = {
                 ["yieldBonus"] = 0.10,
                 ["hivesPerHa"] = 8
             },
-            ["BUCKWHEAT"]  = {
+            ["BUCKWHEAT"] = {
                 ["yieldBonus"] = 0.25,
                 ["hivesPerHa"] = 4.5
             },
-            ["PHACELIA"]   = {
+            ["PHACELIA"]  = {
                 ["yieldBonus"] = 0.25,
                 ["hivesPerHa"] = 4
             },
-            ["STRAWBERRY"] = {
-                ["yieldBonus"] = 0.50,
-                ["hivesPerHa"] = 1.5
-            },
-            ["SILPHIE"]    = {
+            ["SILPHIE"]   = {
                 ["yieldBonus"] = 0.50,
                 ["hivesPerHa"] = 4
             },
@@ -139,11 +136,10 @@ local function init()
     HelpLineManager.loadMapData = Utils.overwrittenFunction(HelpLineManager.loadMapData, loadBeesRevampHelpLine)
 
     FSDensityMapUtil.cutFruitArea = Utils.overwrittenFunction(FSDensityMapUtil.cutFruitArea, Test.cutFruitArea)
-    FSBaseMission.setHarvestScaleRatio = Utils.overwrittenFunction(FSBaseMission.setHarvestScaleRatio,
-        Test.getHarvestScaleMultiplier)
+    FSBaseMission.getHarvestScaleMultiplier = Utils.overwrittenFunction(FSBaseMission.getHarvestScaleMultiplier, Test.getHarvestScaleMultiplier)
+    Cutter.processCutterArea = Utils.overwrittenFunction(Cutter.processCutterArea, Test.processCutterArea)
 
-    SpecializationPatcher.installSpecializations(modName, g_placeableSpecializationManager, modDirectory,
-        g_placeableTypeManager)
+    SpecializationPatcher.installSpecializations(modName, g_placeableSpecializationManager, modDirectory, g_placeableTypeManager)
 end
 
 

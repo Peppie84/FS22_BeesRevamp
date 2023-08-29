@@ -1,42 +1,44 @@
 Test = {}
 
----FSDensityMapUtil.cutFruitArea
----@param self table
----@param overwrittenFunc function
----@param fruitIndex any
----@param startWorldX any
----@param startWorldZ any
----@param widthWorldX any
----@param widthWorldZ any
----@param heightWorldX any
----@param heightWorldZ any
----@param destroySpray any
----@param useMinForageState any
----@param excludedSprayType any
----@param setsWeeds any
----@param limitToField any
----@return unknown
-function Test.cutFruitArea(self, overwrittenFunc, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
+function Test.cutFruitArea(fruitIndex, overwrittenFunc, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX,
+                           heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
+    g_brUtils:logDebug('Test:cutFruitArea')
 
-    local messageFormat = "Test.cutFruitArea x, z = %s, %s - getBeehiveInfluenceFactorAt: %s"
-    local message = string.format(messageFormat, tostring(startWorldX), tostring(startWorldZ), tostring(g_currentMission.beehiveSystem:getBeehiveInfluenceFactorAt(startWorldZ, startWorldX)))
-    g_brUtils:logDebug(message)
+    local numPixels, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeFactor, growthState, maxArea, terrainDetailPixelsSum =
+        overwrittenFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ,
+            destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
+    if Test.popBeeMultiplier then
+        Test.lastBeeYieldBonusPercentage = beeFactor
+    end
 
-    return overwrittenFunc(self, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
+    return numPixels, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor,
+        beeFactor, growthState, maxArea, terrainDetailPixelsSum
 end
 
 ---FSBaseMission:getHarvestScaleMultiplier
----@param self table
----@param overwrittenFunc function
----@param fruitTypeIndex any
----@param sprayFactor any
----@param plowFactor any
----@param limeFactor any
----@param weedFactor any
----@param stubbleFactor any
----@param rollerFactor any
----@param beeYieldBonusPercentage any
-function Test.getHarvestScaleMultiplier(self, overwrittenFunc, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeYieldBonusPercentage)
-    g_brUtils:logDebug('Test.getHarvestScaleMultiplier')
+function Test:getHarvestScaleMultiplier(overwrittenFunc, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor,
+                                        stubbleFactor, rollerFactor, beeYieldBonusPercentage)
+    ---
+    g_brUtils:logDebug('Test:getHarvestScaleMultiplier')
+    g_currentMission.beehiveSystem.LAST_FRUIT_INDEX = fruitTypeIndex or FruitType.UNKNOWN
+
     return overwrittenFunc(self, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeYieldBonusPercentage)
+end
+
+---Cutter:processCutterArea
+function Test:processCutterArea(overwrittenFunc, workArea, dt)
+    local spec = self.spec_cutter
+    g_brUtils:logDebug('Test:processCutterArea')
+
+    Test.popBeeMultiplier = true
+    local lastRealArea, lastArea = overwrittenFunc(self, workArea, dt)
+    Test.popBeeMultiplier = false
+
+    if Test.lastBeeYieldBonusPercentage ~= nil then
+        g_brUtils:logDebug('lastBeeYieldBonusPercentage: %s', tostring(Test.lastBeeYieldBonusPercentage))
+        spec.workAreaParameters.lastRealArea = lastRealArea * (1 + Test.lastBeeYieldBonusPercentage)
+        lastRealArea = spec.workAreaParameters.lastRealArea
+    end
+
+    return lastRealArea, lastArea
 end

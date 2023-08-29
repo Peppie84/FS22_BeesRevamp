@@ -9,7 +9,8 @@
 BeehiveSystemExtended = {
     MOD_NAME = g_currentModName or "unknown",
     MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD = { 0.75, 1.50, 2.25, 3.20, 2.80, 2.00, 1.50, 0.75, -0.5, -0.5, -0.5, -0.5 },
-    DEBUG = true
+    DEBUG = true,
+    LAST_FRUIT_INDEX = FruitType.UNKNOWN
 }
 
 local BeehiveSystemExtended_mt = Class(BeehiveSystemExtended, BeehiveSystem)
@@ -92,6 +93,39 @@ function BeehiveSystemExtended:updateBeehivesOutput(farmId)
             end
         end
     end
+end
+
+---TODO
+---@param wx number
+---@param wz number
+---@return number
+function BeehiveSystemExtended:getBeehiveInfluenceFactorAt(wx, wz)
+    local beehiveCount = self:getBeehiveInfluenceHiveCountAt(wx, wz)
+    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(wx, wz)
+
+    local totalFieldArea = farmLand.totalFieldArea or farmLand.areaInHa
+    if totalFieldArea == nil or self.LAST_FRUIT_INDEX == FruitType.UNKNOWN then
+        return 0
+    end
+
+    local fruitType = g_fruitTypeManager:getFruitTypeByIndex(self.LAST_FRUIT_INDEX)
+    if fruitType == nil then
+        return 0
+    end
+
+    local fruitYieldBonus = self:getYieldBonusByFruitName(fruitType.name)
+
+    if fruitYieldBonus.yieldBonus == 0 then
+        return 0
+    end
+
+    g_brUtils:logDebug('- LAST_FRUIT_INDEX: %s', tostring(self.LAST_FRUIT_INDEX))
+    g_brUtils:logDebug('- totalFieldArea: %s', tostring(totalFieldArea))
+    g_brUtils:logDebug('- beeYieldBonusPercentage: %s', tostring(fruitType.beeYieldBonusPercentage))
+    g_brUtils:logDebug('- result: %s',
+        tostring(math.min(beehiveCount / (totalFieldArea * fruitYieldBonus.hivesPerHa), 1)))
+
+    return math.min(beehiveCount / (totalFieldArea * fruitYieldBonus.hivesPerHa), 1)
 end
 
 ---TODO
@@ -188,33 +222,43 @@ function BeehiveSystemExtended:updateFieldInfoDisplay(fieldInfo, startWorldX, st
     end
 
     local fruitType = g_fruitTypeManager:getFruitTypeByIndex(fruitTypeIndex)
-    local fruitTypeYieldBonus = self.beehivePatchMeta.PATCHLIST_YIELD_BONUS[fruitType.name:upper()]
-    if fruitTypeYieldBonus == nil then
-        fruitTypeYieldBonus = {
-            ["yieldBonus"] = 0,
-            ["hivesPerHa"] = 0
-        }
-    end
+    local fruitYieldBonus = self:getYieldBonusByFruitName(fruitType.name)
 
     fieldInfo.beeFactor = beeHiveYieldBonusAtPlayerPosition
     fieldInfo.totalFieldArea = totalFieldArea
     fieldInfo.fruitTypeIndex = self.fieldUpdateCache
-    fieldInfo.beeYieldBonus = fruitTypeYieldBonus
+    fieldInfo.beeYieldBonus = fruitYieldBonus
     fieldInfo.fruitName = fruitType.name:upper()
 
-    local factor = beeHiveInfluencedHiveCount / (totalFieldArea * fruitTypeYieldBonus.hivesPerHa) *
-        fruitTypeYieldBonus.yieldBonus
+    local factor = 0
+
+    if fruitYieldBonus.yieldBonus ~= 0 then
+        factor = beeHiveInfluencedHiveCount / (totalFieldArea * fruitYieldBonus.hivesPerHa)
+        factor = math.min(factor * fruitYieldBonus.yieldBonus, fruitYieldBonus.yieldBonus)
+    end
 
     local value = string.format(
-        "+ %s %% %s %s",
-        g_i18n:formatNumber(factor * 100, 2),
-        tostring(fieldInfo.totalFieldArea),
-        tostring(fieldInfo.beeFactor)
+        "+ %s %%",
+        g_i18n:formatNumber(factor * 100, 2)
     )
     local color = { 1.0, 1.0, 1.0, 1 }
 
     -- value, color, additionalValue
     return value, color, nil
+end
+
+---Returns the PATCHLIST_YIELD_BONUS table entry for the given fruitName. A 0-value table is returned when no entry is found.
+---@param fruitName string Fruit name
+---@return table {yieldBonus, hivesPerHa}
+function BeehiveSystemExtended:getYieldBonusByFruitName(fruitName)
+    local defaultYieldBonus = { ["yieldBonus"] = 0, ["hivesPerHa"] = 0 }
+
+    local fruitYieldBonus = self.beehivePatchMeta.PATCHLIST_YIELD_BONUS[fruitName:upper()]
+    if fruitYieldBonus == nil then
+        return defaultYieldBonus
+    end
+
+    return fruitYieldBonus
 end
 
 ---TODO

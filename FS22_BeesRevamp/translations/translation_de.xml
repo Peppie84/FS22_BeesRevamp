@@ -6,7 +6,7 @@
     <e k="realbees_beecare_info_title_schwarm_pressure" v="Schwarmlustig"/>
     <e k="realbees_beecare_info_title_bee_population" v="Bienenpopulation"/>
     <e k="realbees_beecare_info_title_state" v="Status"/>
-    <e k="realbees_beecare_info_bee_population_format" v="%d Bienen"/>
+    <e k="realbees_beecare_info_bee_population_format" v="%s Bienen"/>
     <e k="realbees_beecare_do_schwarm_control" v="Schwarmkontrolle durchführen"/>
     <e k="realbees_beecare_state_economic_hive" v="Wirtschaftsvolk"/>
     <e k="realbees_beecare_state_young_hive" v="Jungvolk"/>

@@ -13,6 +13,7 @@ PlaceableBeehiveExtended = {
         ['5f1492c2fa8a3535890ab4edf04e5912'] = 1,  -- Stock lvl 3
         ['aa843f40070ca949ed4e4461d15d89ef'] = 10, -- Stock lvl 4
         ['9375e364a873f2614c7f30c716781051'] = 33, -- Stock lvl 5
+        ["c4011d0e68dc43435cd5ba4c042365ce"] = 4,  -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
     },
     NECTAR_PER_BEE_IN_MILLILITER = 0.05,           -- 50ul (mikroliter)
     BEE_FLIGHTS_PER_HOUR = 2.0,
@@ -52,6 +53,7 @@ function PlaceableBeehiveExtended.registerFunctions(placeableType)
         'updateNectar',
         PlaceableBeehiveExtended.updateNectar
     )
+    SpecializationUtil.registerFunction(placeableType, "updateInfoTables2", PlaceableBeehiveExtended.updateInfoTables2)
 end
 
 ---registerEventListeners
@@ -97,6 +99,8 @@ function PlaceableBeehiveExtended:loadFromXMLFile(xmlFile, key)
     local spec = self.spec_beehiveextended
 
     spec.nectar = xmlFile:getFloat(key .. '.nectar', spec.nectar)
+
+    spec:updateInfoTables2()
 end
 
 function PlaceableBeehiveExtended:saveToXMLFile(xmlFile, key, usedModNames)
@@ -137,14 +141,14 @@ function PlaceableBeehiveExtended:onLoad(savegame)
     spec:updateActionRadius(500);
 
     spec.infoTableNectar = {
-        title = BrUtils:getModText('realbees_placeablebeehiveextended_info_title_nectar'),
+        title = g_brUtils:getModText('realbees_placeablebeehiveextended_info_title_nectar'),
         text = string.format(
-            BrUtils:getModText('realbees_placeablebeehiveextended_info_nectar_format'),
+            g_brUtils:getModText('realbees_placeablebeehiveextended_info_nectar_format'),
             g_i18n:formatNumber(spec.nectar)
         )
     }
     spec.infoTableHives = {
-        title = BrUtils:getModText('realbees_placeablebeehiveextended_info_title_hives'),
+        title = g_brUtils:getModText('realbees_placeablebeehiveextended_info_title_hives'),
         text = spec.hiveCount
     }
 
@@ -169,7 +173,8 @@ function PlaceableBeehiveExtended:onHourChanged()
 
     ---
     --- Produce Nectar!
-    if specBeeHive.isFxActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
+    ---if specBeeHive.isFxActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
+    if specBeeHive.isFxActive then
         local flyingBees = specBeeCare:getBeePopulation() * PlaceableBeehiveExtended.FLYING_BEES_PERCENTAGE
         local nectarInMlPerHour = flyingBees * PlaceableBeehiveExtended.NECTAR_PER_BEE_IN_MILLILITER *
             PlaceableBeehiveExtended.BEE_FLIGHTS_PER_HOUR
@@ -273,8 +278,16 @@ function PlaceableBeehiveExtended:updateNectar(nectar)
     end
 
     spec.nectar = spec.nectar + nectar
+    spec:updateInfoTables2()
+end
+
+function PlaceableBeehiveExtended:updateInfoTables2()
+    g_brUtils:logDebug('BeeCare.updateInfoTables2')
+
+    local spec = self.spec_beehiveextended
+
     spec.infoTableNectar.text = string.format(
-        BrUtils:getModText('realbees_placeablebeehiveextended_info_nectar_format'),
+        g_brUtils:getModText('realbees_placeablebeehiveextended_info_nectar_format'),
         g_i18n:formatNumber(spec.nectar)
     )
 end

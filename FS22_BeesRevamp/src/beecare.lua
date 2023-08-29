@@ -7,6 +7,7 @@
 --
 BeeCare = {
     MOD_NAME = g_currentModName or "unknown",
+    OXUSIM_FEATURE_DISABLE = true,
     DEFAULT_BEE_VALUE_MAX = 20000,
     DEFAULT_BEE_VALUE = 14000,
     DEFAULT_BEE_VALUE_MIN = 8000,
@@ -193,10 +194,10 @@ function BeeCare:updateInfoTables()
     local spec = self.spec_beecare
 
     spec.infoTablePopulation = {
-        title = BrUtils:getModText('realbees_beecare_info_title_bee_population'),
+        title = g_brUtils:getModText('realbees_beecare_info_title_bee_population'),
         text = string.format(
-            BrUtils:getModText('realbees_beecare_info_bee_population_format'),
-            g_i18n:formatNumber(self:getBeePopulation())
+            g_brUtils:getModText('realbees_beecare_info_bee_population_format'),
+            tostring(g_i18n:formatNumber(self:getBeePopulation(), 0))
         )
     }
 
@@ -206,36 +207,36 @@ function BeeCare:updateInfoTables()
             'realbees_beecare_common_state_off'
 
         spec.infoTableSwarm = {
-            title = BrUtils:getModText('realbees_beecare_info_title_schwarm_pressure'),
-            text = BrUtils:getModText(schwarmTextLabel)
+            title = g_brUtils:getModText('realbees_beecare_info_title_schwarm_pressure'),
+            text = g_brUtils:getModText(schwarmTextLabel)
         }
     end
 
     spec.infoTableOxuSim = {
-        title = BrUtils:getModText('realbees_beecare_info_title_oxusim'),
-        text = BrUtils:getModText('realbees_beecare_common_state_off')
+        title = g_brUtils:getModText('realbees_beecare_info_title_oxusim'),
+        text = g_brUtils:getModText('realbees_beecare_common_state_off')
     }
 
     local statusHive = ''
     if spec.state == BeeCare.STATES.ECONOMIC_HIVE then
-        statusHive = BrUtils:getModText('realbees_beecare_state_economic_hive')
+        statusHive = g_brUtils:getModText('realbees_beecare_state_economic_hive')
     elseif spec.state == BeeCare.STATES.YOUNG_HIVE then
-        statusHive = BrUtils:getModText('realbees_beecare_state_young_hive')
+        statusHive = g_brUtils:getModText('realbees_beecare_state_young_hive')
     elseif spec.state == BeeCare.STATES.DEAD then
-        statusHive = BrUtils:getModText('realbees_beecare_state_dead_hive')
+        statusHive = g_brUtils:getModText('realbees_beecare_state_dead_hive')
     end
 
     if spec.schwarmed then
         statusHive = string.format('%s (%s)',
             statusHive,
-            BrUtils:getModText('realbees_beecare_state_additional_schwarmed')
+            g_brUtils:getModText('realbees_beecare_state_additional_schwarmed')
         )
     end
 
     g_brUtils:logDebug(' State, %s', statusHive)
 
     spec.infoTableState = {
-        title = BrUtils:getModText('realbees_beecare_info_title_state'),
+        title = g_brUtils:getModText('realbees_beecare_info_title_state'),
         text = statusHive
     }
 end
@@ -252,7 +253,7 @@ function BeeCare:onFinalizePlacement()
     end
 
     spec.bees = math.random(BeeCare.DEFAULT_BEE_VALUE_MIN, BeeCare.DEFAULT_BEE_VALUE)
-    spec.placedDay = BrUtils:getCurrentDayYearString()
+    spec.placedDay = g_brUtils:getCurrentDayYearString()
     spec.state = BeeCare.STATES.YOUNG_HIVE
     spec:updateInfoTables()
 end
@@ -298,6 +299,10 @@ function BeeCare:onYearChanged()
 
     local oxuCareOnNov = 'Y' .. currentYear .. 'M9D0'
     local oxuCareOnDec = 'Y' .. currentYear .. 'M10D0'
+
+    if BeeCare.OXUSIM_FEATURE_DISABLE == true then
+        spec.lastOxucare = oxuCareOnDec
+    end
 
     if spec.lastOxucare == nil or
         spec.lastOxucare == '' or
@@ -423,9 +428,9 @@ function BeeCare:updateBeehiveState(overwrittenFunc)
 end
 
 ---TODO
----@param superFunc function
+---@param overwrittenFunc function
 ---@param infoTable table
-function BeeCare:updateInfo(superFunc, infoTable)
+function BeeCare:updateInfo(overwrittenFunc, infoTable)
     local spec = self.spec_beecare
 
     if spec.infoTableState ~= nil then
@@ -440,5 +445,5 @@ function BeeCare:updateInfo(superFunc, infoTable)
 
     table.insert(infoTable, spec.infoTableOxuSim)
 
-    superFunc(self, infoTable)
+    overwrittenFunc(self, infoTable)
 end
