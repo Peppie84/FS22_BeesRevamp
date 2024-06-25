@@ -99,14 +99,14 @@ Feb=-0.5
 
  ## New Behivesystem
  ### Honey production
-It's hard to re-calculate a new value for real bees. In real, a bee hive with two brood frames + one honey frame can produce 50kg per year - in average, depending on the weather. But a two frame brood hive also needs nearly 15kg food for winter (Nov-Feb/Mar), mostly feeded with sugar water or something similar.
+It's hard to re-calculate a new value for real bees. In real, a bee hive with two brood boxes + one honey box can produce 50kg per year (spring and summer) - in average, or also 90kg just on a canola field in spring, depending on the weather. But a two boxes brood hive also needs nearly 15kg food for winter (Nov-Feb/Mar), mostly feeded with sugar water or something similar.
 
 Below you can see some "real" numbers for the placables and situations.
 Based on the average of 50kg per year and 8 month of production + 2 days per month as season settings:
 
 `50kg/year / 8 = 6.25 kg/month / reciprocal(2) = 3.125 kg/day / 24 = 0.13020833¯ kg/hour`
 
-For a single frame hive, the defined `Beehive groth factor` simulates the growing/shrinking of a hive. So, a single frame hive can produce `0.26041666 kg/hour` instead of its `0.13020833¯ kg/hour` on month **Jun**.
+For a single box hive, the defined `Beehive groth factor` simulates the growing/shrinking of a hive. So, a single box hive can produce `0.26041666 kg/hour` instead of its `0.13020833¯ kg/hour` on month **Jun**.
 
  | Season |Honey per Period|Honey per Hour|Placeable Price|
 |---|:---:|:---:|:---:|
