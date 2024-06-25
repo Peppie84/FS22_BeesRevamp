@@ -4,6 +4,7 @@
 -- This table will be used to update the filltype pricePerLiter for honey.
 --
 -- Copyright (c) Peppie84, 2023
+-- https://github.com/Peppie84/FS22_BeesRevamp
 --
 FillTypePatcher = {
     REAL_PRICE_PERLITER = 13.15 -- €

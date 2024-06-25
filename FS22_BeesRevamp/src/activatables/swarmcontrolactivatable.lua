@@ -1,27 +1,29 @@
 --
 -- SwarmControlActivatable
 --
--- Todo: add description
+-- Enables the swarm control activatable for each bee hive
 --
 -- Copyright (c) Peppie84, 2023
+-- https://github.com/Peppie84/FS22_BeesRevamp
 --
 
 SwarmControlActivatable = {}
 local SwarmControlActivatable_mt = Class(SwarmControlActivatable)
 
----TODO
+---Create a new SwarmControlActivatable
 function SwarmControlActivatable.new(beecare)
     local self = {}
 
     setmetatable(self, SwarmControlActivatable_mt)
 
     self.beecare = beecare
-    self.activateText = g_brUtils:getModText("realbees_beecare_do_schwarm_control")
+    self.activateText = g_brUtils:getModText("realbees_beecare_do_swarm_control")
 
     return self
 end
 
----TODO
+---Only activatable if swarm control is needed and the hive is
+---interactable
 function SwarmControlActivatable:getIsActivatable()
     if self.beecare:getCanInteract() and self.beecare:getSwarmControleNeeded() then
         return true
@@ -30,7 +32,7 @@ function SwarmControlActivatable:getIsActivatable()
     return false
 end
 
----TODO
+---Do the swarm control on the beecare spec.
 function SwarmControlActivatable:run()
     if g_server ~= nil then
         self.beecare:doSwarmControl()

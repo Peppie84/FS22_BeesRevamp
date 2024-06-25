@@ -1,9 +1,10 @@
 --
 -- Main
 --
--- Main class for initialize the real bees mod.
+-- Main class for initialize the bees revamp mod.
 --
 -- Copyright (c) Peppie84, 2023
+-- https://github.com/Peppie84/FS22_BeesRevamp
 --
 ---@type string directory of the mod.
 local modDirectory = g_currentModDirectory or ''
@@ -110,7 +111,7 @@ local function startMission(mission)
     modEnvironment:onMissionStart(mission)
 end
 
----comment
+---loadBeesRevampHelpLine
 ---@param self table
 ---@param overwrittenFunc function
 ---@param ... any
@@ -136,66 +137,13 @@ local function init()
     HelpLineManager.loadMapData = Utils.overwrittenFunction(HelpLineManager.loadMapData, loadBeesRevampHelpLine)
 
     FSDensityMapUtil.cutFruitArea = Utils.overwrittenFunction(FSDensityMapUtil.cutFruitArea, Test.cutFruitArea)
-    FSBaseMission.getHarvestScaleMultiplier = Utils.overwrittenFunction(FSBaseMission.getHarvestScaleMultiplier, Test.getHarvestScaleMultiplier)
+    FSBaseMission.getHarvestScaleMultiplier = Utils.overwrittenFunction(FSBaseMission.getHarvestScaleMultiplier,
+        Test.getHarvestScaleMultiplier)
     Cutter.processCutterArea = Utils.overwrittenFunction(Cutter.processCutterArea, Test.processCutterArea)
 
-    SpecializationPatcher.installSpecializations(modName, g_placeableSpecializationManager, modDirectory, g_placeableTypeManager)
+    SpecializationPatcher.installSpecializations(modName, g_placeableSpecializationManager, modDirectory,
+        g_placeableTypeManager)
 end
 
 
 init()
-
-
--- local function initSpecialization(typeManager)
---     -- if typeManager.typeName == "placeable" then
---     --     RealBees.installSpecializations(g_placeableTypeManager, g_specializationManager, modDirectory, modName)
---     -- end
--- end
-
--- -- isActive
--- function isActive()
---     return g_modIsLoaded["FS22_RealBees"]
--- end
-
--- -- init
--- function init()
---     FSBaseMission.initTerrain = Utils.appendedFunction(FSBaseMission.initTerrain, initTerrain)
---     Mission00.load = Utils.prependedFunction(Mission00.load, load)
-
---     -- -- change old beehive placeable system
-
---     -- addConsoleCommand("mydebug1", "Debugme", "__debug1", BeehiveSystemMod)
---     -- addConsoleCommand("mydebug2", "Debugme", "__debug2", BeehiveSystemMod)
--- end
-
--- -- initTerrain
--- function initTerrain(mission, terrainId, filename)
---     log("Main RealBees initTerrain")
---     if not isActive() then return end
-
---     --BeehiveSystem.updateState = Utils.overwrittenFunction(BeehiveSystem.updateState, BeehiveSystemMod.updateState)
---     --PlaceableBeehive.getHoneyAmountToSpawn = Utils.overwrittenFunction(PlaceableBeehive.getHoneyAmountToSpawn, BeehiveSystemMod.getHoneyAmountToSpawn)
--- end
-
--- -- load
--- function load()
---     log("Main RealBees load")
---     if not isActive() then return end
-
---     BeehiveSystem.onHourChanged = Utils.overwrittenFunction(BeehiveSystem.onHourChanged, BeehiveSystemMod.onHourChanged)
-
---     SpecializationManager.addSpecialization = Utils.overwrittenFunction(SpecializationManager.addSpecialization, BeehiveSystemMod.AddSpecialization)
---     SpecializationManager.initDataStructures = Utils.appendedFunction(SpecializationManager.initDataStructures, BeehiveSystemMod.initDataStructures)
-
---     --BeehiveSystem.updateState = Utils.overwrittenFunction(BeehiveSystem.updateState, BeehiveSystemMod.updateState)
---     --PlaceableBeehive.getHoneyAmountToSpawn = Utils.overwrittenFunction(PlaceableBeehive.getHoneyAmountToSpawn, BeehiveSystemMod.getHoneyAmountToSpawn)
--- end
-
--- -- function PostInitSpecializations(specializationManager, superFunc, ...)
--- --     print("Main RealBees postInitSpecializations " .. self.typeName)
--- --     self.specializations["beehive"] = nil;
--- --     specializationManager:addSpecialization("beehive", "PlaceableRealBees", modDirectory .. "NotPlaceableRealBees.lua");
--- --     superFunc(specializationManager, ...)
--- -- end
-
--- init()

@@ -4,6 +4,7 @@
 -- BeesRevamp utils table. Just some helper functions.
 --
 -- Copyright (c) Peppie84, 2023
+-- https://github.com/Peppie84/FS22_BeesRevamp
 --
 BrUtils = {
     DEBUG_MODE = false,
@@ -17,30 +18,30 @@ BrUtils = {
 }
 
 ---Log a message. It will consider the debug flag for debug messages
----@param serverity number
+---@param severity number
 ---@param messageFormat string
 ---@param ... any
-function BrUtils:log(serverity, messageFormat, ...)
-    if not self.DEBUG_MODE and serverity == self.SERVERITY.DEBUG then
+function BrUtils:log(severity, messageFormat, ...)
+    if not self.DEBUG_MODE and severity == self.SERVERITY.DEBUG then
         return
     end
 
-    local serverityName = self:getServerityString(serverity)
+    local severityName = self:getSeverityString(severity)
 
-    log(string.format('BeeRevamp %s: ' .. messageFormat, serverityName, ...))
+    log(string.format('BeesRevamp %s: ' .. messageFormat, severityName, ...))
 end
 
 ---Translates the serverity value (number) into a readable value.
 ---@param serverity number
 ---@return string
-function BrUtils:getServerityString(serverity)
+function BrUtils:getSeverityString(serverity)
     for serverityIndex, serverityValue in pairs(self.SERVERITY) do
         if serverity == serverityValue then
             return tostring(serverityIndex)
         end
     end
 
-    return "{Serverity not found}"
+    return "{Severity not found}"
 end
 
 ---Log a debug message

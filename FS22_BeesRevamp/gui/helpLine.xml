@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <helpLines>
   <category title="Categorie1">
-    <page title="Page1">
+    <page title="Overview">
       <paragraph>
         <text text="Text1" />
       </paragraph>
+    </page>
+    <page title="Bee behavior">
       <paragraph>
-        <text text="Text2" />
+        <text text="Text1" />
       </paragraph>
+    </page>
+    <page title="Yieldbonus">
       <paragraph>
-        <text text="Text3" />
+        <text text="Text1" />
       </paragraph>
+    </page>
+    <page title="Honey">
       <paragraph>
-        <text text="Text4" />
+        <text text="Text1" />
       </paragraph>
+    </page>
+    <page title="Swarming">
       <paragraph>
-        <text text="Text5" />
+        <text text="Text1" />
+      </paragraph>
+    </page>
+    <page title="Winter treatment">
+      <paragraph>
+        <text text="Text1" />
       </paragraph>
     </page>
   </category>

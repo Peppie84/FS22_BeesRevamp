@@ -164,7 +164,6 @@ Registrierte Methoden:
 ### BeeCare
 In der BeeCare Spezialisierung geht um das Wohl der Bienen. Hier wird gesteuert ob Schwarmkontrolle gemacht werden muss, die Aktion wird hier gesteuert, die Winterbehandlung, die Anzahl der Binen pro Volk (Hive).
 Registrierte Methoden:
- - getBeehiveStatus
  - getBeePopulation
  - updateInfoTables
  - getCanInteract

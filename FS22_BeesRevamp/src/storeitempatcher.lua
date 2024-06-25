@@ -1,9 +1,10 @@
 ---
 -- StoreItemPatcher
 --
--- tbd
+-- Patch prices to runtime for beehives.
 --
 -- Copyright (c) Peppie84, 2023
+-- https://github.com/Peppie84/FS22_BeesRevamp
 --
 StoreItemPatcher = {
     MOD_NAME = g_currentModName or "unknown"

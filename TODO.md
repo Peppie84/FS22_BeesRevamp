@@ -15,7 +15,7 @@
     - [x] Tagsüber sind es nur die restlichen 1/3 Bienen die Honig produzieren
         - [x] Nachts sind es aber volle 3/3
     - [x] Umgewandelt werden auch hier pro Stunde 50ul (Mikroliter) pro Biene
-    - [x] Nektar zu Honig ist 3:1
+    - [x] Das Verhältnis Nektar zu Honig ist 3:1
 - [x] Nektar/Honig wird stündlich konsumiert pro Biene
     - [x] Konsum entspricht etwa 16kg auf 5000 Bienen für 6 Monate. (Für die Winterphase)
         - [] Aktuelle Umsetzung nochmal prüfen!

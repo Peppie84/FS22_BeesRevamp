@@ -5,17 +5,18 @@
 -- and adds some special cases to it.
 --
 -- Copyright (c) Peppie84, 2023
+-- https://github.com/Peppie84/FS22_BeesRevamp
 --
 BeehiveSystemExtended = {
     MOD_NAME = g_currentModName or "unknown",
     MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD = { 0.75, 1.50, 2.25, 3.20, 2.80, 2.00, 1.50, 0.75, -0.5, -0.5, -0.5, -0.5 },
-    DEBUG = true,
+    DEBUG = false,
     LAST_FRUIT_INDEX = FruitType.UNKNOWN
 }
 
 local BeehiveSystemExtended_mt = Class(BeehiveSystemExtended, BeehiveSystem)
 
----TODO
+---Create a new BeehiveSystemExtended class
 ---@param mission table current loaded mission table
 ---@param customMt any custom metatable class
 ---@return table (BeehiveSystemExtended) returns BeehiveSystemExtended instance
@@ -29,12 +30,6 @@ function BeehiveSystemExtended.new(mission, beehivePatchMeta, customMt)
     self:addFieldInfoExtension()
 
     return self
-end
-
----TODO
----@param mission table
-function BeehiveSystemExtended:onMissionStart(mission)
-    -- kann gelöscht werden, wenn nichts rein kommt ...
 end
 
 ---TODO
@@ -58,15 +53,14 @@ function BeehiveSystemExtended:updateState()
     g_brUtils:logDebug('- CurrentIsProductionActive: %s', self.isProductionActive)
 end
 
----TODO
+---Get the growth factor of the hive, based on the given month
 ---@param period number
 ---@return number
-function BeehiveSystemExtended:getGrothFactor(period)
-    ---TODO Rename to groth factor
+function BeehiveSystemExtended:getGrowthFactor(period)
     return self.MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD[period]
 end
 
----TODO
+---Delete the class
 function BeehiveSystemExtended:delete()
     g_brUtils:logDebug('BeehiveSystemExtended.delete')
     BeehiveSystemExtended:superClass().delete(self)
@@ -152,16 +146,16 @@ function BeehiveSystemExtended:addFieldInfoExtension()
         local precisionFarmingMod = FS22_precisionFarming.g_precisionFarming
         if precisionFarmingMod ~= nil then
             precisionFarmingMod.fieldInfoDisplayExtension:addFieldInfo(
-                "Influenced by Bees",
+                g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_by_bees'),
                 self,
-                self.updateFieldInfoDisplay2,
+                self.updateFieldInfoDisplayInfluenced,
                 4,
                 nil
             )
             precisionFarmingMod.fieldInfoDisplayExtension:addFieldInfo(
-                "Bee Bonus",
+                g_brUtils:getModText('beesrevamp_beehivesystemextended_info_bee_bonus'),
                 self,
-                self.updateFieldInfoDisplay,
+                self.updateFieldInfoDisplayBeeBonus,
                 4,
                 nil
             )
@@ -173,7 +167,7 @@ function BeehiveSystemExtended:addFieldInfoExtension()
                 self.fieldUpdateCache = data.fruitTypeMax or FruitType.UNKNOWN
             end
         )
-    else -- OR simply add Crop Rotation Info to standard HUDs
+    else
         PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(
             PlayerHUDUpdater.fieldAddFruit,
             BeehiveSystemExtended.fieldAddFruit
@@ -181,7 +175,7 @@ function BeehiveSystemExtended:addFieldInfoExtension()
     end
 end
 
----TODO
+---BeehiveSystemExtended:updateFieldInfoDisplayBeeBonus
 ---@param fieldInfo any
 ---@param startWorldX any
 ---@param startWorldZ any
@@ -190,7 +184,7 @@ end
 ---@param heightWorldX any
 ---@param heightWorldZ any
 ---@param isColorBlindMode any
-function BeehiveSystemExtended:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ,
+function BeehiveSystemExtended:updateFieldInfoDisplayBeeBonus(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ,
                                                       heightWorldX, heightWorldZ, isColorBlindMode)
     if g_farmlandManager:getOwnerIdAtWorldPosition(startWorldX, startWorldZ) ~= self.mission.player.farmId then
         return nil
@@ -261,7 +255,7 @@ function BeehiveSystemExtended:getYieldBonusByFruitName(fruitName)
     return fruitYieldBonus
 end
 
----TODO
+---BeehiveSystemExtended:updateFieldInfoDisplayInfluenced
 ---@param fieldInfo any
 ---@param startWorldX any
 ---@param startWorldZ any
@@ -270,7 +264,7 @@ end
 ---@param heightWorldX any
 ---@param heightWorldZ any
 ---@param isColorBlindMode any
-function BeehiveSystemExtended:updateFieldInfoDisplay2(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ,
+function BeehiveSystemExtended:updateFieldInfoDisplayInfluenced(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ,
                                                        heightWorldX, heightWorldZ, isColorBlindMode)
     if g_farmlandManager:getOwnerIdAtWorldPosition(startWorldX, startWorldZ) ~= self.mission.player.farmId then
         return nil
@@ -282,15 +276,23 @@ function BeehiveSystemExtended:updateFieldInfoDisplay2(fieldInfo, startWorldX, s
     )
     fieldInfo.beeHiveInfluencedHiveCount = beeHiveInfluencedHiveCount
 
+    local labelInfluencedHiveSingular = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_singular')
+    local labelInfluencedHivePlural = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_singular')
+    local labelInfluencedHives = labelInfluencedHiveSingular
+
+    if beeHiveInfluencedHiveCount ~= 1 then
+        labelInfluencedHives = labelInfluencedHivePlural
+    end
+
     local value = string.format(
-        "%s Hives",
+        "%s " .. labelInfluencedHives,
         g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)
     )
 
     return value, { 1.0, 1.0, 1.0, 1 }, nil, nil
 end
 
----TODO
+---BeehiveSystemExtended:yieldChangeFunc
 ---@param fieldInfo any
 ---@return number
 ---@return number
@@ -325,6 +327,7 @@ function BeehiveSystemExtended:fieldAddFruit(data, box)
     if fruitTypeIndex == nil then
         return
     end
+
     local fruitType = g_fruitTypeManager:getFruitTypeByIndex(fruitTypeIndex)
     local player = g_currentMission.player
 
@@ -347,12 +350,21 @@ function BeehiveSystemExtended:fieldAddFruit(data, box)
         totalFieldArea = 0
     end
 
-    box:addLine("Influenced by Bees", string.format("%s Hives", g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)))
-    box:addLine("Bee Bonus", string.format("+ %s %%", g_i18n:formatNumber(beeHiveYieldBonusAtPlayerPosition * 100, 2)))
-    box:addLine("Field area", g_i18n:formatNumber(totalFieldArea, 0))
+    local labelInfluencedByBees = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_by_bees')
+    local labelBeeBonus = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_bee_bonus')
+    local labelInfluencedHiveSingular = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_singular')
+    local labelInfluencedHivePlural = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_singular')
+    local labelInfluencedHives = labelInfluencedHiveSingular
+
+    if beeHiveInfluencedHiveCount ~= 1 then
+        labelInfluencedHives = labelInfluencedHivePlural
+    end
+
+    box:addLine(labelInfluencedByBees, string.format("%s "..labelInfluencedHives, g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)))
+    box:addLine(labelBeeBonus, string.format("+ %s %%", g_i18n:formatNumber(beeHiveYieldBonusAtPlayerPosition * 100, 2)))
 end
 
----TODO
+---BeehiveSystemExtended:updateFieldInfo
 ---@param posX number
 ---@param posZ number
 ---@param rotY number
@@ -360,18 +372,4 @@ function BeehiveSystemExtended:updateFieldInfo(posX, posZ, rotY)
     if self.requestedFieldData then
         return
     end
-
-    -- multiple calls per second!
 end
-
--- function BeehiveSystemExtended:addPalletSpawnerFillLevel(superFunc,fillLevel)
--- 	if self.isServer then
---         superFunc(self,fillLevel)
---         local spec = self.spec_beehivePalletSpawner
-
---         print("- FillLevel: " .. spec.pendingLiters)
--- 	end
--- end
-
--- PlaceableBeehivePalletSpawner.addFillLevel = Utils.overwrittenFunction(PlaceableBeehivePalletSpawner.addFillLevel, BeehiveSystemExtended.addPalletSpawnerFillLevel)
--- PlaceableBeehive.getHoneyAmountToSpawn = Utils.overwrittenFunction(PlaceableBeehive.getHoneyAmountToSpawn, BeehiveSystemExtended.getHoneyAmountToSpawn)

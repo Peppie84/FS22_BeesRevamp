@@ -7,6 +7,7 @@ function Test.cutFruitArea(fruitIndex, overwrittenFunc, startWorldX, startWorldZ
     local numPixels, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeFactor, growthState, maxArea, terrainDetailPixelsSum =
         overwrittenFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ,
             destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
+
     if Test.popBeeMultiplier then
         Test.lastBeeYieldBonusPercentage = beeFactor
     end
@@ -22,7 +23,8 @@ function Test:getHarvestScaleMultiplier(overwrittenFunc, fruitTypeIndex, sprayFa
     g_brUtils:logDebug('Test:getHarvestScaleMultiplier')
     g_currentMission.beehiveSystem.LAST_FRUIT_INDEX = fruitTypeIndex or FruitType.UNKNOWN
 
-    return overwrittenFunc(self, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeYieldBonusPercentage)
+    return overwrittenFunc(self, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor,
+        rollerFactor, beeYieldBonusPercentage)
 end
 
 ---Cutter:processCutterArea

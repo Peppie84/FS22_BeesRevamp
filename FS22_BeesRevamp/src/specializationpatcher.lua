@@ -5,6 +5,7 @@
 -- and apply them to the placeables with specialization `PlaceableBeehive`.
 --
 -- Copyright (c) Peppie84, 2023
+-- https://github.com/Peppie84/FS22_BeesRevamp
 --
 SpecializationPatcher = {
     MOD_NAME = g_currentModName or 'unknown'

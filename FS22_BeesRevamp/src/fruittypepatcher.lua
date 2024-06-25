@@ -6,6 +6,7 @@
 -- if the hives / ha is saturated.
 --
 -- Copyright (c) Peppie84, 2023
+-- https://github.com/Peppie84/FS22_BeesRevamp
 --
 FruitTypePatcher = {
 }
