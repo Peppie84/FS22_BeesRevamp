@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="80">
   <author>Peppie84</author>
-  <version>1.0.0.0</version>
+  <version>0.0.1.0</version>
   <title>
     <de>RealBees</de>
   </title>
   <description>
     <de><![CDATA[
                 Es gibt noch keine Beschreibung
-            ]]>    </de>
+            ]]></de>
   </description>
   <iconFilename>icon_BeesRevamp.dds</iconFilename>
   <multiplayer supported="false" />
