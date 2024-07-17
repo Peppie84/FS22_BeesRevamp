@@ -43,8 +43,8 @@
 - [x] SpecializationPatcher, damit bestehende Hives mit neuer Spezialisierung gepatcht werden
 - [x] FilltypePatcher, damit der Grundpreis des Honigs angepasst werden kann
 - [x] FruitTypePatcher, um den Früchten neue BeeYields zu geben
-- [] FilltypePatcher, FruitTypePatcher, StoreItemPatcher, SpecializationPatcher sollte alles in eine Art `Bootstrap.lua` (main?) gebaut werden
-- [] HilfeSystem für Real-Bees mod einplanen
+- [x] FilltypePatcher, FruitTypePatcher, StoreItemPatcher, SpecializationPatcher sollte alles in eine Art `Bootstrap.lua` (main?) gebaut werden
+- [x] HilfeSystem für Real-Bees mod einplanen
 - [x] PricePerLiter Honig 13.15€ pro Liter = 15€ pro Kilo
 - [x] Im FieldInfo Hud anzeigen wie viel Hives influenced sind und wie viel %Bonus es gibt
 	 - Muss irgendwie gecached werden, da es sonst zu oft aufgerufen wird!
@@ -70,9 +70,3 @@
     - Dann müsste man 10 fach Schwarmkontrolle machen
     - Dann müsste 10 fach behandelt werden
     - Dann könnte auch nur ein einzelnes Volk von 10 sterben, usw..
-
-
-
-### Texte
-- Get realistic beekeeping into farming simulator
-- a bit more challenging to keep the bees alive

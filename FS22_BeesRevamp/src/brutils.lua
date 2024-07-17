@@ -9,7 +9,7 @@
 BrUtils = {
     DEBUG_MODE = false,
     MOD_NAME = g_currentModName or "unknown",
-    SERVERITY = {
+    SEVERITY = {
         INFO = 1,
         ERROR = 2,
         WARNING = 3,
@@ -22,7 +22,7 @@ BrUtils = {
 ---@param messageFormat string
 ---@param ... any
 function BrUtils:log(severity, messageFormat, ...)
-    if not self.DEBUG_MODE and severity == self.SERVERITY.DEBUG then
+    if not self.DEBUG_MODE and severity == self.SEVERITY.DEBUG then
         return
     end
 
@@ -35,7 +35,7 @@ end
 ---@param serverity number
 ---@return string
 function BrUtils:getSeverityString(serverity)
-    for serverityIndex, serverityValue in pairs(self.SERVERITY) do
+    for serverityIndex, serverityValue in pairs(self.SEVERITY) do
         if serverity == serverityValue then
             return tostring(serverityIndex)
         end
@@ -48,28 +48,28 @@ end
 ---@param messageFormat string
 ---@param ... any
 function BrUtils:logDebug(messageFormat, ...)
-    self:log(BrUtils.SERVERITY.DEBUG, messageFormat, ...)
+    self:log(BrUtils.SEVERITY.DEBUG, messageFormat, ...)
 end
 
 ---Log a info message
 ---@param messageFormat string
 ---@param ... any
 function BrUtils:logInfo(messageFormat, ...)
-    self:log(BrUtils.SERVERITY.INFO, messageFormat, ...)
+    self:log(BrUtils.SEVERITY.INFO, messageFormat, ...)
 end
 
 ---Log a error message
 ---@param messageFormat string
 ---@param ... any
 function BrUtils:logError(messageFormat, ...)
-    self:log(BrUtils.SERVERITY.ERROR, messageFormat, ...)
+    self:log(BrUtils.SEVERITY.ERROR, messageFormat, ...)
 end
 
 ---Log a warning message
 ---@param messageFormat string
 ---@param ... any
 function BrUtils:logWarning(messageFormat, ...)
-    self:log(BrUtils.SERVERITY.WARNING, messageFormat, ...)
+    self:log(BrUtils.SEVERITY.WARNING, messageFormat, ...)
 end
 
 ---TODO

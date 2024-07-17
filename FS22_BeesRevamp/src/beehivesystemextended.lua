@@ -11,7 +11,8 @@ BeehiveSystemExtended = {
     MOD_NAME = g_currentModName or "unknown",
     MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD = { 0.75, 1.50, 2.25, 3.20, 2.80, 2.00, 1.50, 0.75, -0.5, -0.5, -0.5, -0.5 },
     DEBUG = false,
-    LAST_FRUIT_INDEX = FruitType.UNKNOWN
+    LAST_FRUIT_INDEX = FruitType.UNKNOWN,
+    HIGH_BEE_POPULATION_FIX = 1.25
 }
 
 local BeehiveSystemExtended_mt = Class(BeehiveSystemExtended, BeehiveSystem)
@@ -116,10 +117,19 @@ function BeehiveSystemExtended:getBeehiveInfluenceFactorAt(wx, wz)
     g_brUtils:logDebug('- LAST_FRUIT_INDEX: %s', tostring(self.LAST_FRUIT_INDEX))
     g_brUtils:logDebug('- totalFieldArea: %s', tostring(totalFieldArea))
     g_brUtils:logDebug('- beeYieldBonusPercentage: %s', tostring(fruitType.beeYieldBonusPercentage))
+    g_brUtils:logDebug('- beehiveCount: %s', tostring(beehiveCount))
     g_brUtils:logDebug('- result: %s',
-        tostring(math.min(beehiveCount / (totalFieldArea * fruitYieldBonus.hivesPerHa), 1)))
+        tostring((beehiveCount / (totalFieldArea * fruitYieldBonus.hivesPerHa))))
 
-    return math.min(beehiveCount / (totalFieldArea * fruitYieldBonus.hivesPerHa), 1)
+    local beeYieldBonus = (beehiveCount / (totalFieldArea * fruitYieldBonus.hivesPerHa))
+    local beeYieldBonusFixer = 0
+
+    -- some over populate fix at 125%
+    if beeYieldBonus > BeehiveSystemExtended.HIGH_BEE_POPULATION_FIX then
+        beeYieldBonusFixer = (beeYieldBonus - BeehiveSystemExtended.HIGH_BEE_POPULATION_FIX)
+    end
+
+    return math.max(math.min(beeYieldBonus, 1) - beeYieldBonusFixer, 0)
 end
 
 ---TODO
@@ -131,7 +141,7 @@ function BeehiveSystemExtended:getBeehiveInfluenceHiveCountAt(wx, wz)
 
     for i = 1, #self.beehivesSortedRadius do
         local beehive = self.beehivesSortedRadius[i]
-        if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 then
+        if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 and beehive:getHiveState() == BeeCare.STATES.ECONOMIC_HIVE then
             beehiveInfluenceCounter = beehiveInfluenceCounter + beehive:getBeehiveHiveCount()
         end
     end
@@ -277,7 +287,7 @@ function BeehiveSystemExtended:updateFieldInfoDisplayInfluenced(fieldInfo, start
     fieldInfo.beeHiveInfluencedHiveCount = beeHiveInfluencedHiveCount
 
     local labelInfluencedHiveSingular = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_singular')
-    local labelInfluencedHivePlural = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_singular')
+    local labelInfluencedHivePlural = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_plural')
     local labelInfluencedHives = labelInfluencedHiveSingular
 
     if beeHiveInfluencedHiveCount ~= 1 then
@@ -353,7 +363,7 @@ function BeehiveSystemExtended:fieldAddFruit(data, box)
     local labelInfluencedByBees = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_by_bees')
     local labelBeeBonus = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_bee_bonus')
     local labelInfluencedHiveSingular = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_singular')
-    local labelInfluencedHivePlural = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_singular')
+    local labelInfluencedHivePlural = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_influenced_hive_plural')
     local labelInfluencedHives = labelInfluencedHiveSingular
 
     if beeHiveInfluencedHiveCount ~= 1 then

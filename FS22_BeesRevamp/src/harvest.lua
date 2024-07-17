@@ -1,15 +1,19 @@
-Test = {}
+Harvest = {
+    popBeeMultiplier = false,
+    lastBeeYieldBonusPercentage = 0,
+}
 
-function Test.cutFruitArea(fruitIndex, overwrittenFunc, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX,
+---CutFruitArea
+function Harvest.cutFruitArea(fruitIndex, overwrittenFunc, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX,
                            heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
-    g_brUtils:logDebug('Test:cutFruitArea')
+    g_brUtils:logDebug('Harvest:cutFruitArea')
 
     local numPixels, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeFactor, growthState, maxArea, terrainDetailPixelsSum =
         overwrittenFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ,
             destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
 
-    if Test.popBeeMultiplier then
-        Test.lastBeeYieldBonusPercentage = beeFactor
+    if Harvest.popBeeMultiplier then
+        Harvest.lastBeeYieldBonusPercentage = beeFactor
     end
 
     return numPixels, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor,
@@ -17,10 +21,10 @@ function Test.cutFruitArea(fruitIndex, overwrittenFunc, startWorldX, startWorldZ
 end
 
 ---FSBaseMission:getHarvestScaleMultiplier
-function Test:getHarvestScaleMultiplier(overwrittenFunc, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor,
+function Harvest:getHarvestScaleMultiplier(overwrittenFunc, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor,
                                         stubbleFactor, rollerFactor, beeYieldBonusPercentage)
     ---
-    g_brUtils:logDebug('Test:getHarvestScaleMultiplier')
+    g_brUtils:logDebug('Harvest:getHarvestScaleMultiplier')
     g_currentMission.beehiveSystem.LAST_FRUIT_INDEX = fruitTypeIndex or FruitType.UNKNOWN
 
     return overwrittenFunc(self, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor,
@@ -28,17 +32,17 @@ function Test:getHarvestScaleMultiplier(overwrittenFunc, fruitTypeIndex, sprayFa
 end
 
 ---Cutter:processCutterArea
-function Test:processCutterArea(overwrittenFunc, workArea, dt)
+function Harvest:processCutterArea(overwrittenFunc, workArea, dt)
     local spec = self.spec_cutter
-    g_brUtils:logDebug('Test:processCutterArea')
+    g_brUtils:logDebug('Harvest:processCutterArea')
 
-    Test.popBeeMultiplier = true
+    Harvest.popBeeMultiplier = true
     local lastRealArea, lastArea = overwrittenFunc(self, workArea, dt)
-    Test.popBeeMultiplier = false
+    Harvest.popBeeMultiplier = false
 
-    if Test.lastBeeYieldBonusPercentage ~= nil then
-        g_brUtils:logDebug('lastBeeYieldBonusPercentage: %s', tostring(Test.lastBeeYieldBonusPercentage))
-        spec.workAreaParameters.lastRealArea = lastRealArea * (1 + Test.lastBeeYieldBonusPercentage)
+    if Harvest.lastBeeYieldBonusPercentage ~= nil then
+        g_brUtils:logDebug('lastBeeYieldBonusPercentage: %s', tostring(Harvest.lastBeeYieldBonusPercentage))
+        spec.workAreaParameters.lastRealArea = lastRealArea * (1 + Harvest.lastBeeYieldBonusPercentage)
         lastRealArea = spec.workAreaParameters.lastRealArea
     end
 

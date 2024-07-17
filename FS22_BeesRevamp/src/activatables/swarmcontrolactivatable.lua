@@ -17,7 +17,7 @@ function SwarmControlActivatable.new(beecare)
     setmetatable(self, SwarmControlActivatable_mt)
 
     self.beecare = beecare
-    self.activateText = g_brUtils:getModText("realbees_beecare_do_swarm_control")
+    self.activateText = g_brUtils:getModText("beesrevamp_beecare_do_swarm_control")
 
     return self
 end

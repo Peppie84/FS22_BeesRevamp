@@ -2,24 +2,32 @@
 <l10n>
   <translationContributors>Peppie84</translationContributors>
   <elements>
-    <e k="realbees_beecare_info_title_oxusim" v="Winterbehandlung"/>
-    <e k="realbees_beecare_info_title_swarm_pressure" v="Schwarmlustig"/>
-    <e k="realbees_beecare_info_title_bee_population" v="Bienenpopulation"/>
-    <e k="realbees_beecare_info_title_state" v="Status"/>
-    <e k="realbees_beecare_info_bee_population_format" v="%s Bienen"/>
-    <e k="realbees_beecare_do_swarm_control" v="Schwarmkontrolle durchführen"/>
-    <e k="realbees_beecare_state_economic_hive" v="Wirtschaftsvolk"/>
-    <e k="realbees_beecare_state_young_hive" v="Jungvolk"/>
-    <e k="realbees_beecare_state_dead_hive" v="Dead"/>
-    <e k="realbees_beecare_state_additional_swarmed" v="abgeschwärmt"/>
-    <e k="realbees_beecare_common_state_on" v="Ja"/>
-    <e k="realbees_beecare_common_state_off" v="Nein"/>
-    <e k="realbees_placeablebeehiveextended_info_title_nectar" v="Nektar"/>
-    <e k="realbees_placeablebeehiveextended_info_nectar_format" v="%.2f l"/>
-    <e k="realbees_placeablebeehiveextended_info_title_hives" v="Völker"/>
+    <e k="beesrevamp_beecare_info_title_oxusim" v="Winter treatment"/>
+    <e k="beesrevamp_beecare_info_title_swarm_pressure" v="Schwarm pressure"/>
+    <e k="beesrevamp_beecare_info_title_bee_population" v="Bee population"/>
+    <e k="beesrevamp_beecare_info_title_state" v="State"/>
+    <e k="beesrevamp_beecare_info_bee_population_format" v="%s Bees"/>
+    <e k="beesrevamp_beecare_do_swarm_control" v="Execute swarm control"/>
+    <e k="beesrevamp_beecare_state_economic_hive" v="Economic colony"/>
+    <e k="beesrevamp_beecare_state_young_hive" v="Young colony"/>
+    <e k="beesrevamp_beecare_state_dead_hive" v="Dead"/>
+    <e k="beesrevamp_beecare_state_additional_swarmed" v="swarmed"/>
+    <e k="beesrevamp_beecare_common_state_on" v="Yes"/>
+    <e k="beesrevamp_beecare_common_state_off" v="No"/>
+    <e k="beesrevamp_placeablebeehiveextended_info_title_nectar" v="Nectar"/>
+    <e k="beesrevamp_placeablebeehiveextended_info_nectar_format" v="%.2f l"/>
+    <e k="beesrevamp_placeablebeehiveextended_info_title_hives" v="Colonies"/>
     <e k="beesrevamp_beehivesystemextended_info_influenced_by_bees" v="Influenced by Bees"/>
     <e k="beesrevamp_beehivesystemextended_info_bee_bonus" v="Bee Bonus"/>
     <e k="beesrevamp_beehivesystemextended_info_influenced_hive_singular" v="Hive"/>
     <e k="beesrevamp_beehivesystemextended_info_influenced_hive_plural" v="Hives"/>
+    <!-- HelpLine -->
+    <e k="beesrevamp_helpline_category" v="Bees Revamp"/>
+    <e k="beesrevamp_helpline_page_1" v="Overview"/>
+    <e k="beesrevamp_helpline_page_2" v="Bee behavior"/>
+    <e k="beesrevamp_helpline_page_3" v="Swarming"/>
+    <e k="beesrevamp_helpline_page_4" v="Yield bonus"/>
+    <e k="beesrevamp_helpline_page_5" v="Honey"/>
+    <e k="beesrevamp_helpline_page_6" v="Winter treatment"/>
   </elements>
 </l10n>

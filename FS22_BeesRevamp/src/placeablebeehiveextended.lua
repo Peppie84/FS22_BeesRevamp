@@ -154,14 +154,14 @@ function PlaceableBeehiveExtended:onLoad(savegame)
     spec:updateActionRadius(500);
 
     spec.infoTableNectar = {
-        title = g_brUtils:getModText('realbees_placeablebeehiveextended_info_title_nectar'),
+        title = g_brUtils:getModText('beesrevamp_placeablebeehiveextended_info_title_nectar'),
         text = string.format(
-            g_brUtils:getModText('realbees_placeablebeehiveextended_info_nectar_format'),
+            g_brUtils:getModText('beesrevamp_placeablebeehiveextended_info_nectar_format'),
             g_i18n:formatNumber(spec.nectar)
         )
     }
     spec.infoTableHives = {
-        title = g_brUtils:getModText('realbees_placeablebeehiveextended_info_title_hives'),
+        title = g_brUtils:getModText('beesrevamp_placeablebeehiveextended_info_title_hives'),
         text = spec.hiveCount
     }
 
@@ -299,7 +299,7 @@ function PlaceableBeehiveExtended:updateNectarInfoTable()
     local spec = self.spec_beehiveextended
 
     spec.infoTableNectar.text = string.format(
-        g_brUtils:getModText('realbees_placeablebeehiveextended_info_nectar_format'),
+        g_brUtils:getModText('beesrevamp_placeablebeehiveextended_info_nectar_format'),
         g_i18n:formatNumber(spec.nectar)
     )
 end

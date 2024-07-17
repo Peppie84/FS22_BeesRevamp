@@ -36,6 +36,7 @@ end
 function BeeCare.registerFunctions(placeableType)
     g_brUtils:logDebug('BeeCare.registerFunctions')
     SpecializationUtil.registerFunction(placeableType, "getBeePopulation", BeeCare.getBeePopulation)
+    SpecializationUtil.registerFunction(placeableType, "getHiveState", BeeCare.getHiveState)
     SpecializationUtil.registerFunction(placeableType, "updateInfoTables", BeeCare.updateInfoTables)
     SpecializationUtil.registerFunction(placeableType, "getCanInteract", BeeCare.getCanInteract)
     SpecializationUtil.registerFunction(placeableType, "doSwarmControl", BeeCare.doSwarmControl)
@@ -113,47 +114,47 @@ function BeeCare:updateInfoTables()
     local spec = self.spec_beecare
 
     spec.infoTablePopulation = {
-        title = g_brUtils:getModText('realbees_beecare_info_title_bee_population'),
+        title = g_brUtils:getModText('beesrevamp_beecare_info_title_bee_population'),
         text = string.format(
-            g_brUtils:getModText('realbees_beecare_info_bee_population_format'),
+            g_brUtils:getModText('beesrevamp_beecare_info_bee_population_format'),
             tostring(g_i18n:formatNumber(self:getBeePopulation(), 0))
         )
     }
 
     if spec.swarmPressure then
         local swarmTextLabel = spec.swarmPressure and
-            'realbees_beecare_common_state_on' or
-            'realbees_beecare_common_state_off'
+            'beesrevamp_beecare_common_state_on' or
+            'beesrevamp_beecare_common_state_off'
 
         spec.infoTableSwarm = {
-            title = g_brUtils:getModText('realbees_beecare_info_title_swarm_pressure'),
+            title = g_brUtils:getModText('beesrevamp_beecare_info_title_swarm_pressure'),
             text = g_brUtils:getModText(swarmTextLabel)
         }
     end
 
     spec.infoTableOxuSim = {
-        title = g_brUtils:getModText('realbees_beecare_info_title_oxusim'),
-        text = g_brUtils:getModText('realbees_beecare_common_state_off')
+        title = g_brUtils:getModText('beesrevamp_beecare_info_title_oxusim'),
+        text = g_brUtils:getModText('beesrevamp_beecare_common_state_off')
     }
 
     local statusHive = ''
     if spec.state == BeeCare.STATES.ECONOMIC_HIVE then
-        statusHive = g_brUtils:getModText('realbees_beecare_state_economic_hive')
+        statusHive = g_brUtils:getModText('beesrevamp_beecare_state_economic_hive')
     elseif spec.state == BeeCare.STATES.YOUNG_HIVE then
-        statusHive = g_brUtils:getModText('realbees_beecare_state_young_hive')
+        statusHive = g_brUtils:getModText('beesrevamp_beecare_state_young_hive')
     elseif spec.state == BeeCare.STATES.DEAD then
-        statusHive = g_brUtils:getModText('realbees_beecare_state_dead_hive')
+        statusHive = g_brUtils:getModText('beesrevamp_beecare_state_dead_hive')
     end
 
     if spec.swarmed then
         statusHive = string.format('%s (%s)',
             statusHive,
-            g_brUtils:getModText('realbees_beecare_state_additional_swarmed')
+            g_brUtils:getModText('beesrevamp_beecare_state_additional_swarmed')
         )
     end
 
     spec.infoTableState = {
-        title = g_brUtils:getModText('realbees_beecare_info_title_state'),
+        title = g_brUtils:getModText('beesrevamp_beecare_info_title_state'),
         text = statusHive
     }
 end
@@ -265,8 +266,9 @@ function BeeCare:onPeriodChanged()
         if random <= 0.75 then
             spec.swarmPressure = true
         end
-        spec:updateInfoTables()
     end
+
+    spec:updateInfoTables()
 end
 
 ---Get the current bee population
@@ -275,11 +277,22 @@ function BeeCare:getBeePopulation()
     local specBeeHiveExtended = self.spec_beehiveextended
     local spec = self.spec_beecare
 
-    local grothFactor = g_currentMission.beehiveSystem:getGrothFactor(spec.environment.currentPeriod);
-    local beePopulation = spec.bees * math.abs(grothFactor)
+    local growthFactor = g_currentMission.beehiveSystem:getGrowthFactor(spec.environment.currentPeriod);
+    local beePopulation = spec.bees * math.abs(growthFactor)
 
     return (specBeeHiveExtended:getBeehiveHiveCount() * beePopulation) - 1 -- minus the queen :P
 end
+
+
+---Get the current hive state
+---@return number
+---@see BeeCare.STATES
+function BeeCare:getHiveState()
+    local spec = self.spec_beecare
+
+    return spec.state
+end
+
 
 ---Clean up by onDelete
 function BeeCare:onDelete()

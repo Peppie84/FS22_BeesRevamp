@@ -22,7 +22,7 @@ source(modDirectory .. 'src/specializationpatcher.lua')
 source(modDirectory .. 'src/fruittypepatcher.lua')
 source(modDirectory .. 'src/filltypepatcher.lua')
 
-source(modDirectory .. 'src/test.lua')
+source(modDirectory .. 'src/harvest.lua')
 
 ---Mission00 is loading
 ---@param mission table (Mission00)
@@ -34,9 +34,9 @@ local function load(mission)
         PATCHLIST_PRICES = {
             ["d7294ff6f5e42e624c40a2df4eeec060"] = 200,   -- Stock lvl 1
             ["215ebd1eab110e0bf84b958df9cf6695"] = 400,   -- Stock lvl 2
-            ["5f1492c2fa8a3535890ab4edf04e5912"] = 450,   -- Stock lvl 3
-            ["aa843f40070ca949ed4e4461d15d89ef"] = 2500,  -- Stock lvl 4
-            ["9375e364a873f2614c7f30c716781051"] = 8500,  -- Stock lvl 5
+            ["5f1492c2fa8a3535890ab4edf04e5912"] = 500,   -- Stock lvl 3
+            ["aa843f40070ca949ed4e4461d15d89ef"] = 4000,  -- Stock lvl 4
+            ["9375e364a873f2614c7f30c716781051"] = 16000,  -- Stock lvl 5
             ["3a4a10c57e06959d5c51a920ec432a80"] = 450,   -- https://farming-simulator.com/mod.php?mod_id=258373&title=fs2022
             ["98cdfe4ea9e2f01dac978f2892daef26"] = 200,   -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
             ["c4011d0e68dc43435cd5ba4c042365ce"] = 1150,  -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
@@ -106,12 +106,6 @@ local function unload()
     end
 end
 
----Called when player clicks start.
----@param mission table (Mission00)
-local function startMission(mission)
-    modEnvironment:onMissionStart(mission)
-end
-
 ---loadBeesRevampHelpLine
 ---@param self table
 ---@param overwrittenFunc function
@@ -129,21 +123,16 @@ end
 
 --- Initialize the mod
 local function init()
-    g_brUtils.DEBUG_MODE = true
-
     Mission00.load = Utils.prependedFunction(Mission00.load, load)
     Mission00.delete = Utils.appendedFunction(FSBaseMission.delete, unload)
-    Mission00.onStartMission = Utils.appendedFunction(Mission00.onStartMission, startMission)
 
     HelpLineManager.loadMapData = Utils.overwrittenFunction(HelpLineManager.loadMapData, loadBeesRevampHelpLine)
 
-    FSDensityMapUtil.cutFruitArea = Utils.overwrittenFunction(FSDensityMapUtil.cutFruitArea, Test.cutFruitArea)
-    FSBaseMission.getHarvestScaleMultiplier = Utils.overwrittenFunction(FSBaseMission.getHarvestScaleMultiplier,
-        Test.getHarvestScaleMultiplier)
-    Cutter.processCutterArea = Utils.overwrittenFunction(Cutter.processCutterArea, Test.processCutterArea)
+    FSDensityMapUtil.cutFruitArea = Utils.overwrittenFunction(FSDensityMapUtil.cutFruitArea, Harvest.cutFruitArea)
+    FSBaseMission.getHarvestScaleMultiplier = Utils.overwrittenFunction(FSBaseMission.getHarvestScaleMultiplier, Harvest.getHarvestScaleMultiplier)
+    Cutter.processCutterArea = Utils.overwrittenFunction(Cutter.processCutterArea, Harvest.processCutterArea)
 
-    SpecializationPatcher.installSpecializations(modName, g_placeableSpecializationManager, modDirectory,
-        g_placeableTypeManager)
+    SpecializationPatcher.installSpecializations(modName, g_placeableSpecializationManager, modDirectory, g_placeableTypeManager)
 end
 
 
