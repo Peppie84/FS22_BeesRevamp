@@ -11,7 +11,7 @@ BeehiveSystemExtended = {
     MOD_NAME = g_currentModName or "unknown",
     MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD = { 0.75, 1.50, 2.25, 3.20, 2.80, 2.00, 1.50, 0.75, -0.5, -0.5, -0.5, -0.5 },
     DEBUG = false,
-    LAST_FRUIT_INDEX = FruitType.UNKNOWN,
+    LAST_FRUIT_INDEX_BY_FIELDID = {},
     HIGH_BEE_POPULATION_FIX = 1.25
 }
 
@@ -35,8 +35,6 @@ end
 
 ---TODO
 function BeehiveSystemExtended:updateState()
-    g_brUtils:logDebug('BeehiveSystemExtended.updateState')
-
     local environment = self.mission.environment
     self.isFxActive = true
     self.isProductionActive = true
@@ -63,14 +61,12 @@ end
 
 ---Delete the class
 function BeehiveSystemExtended:delete()
-    g_brUtils:logDebug('BeehiveSystemExtended.delete')
     BeehiveSystemExtended:superClass().delete(self)
 end
 
 ---TODO
 ---@param farmId number
 function BeehiveSystemExtended:updateBeehivesOutput(farmId)
-    g_brUtils:logDebug('BeehiveSystemExtended.updateBeehivesOutput')
     if self.mission:getIsServer() then
         for i = 1, #self.beehivesSortedRadius do
             local beehive = self.beehivesSortedRadius[i]
@@ -97,24 +93,33 @@ end
 function BeehiveSystemExtended:getBeehiveInfluenceFactorAt(wx, wz)
     local beehiveCount = self:getBeehiveInfluenceHiveCountAt(wx, wz)
     local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(wx, wz)
+    local farmlandId = g_farmlandManager:getFarmlandIdAtWorldPosition(wx, wz)
 
-    local totalFieldArea = farmLand.totalFieldArea or farmLand.areaInHa
-    if totalFieldArea == nil or self.LAST_FRUIT_INDEX == FruitType.UNKNOWN then
+    if farmlandId == nil then
         return 0
     end
 
-    local fruitType = g_fruitTypeManager:getFruitTypeByIndex(self.LAST_FRUIT_INDEX)
+    local lastFruitIndex = self.LAST_FRUIT_INDEX_BY_FIELDID[farmlandId]
+    if lastFruitIndex == nil then
+        return 0
+    end
+
+    local totalFieldArea = farmLand.totalFieldArea or farmLand.areaInHa
+    if totalFieldArea == nil then
+        return 0
+    end
+
+    local fruitType = g_fruitTypeManager:getFruitTypeByIndex(lastFruitIndex)
     if fruitType == nil then
         return 0
     end
 
     local fruitYieldBonus = self:getYieldBonusByFruitName(fruitType.name)
-
     if fruitYieldBonus.yieldBonus == 0 then
         return 0
     end
 
-    g_brUtils:logDebug('- LAST_FRUIT_INDEX: %s', tostring(self.LAST_FRUIT_INDEX))
+    g_brUtils:logDebug('- LAST_FRUIT_INDEX: %s', tostring(lastFruitIndex))
     g_brUtils:logDebug('- totalFieldArea: %s', tostring(totalFieldArea))
     g_brUtils:logDebug('- beeYieldBonusPercentage: %s', tostring(fruitType.beeYieldBonusPercentage))
     g_brUtils:logDebug('- beehiveCount: %s', tostring(beehiveCount))
@@ -302,37 +307,11 @@ function BeehiveSystemExtended:updateFieldInfoDisplayInfluenced(fieldInfo, start
     return value, { 1.0, 1.0, 1.0, 1 }, nil, nil
 end
 
----BeehiveSystemExtended:yieldChangeFunc
----@param fieldInfo any
----@return number
----@return number
----@return unknown
----@return unknown
-function BeehiveSystemExtended:yieldChangeFunc(fieldInfo)
-    if fieldInfo.fruitTypeIndex == nil or fieldInfo.beeHiveInfluencedHiveCount == nil then
-        return 0, 1, nil, nil
-    end
-
-    --fieldInfo.beeHiveInfluencedHiveCount  = beeHiveInfluencedHiveCount
-    --fieldInfo.beeFactor                   = max
-    --fieldInfo.totalFieldArea              = ha
-    --fieldInfo.beeYieldBonus               = patchObj.hivesPerHa
-
-    local beeFactor = (fieldInfo.beeFactor * fieldInfo.beeYieldBonus) or 0
-    local factor = (fieldInfo.beeHiveInfluencedHiveCount / (fieldInfo.totalFieldArea * fieldInfo.beeYieldBonus.hivesPerHa)) *
-        fieldInfo.beeYieldBonus
-    local maxFactor = math.min(factor, beeFactor)
-
-    --- factor, proportion, _yieldPotential, _yieldPotentialToHa
-    return 0, 1, nil, nil
-end
-
 ---comment
 ---@param data table
 ---@param box table InfoBox
 function BeehiveSystemExtended:fieldAddFruit(data, box)
-    g_brUtils:logDebug('BeehiveSystemExtended.fieldAddFruit')
-
+    local beehiveSystemExtended = g_currentMission.beehiveSystem
     local fruitTypeIndex = data.fruitTypeMax
     if fruitTypeIndex == nil then
         return
@@ -341,16 +320,19 @@ function BeehiveSystemExtended:fieldAddFruit(data, box)
     local fruitType = g_fruitTypeManager:getFruitTypeByIndex(fruitTypeIndex)
     local player = g_currentMission.player
 
-    local beeHiveYieldBonusAtPlayerPosition = g_currentMission.beehiveSystem:getBeehiveInfluenceFactorAt(
+    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(
+        player.baseInformation.lastPositionX,
+        player.baseInformation.lastPositionZ
+    )
+
+    beehiveSystemExtended.LAST_FRUIT_INDEX_BY_FIELDID[farmLand.id] = fruitTypeIndex
+
+    local beeHiveYieldBonusAtPlayerPosition = beehiveSystemExtended:getBeehiveInfluenceFactorAt(
         player.baseInformation.lastPositionX,
         player.baseInformation.lastPositionZ
     ) * fruitType.beeYieldBonusPercentage;
 
-    local beeHiveInfluencedHiveCount = g_currentMission.beehiveSystem:getBeehiveInfluenceHiveCountAt(
-        player.baseInformation.lastPositionX,
-        player.baseInformation.lastPositionZ
-    )
-    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(
+    local beeHiveInfluencedHiveCount = beehiveSystemExtended:getBeehiveInfluenceHiveCountAt(
         player.baseInformation.lastPositionX,
         player.baseInformation.lastPositionZ
     )

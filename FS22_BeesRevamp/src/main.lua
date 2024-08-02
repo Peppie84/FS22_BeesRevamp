@@ -41,7 +41,6 @@ local function load(mission)
             ["98cdfe4ea9e2f01dac978f2892daef26"] = 200,   -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
             ["c4011d0e68dc43435cd5ba4c042365ce"] = 1150,  -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
             ["5f8c5339e645b43380da721a356ca8b7"] = 450,   -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
-            ["778abd40c811b423ed2e0d91af9ef3b7"] = 14500, -- https://farming-simulator.com/mod.php?mod_id=225503&title=fs2022
         },
         PATCHLIST_HIVE_COUNT = {
             ["d7294ff6f5e42e624c40a2df4eeec060"] = 1,  -- Stock lvl 1
@@ -127,11 +126,7 @@ local function init()
     Mission00.delete = Utils.appendedFunction(FSBaseMission.delete, unload)
 
     HelpLineManager.loadMapData = Utils.overwrittenFunction(HelpLineManager.loadMapData, loadBeesRevampHelpLine)
-
     FSDensityMapUtil.cutFruitArea = Utils.overwrittenFunction(FSDensityMapUtil.cutFruitArea, Harvest.cutFruitArea)
-    FSBaseMission.getHarvestScaleMultiplier = Utils.overwrittenFunction(FSBaseMission.getHarvestScaleMultiplier, Harvest.getHarvestScaleMultiplier)
-    Cutter.processCutterArea = Utils.overwrittenFunction(Cutter.processCutterArea, Harvest.processCutterArea)
-
     SpecializationPatcher.installSpecializations(modName, g_placeableSpecializationManager, modDirectory, g_placeableTypeManager)
 end
 
