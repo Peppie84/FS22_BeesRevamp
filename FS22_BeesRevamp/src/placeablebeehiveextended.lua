@@ -23,7 +23,7 @@ PlaceableBeehiveExtended = {
     },
     NECTAR_PER_BEE_IN_MILLILITER = 0.05,           -- 50ul (mikroliter)
     BEE_FLIGHTS_PER_HOUR = 2.0,
-    BEE_HONEY_CONSUMATION_PER_MONTH = 0.000433,
+    BEE_HONEY_CONSUMATION_PER_MONTH = 0.000453,
     FLYING_BEES_PERCENTAGE = 0.66,
     HOUSE_BEES_PERCENTAGE = 0.34,
     RATIO_HONEY_KG_TO_LITER = 1.4,
@@ -59,7 +59,11 @@ function PlaceableBeehiveExtended.registerFunctions(placeableType)
         'updateNectar',
         PlaceableBeehiveExtended.updateNectar
     )
-    SpecializationUtil.registerFunction(placeableType, "updateInfoTables2", PlaceableBeehiveExtended.updateNectarInfoTable)
+    SpecializationUtil.registerFunction(
+        placeableType,
+        'updateNectarInfoTable',
+        PlaceableBeehiveExtended.updateNectarInfoTable
+    )
 end
 
 ---registerEventListeners
@@ -109,7 +113,7 @@ function PlaceableBeehiveExtended:loadFromXMLFile(xmlFile, key)
 
     spec.nectar = xmlFile:getFloat(key .. '.nectar', spec.nectar)
 
-    spec:updateInfoTables2()
+    spec:updateNectarInfoTable()
 end
 
 ---PlaceableBeehiveExtended:saveToXMLFile
@@ -169,6 +173,8 @@ function PlaceableBeehiveExtended:onLoad(savegame)
     g_messageCenter:subscribe(MessageType.HOUR_CHANGED, PlaceableBeehiveExtended.onHourChanged, self)
 end
 
+---TODO
+---@param radius number
 function PlaceableBeehiveExtended:updateActionRadius(radius)
     local specBeehive = self.spec_beehive
 
@@ -251,7 +257,7 @@ function PlaceableBeehiveExtended:getHoneyAmountToSpawn(superFunc)
 
             spec:updateNectar(-nectarInLiterPerHour)
 
-            return nectarInLiterPerHour / PlaceableBeehiveExtended.RATIO_HONEY_LITER_TO_NECTAR
+            return (nectarInLiterPerHour * spec.environment.timeAdjustment) / PlaceableBeehiveExtended.RATIO_HONEY_LITER_TO_NECTAR
         end
     end
 
@@ -285,22 +291,26 @@ end
 function PlaceableBeehiveExtended:updateNectar(nectar)
     local spec = self.spec_beehiveextended
 
-    if nectar < 0 and spec.nectar <= 0 then
+    if nectar <= 0 and spec.nectar <= 0 then
         return
     end
 
-    spec.nectar = spec.nectar + nectar
-    spec:updateInfoTables2()
+    spec.nectar = spec.nectar + (nectar * spec.environment.timeAdjustment)
+    if spec.nectar < 0 then
+        spec.nectar = 0
+    end
+
+    spec:updateNectarInfoTable()
 end
 
+---TODO
 function PlaceableBeehiveExtended:updateNectarInfoTable()
-    g_brUtils:logDebug('BeeCare.updateNectarInfoTable')
 
     local spec = self.spec_beehiveextended
 
     spec.infoTableNectar.text = string.format(
         g_brUtils:getModText('beesrevamp_placeablebeehiveextended_info_nectar_format'),
-        g_i18n:formatNumber(spec.nectar)
+        g_i18n:formatNumber(spec.nectar, 2)
     )
 end
 

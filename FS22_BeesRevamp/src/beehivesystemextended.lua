@@ -48,6 +48,10 @@ function BeehiveSystemExtended:updateState()
         self.isFxActive = false
     end
 
+    if isWinterSeason then
+        self.isProductionActive = false
+    end
+
     g_brUtils:logDebug('- CurrentFxActive: %s', self.isFxActive)
     g_brUtils:logDebug('- CurrentIsProductionActive: %s', self.isProductionActive)
 end

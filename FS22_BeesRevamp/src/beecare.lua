@@ -41,6 +41,7 @@ function BeeCare.registerFunctions(placeableType)
     SpecializationUtil.registerFunction(placeableType, "getCanInteract", BeeCare.getCanInteract)
     SpecializationUtil.registerFunction(placeableType, "doSwarmControl", BeeCare.doSwarmControl)
     SpecializationUtil.registerFunction(placeableType, "getSwarmControleNeeded", BeeCare.getSwarmControleNeeded)
+    SpecializationUtil.registerFunction(placeableType, 'decideToSwarm', BeeCare.decideToSwarm)
 end
 
 ---registerEventListeners
@@ -76,6 +77,7 @@ function BeeCare.registerSavegameXMLPaths(schema, basePath)
     schema:register(XMLValueType.BOOL, basePath .. '#swarmed', 'Is hive swarmed')
     schema:register(XMLValueType.BOOL, basePath .. '#swarmPressure', 'Has hive swarm pressure')
     schema:register(XMLValueType.INT, basePath .. '#state', 'Current state of the hive')
+    schema:register(XMLValueType.BOOL, basePath .. '#monthlyPressureCheck', 'This month checked to swarm')
     schema:setXMLSpecializationType()
 end
 
@@ -89,6 +91,7 @@ function BeeCare:loadFromXMLFile(xmlFile, key)
     spec.swarmed = xmlFile:getBool(key .. '#swarmed', spec.swarmed)
     spec.swarmPressure = xmlFile:getBool(key .. '#swarmPressure', spec.swarmPressure)
     spec.state = xmlFile:getInt(key .. '#state', spec.state)
+    spec.monthlyPressureCheck = xmlFile:getInt(key .. '#monthlyPressureCheck', spec.monthlyPressureCheck)
     spec:updateInfoTables()
 end
 
@@ -102,6 +105,7 @@ function BeeCare:saveToXMLFile(xmlFile, key, usedModNames)
     xmlFile:setBool(key .. '#swarmed', spec.swarmed)
     xmlFile:setBool(key .. '#swarmPressure', spec.swarmPressure)
     xmlFile:setInt(key .. '#state', spec.state)
+    xmlFile:setBool(key .. '#monthlyPressureCheck', spec.monthlyPressureCheck)
 end
 
 -------------------------------------------------------------------------------
@@ -121,7 +125,9 @@ function BeeCare:updateInfoTables()
         )
     }
 
+    spec.infoTableSwarm = nil
     if spec.swarmPressure then
+        g_brUtils:logDebug('spec.swarmPressure = %s', tostring(spec.swarmPressure))
         local swarmTextLabel = spec.swarmPressure and
             'beesrevamp_beecare_common_state_on' or
             'beesrevamp_beecare_common_state_off'
@@ -195,6 +201,7 @@ function BeeCare:onLoad(savegame)
     spec.state = BeeCare.STATES.YOUNG_HIVE
     spec.swarmed = false
     spec.swarmPressure = false
+    spec.monthlyPressureCheck = false
 
     spec.infoTablePopulation = nil
     spec.infoTableSwarm = nil
@@ -206,6 +213,24 @@ function BeeCare:onLoad(savegame)
 
     g_messageCenter:subscribe(MessageType.PERIOD_CHANGED, BeeCare.onPeriodChanged, self)
     g_messageCenter:subscribe(MessageType.YEAR_CHANGED, BeeCare.onYearChanged, self)
+    g_messageCenter:subscribe(MessageType.HOUR_CHANGED, BeeCare.onHourChanged, self)
+end
+
+---TODO
+function BeeCare:onHourChanged()
+    g_brUtils:logDebug('BeeCare.onHourChanged')
+    local spec = self.spec_beecare
+    local currentHour = spec.environment.currentHour
+    local isAfternoon = currentHour >= 12 and currentHour <= 15
+    local isSunIn = spec.environment.isSunOn
+
+    if spec.environment.daysPerPeriod > 1 and spec.monthlyPressureCheck == false and isAfternoon and isSunIn then
+        spec:decideToSwarm()
+        if spec.swarmPressure then
+            spec.monthlyPressureCheck = true
+        end
+        spec:updateInfoTables()
+    end
 end
 
 ---On Year changed, check oxucare was made else the hive
@@ -253,6 +278,7 @@ end
 function BeeCare:onPeriodChanged()
     g_brUtils:logDebug('BeeCare.onPeriodChanged')
     local spec = self.spec_beecare
+    spec.monthlyPressureCheck = false
 
     if spec.swarmPressure then
         spec.swarmed = true
@@ -260,15 +286,26 @@ function BeeCare:onPeriodChanged()
         spec.bees = spec.bees * 0.5
     end
 
+    if spec.environment.daysPerPeriod <= 1 then
+        self:decideToSwarm()
+        spec.monthlyPressureCheck = true
+    end
+
+    spec:updateInfoTables()
+end
+
+---TODO
+function BeeCare:decideToSwarm()
+    g_brUtils:logDebug('BeeCare.descideToSwarm')
+    local spec = self.spec_beecare
     local currentPeriod = spec.environment.currentPeriod
-    if currentPeriod >= 1 and currentPeriod <= 6 and not spec.swarmed and spec.state == BeeCare.STATES.ECONOMIC_HIVE then
+
+    if currentPeriod > 1 and currentPeriod <= 5 and not spec.swarmed and spec.state == BeeCare.STATES.ECONOMIC_HIVE and spec.monthlyPressureCheck == false then
         local random = math.random()
         if random <= 0.75 then
             spec.swarmPressure = true
         end
     end
-
-    spec:updateInfoTables()
 end
 
 ---Get the current bee population

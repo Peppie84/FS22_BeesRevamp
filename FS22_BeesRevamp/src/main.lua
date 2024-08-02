@@ -92,7 +92,7 @@ local function load(mission)
     mission.beehiveSystem = modEnvironment
 
     --First version, do not patch the filltype pricePerLiter
-    --FillTypePatcher:patchBasePrice(g_fillTypeManager)
+    FillTypePatcher:patchBasePrice(g_fillTypeManager)
     StoreItemPatcher:patchItems(modName, g_storeManager, beehivePatchMeta)
     SpecializationPatcher.patchPlacablesWithNewSpec(modName, g_placeableTypeManager)
     FruitTypePatcher:patchFruitsBeeYieldBonus(g_fruitTypeManager, beehivePatchMeta.PATCHLIST_YIELD_BONUS)
@@ -122,6 +122,8 @@ end
 
 --- Initialize the mod
 local function init()
+    BrUtils.DEBUG_MODE = true
+
     Mission00.load = Utils.prependedFunction(Mission00.load, load)
     Mission00.delete = Utils.appendedFunction(FSBaseMission.delete, unload)
 
@@ -129,6 +131,5 @@ local function init()
     FSDensityMapUtil.cutFruitArea = Utils.overwrittenFunction(FSDensityMapUtil.cutFruitArea, Harvest.cutFruitArea)
     SpecializationPatcher.installSpecializations(modName, g_placeableSpecializationManager, modDirectory, g_placeableTypeManager)
 end
-
 
 init()

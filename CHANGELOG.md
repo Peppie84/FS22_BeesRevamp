@@ -4,3 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+
+
+## [0.0.2.0] - 2024-08-02
+- adjust the sell price of honey from 10.20 to 5.42
+- added the ability to `decideToSwarm` when played with multiple days per period. One decision per month
+- no nectar to honey production within the winter period if still nectar is in the hive
+- increased the bee nectar consumption from 0.000433 to 0.000453 per month
+- fixed the nectar/honey production and consumption when played with multiple days per period.
+- the nectar value on the info hud is now displayed in float,2
