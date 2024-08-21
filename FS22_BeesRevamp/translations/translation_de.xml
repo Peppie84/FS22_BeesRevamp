@@ -19,8 +19,8 @@
     <e k="beesrevamp_placeablebeehiveextended_info_title_hives" v="Völker"/>
     <e k="beesrevamp_beehivesystemextended_info_influenced_by_bees" v="Beeinflusst von Bienen"/>
     <e k="beesrevamp_beehivesystemextended_info_bee_bonus" v="Bonus durch Bienen"/>
-    <e k="beesrevamp_beehivesystemextended_info_influenced_hive_singular" v="Bienenstock"/>
-    <e k="beesrevamp_beehivesystemextended_info_influenced_hive_plural" v="Bienenstöcke"/>
+    <e k="beesrevamp_beehivesystemextended_info_influenced_hive_singular" v="W.Volk"/>
+    <e k="beesrevamp_beehivesystemextended_info_influenced_hive_plural" v="W.Völker"/>
     <!-- HelpLine -->
     <e k="beesrevamp_helpline_category" v="Bees Revamp"/>
     <e k="beesrevamp_helpline_page_1" v="Übersicht"/>

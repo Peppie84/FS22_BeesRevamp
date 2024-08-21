@@ -96,10 +96,14 @@ end
 ---@return number
 function BeehiveSystemExtended:getBeehiveInfluenceFactorAt(wx, wz)
     local beehiveCount = self:getBeehiveInfluenceHiveCountAt(wx, wz)
-    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(wx, wz)
     local farmlandId = g_farmlandManager:getFarmlandIdAtWorldPosition(wx, wz)
 
     if farmlandId == nil then
+        return 0
+    end
+
+    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(wx, wz)
+    if farmLand == nil then
         return 0
     end
 
