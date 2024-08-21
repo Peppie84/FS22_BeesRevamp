@@ -91,7 +91,7 @@ function BeeCare:loadFromXMLFile(xmlFile, key)
     spec.swarmed = xmlFile:getBool(key .. '#swarmed', spec.swarmed)
     spec.swarmPressure = xmlFile:getBool(key .. '#swarmPressure', spec.swarmPressure)
     spec.state = xmlFile:getInt(key .. '#state', spec.state)
-    spec.monthlyPressureCheck = xmlFile:getInt(key .. '#monthlyPressureCheck', spec.monthlyPressureCheck)
+    spec.monthlyPressureCheck = xmlFile:getBool(key .. '#monthlyPressureCheck', spec.monthlyPressureCheck)
     spec:updateInfoTables()
 end
 

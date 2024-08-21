@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="80">
   <author>Peppie84</author>
-  <version>0.0.2.0</version>
+  <version>0.0.2.1</version>
   <title>
     <en>Bees Revamp</en>
     <de>Bees Revamp</de>
@@ -50,12 +50,10 @@ Alle Werte und Änderungen sind wissenschaftlich belegt und oder vielleicht etwa
 Falls Du Fehler oder Anregungen melden oder Hilfe benötigt, dann kommt auf die Github-Seite von dieser Mod unter: https://github.com/Peppie84/FS22_BeesRevamp
 ]]></de>
   </description>
-
   <dependencies>
     <dependency>FS22_beeHivesWood</dependency>
     <dependency>FS22_SmallBeehives01</dependency>
   </dependencies>
-
   <iconFilename>icon_BeesRevamp.dds</iconFilename>
   <multiplayer supported="false" />
   <extraSourceFiles>

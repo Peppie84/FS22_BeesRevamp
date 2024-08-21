@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 
+## [0.0.2.1] - 2024-08-21
+- fix a bug for saving the `monthlyPressureCheck`
+
 ## [0.0.2.0] - 2024-08-02
 - adjust the sell price of honey from 10.20 to 5.42
 - added the ability to `decideToSwarm` when played with multiple days per period. One decision per month
