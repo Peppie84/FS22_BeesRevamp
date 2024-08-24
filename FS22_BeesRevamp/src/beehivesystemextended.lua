@@ -154,8 +154,7 @@ function BeehiveSystemExtended:getBeehiveInfluenceHiveCountAt(wx, wz)
 
     for i = 1, #self.beehivesSortedRadius do
         local beehive = self.beehivesSortedRadius[i]
-        --if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 and beehive:getHiveState() == BeeCare.STATES.ECONOMIC_HIVE then
-        if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 then
+        if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 and beehive:getHiveState() == BeeCare.STATES.ECONOMIC_HIVE then
             beehiveInfluenceCounter = beehiveInfluenceCounter + beehive:getBeehiveHiveCount()
         end
     end
