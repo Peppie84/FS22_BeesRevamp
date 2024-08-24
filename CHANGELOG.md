@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 - english translation of moddesc and helpline - for #2
+- added overpopulation info to the field info - for #1
 
 ## [0.0.2.1] - 2024-08-21
 - fix a bug for saving the `monthlyPressureCheck`
