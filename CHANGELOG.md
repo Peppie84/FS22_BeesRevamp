@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+
+
+## [0.0.3.0] - 2024-08-24
 - english translation of moddesc and helpline - for [#2](https://github.com/Peppie84/FS22_BeesRevamp/issues/2)
 - added overpopulation info to the field info - for [#1](https://github.com/Peppie84/FS22_BeesRevamp/issues/1)
 - fixed a bug with precision farming mod and showing the correct field infos
