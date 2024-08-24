@@ -102,7 +102,7 @@ function BeehiveSystemExtended:getBeehiveInfluenceFactorAt(wx, wz)
         return 0
     end
 
-    local farmLand = g_farmlandManager:getFarmlandAtWorldPosition(wx, wz)
+    local farmLand = g_farmlandManager:getFarmlandById(farmlandId)
     if farmLand == nil then
         return 0
     end
@@ -154,7 +154,8 @@ function BeehiveSystemExtended:getBeehiveInfluenceHiveCountAt(wx, wz)
 
     for i = 1, #self.beehivesSortedRadius do
         local beehive = self.beehivesSortedRadius[i]
-        if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 and beehive:getHiveState() == BeeCare.STATES.ECONOMIC_HIVE then
+        --if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 and beehive:getHiveState() == BeeCare.STATES.ECONOMIC_HIVE then
+        if beehive:getBeehiveInfluenceFactor(wx, wz) > 0 and beehive:getBeePopulation() > 0 then
             beehiveInfluenceCounter = beehiveInfluenceCounter + beehive:getBeehiveHiveCount()
         end
     end

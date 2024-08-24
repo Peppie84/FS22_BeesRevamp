@@ -45,7 +45,7 @@ Alle Werte und Änderungen sind wissenschaftlich belegt und oder vielleicht etwa
 - Honigverkaufspreis wurde angepasst
 - Precision Farming kompatibel
 
-Falls Ihr Fehler oder Anregungen melden oder Hilfe benötigt, dann kommt auf die Github-Seite von dieser Mod unter: https://github.com/Peppie84/FS22_BeesRevamp
+Falls Du Fehler oder Anregungen melden oder Hilfe benötigst, dann komm auf die Github-Seite von dieser Mod unter: https://github.com/Peppie84/FS22_BeesRevamp
 
 Ich wünsche euch allen viel Spaß mit der Mod.
 
@@ -63,7 +63,7 @@ Jedes Volk hat eine zufällige Menge an Bienen sobald es platziert wird und wird
 - es nicht regnet
 - es kein Wintermonat ist
 
-Zusätzlich wurde auch die Reichweite massiv erhöht. Ein Biene sammelt im real-life in einem Umkreis von bis zu 3km. Daher wurde die Reichweite auf 500m (1km Umkreis) erweitert."/>
+Zusätzlich wurde auch die Reichweite massiv erhöht. Ein Biene sammelt im real-life in einem Umkreis von bis zu 3km. Daher wurde die Reichweite auf 500m erweitert."/>
     <e k="beesrevamp_helpline_page_2_paragraph_4_text" v="Es gibt auch Bienenstöcke die mehrere Bienenvölker beherbergen, z.B. Beehive (10 Langstroth). Es werden aber derzeit nicht 10 einzelne Völker simuliert sondern alles wie ein einziges Volk berechnet. Für die spätere Ertragsbonus-Berechnung wird aber die Völkeranzahl benutzt."/>
     <e k="beesrevamp_helpline_page_2_paragraph_5_text" v="Das Bienenvolk wird ab sofort auch stündlich vom gesammelten Nektar essen. Aber keine Angst wenn der Nektar-Wert auf 0 fällt. Die Bienen verhungern erst mal nicht. Wenn man aber nur Regenwetter hat, dann wird sich die Honigproduktion in einem Jahr schon sehr massiv verändern."/>
     <e k="beesrevamp_helpline_page_3" v="Schwarm"/>
