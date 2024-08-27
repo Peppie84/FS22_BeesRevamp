@@ -65,7 +65,7 @@
 ### Todos gewachsen durch die Entwicklung
 - [x] Entfernungsberechnung prüfen
 - [] Vor der ersten Stunde, nach aktivieren der Mod, ist der Verkaufspreis-Chart falsch, weil er den alten Wert anzeigt. Hier sollte man mal prüfen ob man ein refresh Table auslösen kann
-- [] Alle Zeichenketten in Singlequotes
+- [x] Alle Zeichenketten in Singlequotes
 - [x] Sollen große Hives (10+) auch das 10 fache an Schwärme haben? - Nein
     - Dann müsste man 10 fach Schwarmkontrolle machen
     - Dann müsste 10 fach behandelt werden

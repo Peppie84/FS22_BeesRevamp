@@ -8,7 +8,7 @@
 --
 BrUtils = {
     DEBUG_MODE = false,
-    MOD_NAME = g_currentModName or "unknown",
+    MOD_NAME = g_currentModName or 'unknown',
     SEVERITY = {
         INFO = 1,
         ERROR = 2,
@@ -41,7 +41,7 @@ function BrUtils:getSeverityString(serverity)
         end
     end
 
-    return "{Severity not found}"
+    return '{Severity not found}'
 end
 
 ---Log a debug message

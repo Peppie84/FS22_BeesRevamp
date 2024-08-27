@@ -8,7 +8,7 @@
 -- https://github.com/Peppie84/FS22_BeesRevamp
 --
 BeehiveSystemExtended = {
-    MOD_NAME = g_currentModName or "unknown",
+    MOD_NAME = g_currentModName or 'unknown',
     MAX_HONEY_PER_MONTH_INDEXED_BY_PERIOD = { 0.75, 1.50, 2.25, 3.20, 2.80, 2.00, 1.50, 0.75, -0.5, -0.5, -0.5, -0.5 },
     DEBUG = false,
     LAST_FRUIT_INDEX_BY_FIELDID = {},
@@ -168,7 +168,7 @@ end
 -------------------------------------------------------------------------------
 
 function BeehiveSystemExtended:addFieldInfoExtension()
-    if g_modIsLoaded["FS22_precisionFarming"] then
+    if g_modIsLoaded['FS22_precisionFarming'] then
         local precisionFarmingMod = FS22_precisionFarming.g_precisionFarming
         if precisionFarmingMod ~= nil then
             precisionFarmingMod.fieldInfoDisplayExtension:addFieldInfo(
@@ -296,7 +296,7 @@ function BeehiveSystemExtended:updateFieldInfoDisplayBeeBonus(fieldInfo, startWo
     fieldInfo.beeYieldBonus = fruitYieldBonus
 
     local value = string.format(
-        "+ %s %%",
+        '+ %s %%',
         g_i18n:formatNumber(beeHiveYieldBonusAtPlayerPosition * 100, 2)
     )
 
@@ -308,7 +308,7 @@ end
 ---@param fruitName string Fruit name
 ---@return table {yieldBonus, hivesPerHa}
 function BeehiveSystemExtended:getYieldBonusByFruitName(fruitName)
-    local defaultYieldBonus = { ["yieldBonus"] = 0, ["hivesPerHa"] = 0 }
+    local defaultYieldBonus = { ['yieldBonus'] = 0, ['hivesPerHa'] = 0 }
 
     local fruitYieldBonus = self.beehivePatchMeta.PATCHLIST_YIELD_BONUS[fruitName:upper()]
     if fruitYieldBonus == nil then
@@ -348,7 +348,7 @@ function BeehiveSystemExtended:updateFieldInfoDisplayInfluenced(fieldInfo, start
     end
 
     local value = string.format(
-        "%s " .. labelInfluencedHives,
+        '%s ' .. labelInfluencedHives,
         g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)
     )
 
@@ -405,8 +405,8 @@ function BeehiveSystemExtended:fieldAddFruit(data, box)
 
     local beeOverPopulateFixer = beehiveSystemExtended.OVER_POPULATION_INDEX_BY_FIELDID[farmLand.id]
 
-    box:addLine(labelInfluencedByBees, string.format("%s "..labelInfluencedHives, g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)))
-    box:addLine(labelBeeBonus, string.format("+ %s %%", g_i18n:formatNumber(beeHiveYieldBonusAtPlayerPosition * 100, 2)))
+    box:addLine(labelInfluencedByBees, string.format('%s ' .. labelInfluencedHives, g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)))
+    box:addLine(labelBeeBonus, string.format('+ %s %%', g_i18n:formatNumber(beeHiveYieldBonusAtPlayerPosition * 100, 2)))
 
     if beeOverPopulateFixer ~= nil then
         if beeOverPopulateFixer > 0 then

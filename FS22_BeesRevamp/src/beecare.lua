@@ -8,7 +8,7 @@
 -- https://github.com/Peppie84/FS22_BeesRevamp
 --
 BeeCare = {
-    MOD_NAME = g_currentModName or "unknown",
+    MOD_NAME = g_currentModName or 'unknown',
     OXUSIM_FEATURE_DISABLE = true,
     DEFAULT_BEE_VALUE_MAX = 20000,
     DEFAULT_BEE_VALUE = 14000,
@@ -35,12 +35,12 @@ end
 ---@param placeableType table
 function BeeCare.registerFunctions(placeableType)
     g_brUtils:logDebug('BeeCare.registerFunctions')
-    SpecializationUtil.registerFunction(placeableType, "getBeePopulation", BeeCare.getBeePopulation)
-    SpecializationUtil.registerFunction(placeableType, "getHiveState", BeeCare.getHiveState)
-    SpecializationUtil.registerFunction(placeableType, "updateInfoTables", BeeCare.updateInfoTables)
-    SpecializationUtil.registerFunction(placeableType, "getCanInteract", BeeCare.getCanInteract)
-    SpecializationUtil.registerFunction(placeableType, "doSwarmControl", BeeCare.doSwarmControl)
-    SpecializationUtil.registerFunction(placeableType, "getSwarmControleNeeded", BeeCare.getSwarmControleNeeded)
+    SpecializationUtil.registerFunction(placeableType, 'getBeePopulation', BeeCare.getBeePopulation)
+    SpecializationUtil.registerFunction(placeableType, 'getHiveState', BeeCare.getHiveState)
+    SpecializationUtil.registerFunction(placeableType, 'updateInfoTables', BeeCare.updateInfoTables)
+    SpecializationUtil.registerFunction(placeableType, 'getCanInteract', BeeCare.getCanInteract)
+    SpecializationUtil.registerFunction(placeableType, 'doSwarmControl', BeeCare.doSwarmControl)
+    SpecializationUtil.registerFunction(placeableType, 'getSwarmControleNeeded', BeeCare.getSwarmControleNeeded)
     SpecializationUtil.registerFunction(placeableType, 'decideToSwarm', BeeCare.decideToSwarm)
 end
 
@@ -48,16 +48,16 @@ end
 ---@param placeableType table
 function BeeCare.registerEventListeners(placeableType)
     g_brUtils:logDebug('BeeCare.registerEventListeners')
-    SpecializationUtil.registerEventListener(placeableType, "onLoad", BeeCare)
-    SpecializationUtil.registerEventListener(placeableType, "onDelete", BeeCare)
-    SpecializationUtil.registerEventListener(placeableType, "onFinalizePlacement", BeeCare)
-    SpecializationUtil.registerEventListener(placeableType, "onInfoTriggerEnter", BeeCare)
-    SpecializationUtil.registerEventListener(placeableType, "onInfoTriggerLeave", BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onLoad', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onDelete', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onFinalizePlacement', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onInfoTriggerEnter', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onInfoTriggerLeave', BeeCare)
 end
 
 function BeeCare.registerOverwrittenFunctions(placeableType)
-    SpecializationUtil.registerOverwrittenFunction(placeableType, "updateInfo", BeeCare.updateInfo)
-    SpecializationUtil.registerOverwrittenFunction(placeableType, "updateBeehiveState", BeeCare.updateBeehiveState)
+    SpecializationUtil.registerOverwrittenFunction(placeableType, 'updateInfo', BeeCare.updateInfo)
+    SpecializationUtil.registerOverwrittenFunction(placeableType, 'updateBeehiveState', BeeCare.updateBeehiveState)
 end
 
 -------------------------------------------------------------------------------

@@ -19,7 +19,7 @@ PlaceableBeehiveExtended = {
         ['5f1492c2fa8a3535890ab4edf04e5912'] = 1,  -- Stock lvl 3
         ['aa843f40070ca949ed4e4461d15d89ef'] = 10, -- Stock lvl 4
         ['9375e364a873f2614c7f30c716781051'] = 33, -- Stock lvl 5
-        ["c4011d0e68dc43435cd5ba4c042365ce"] = 4,  -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
+        ['c4011d0e68dc43435cd5ba4c042365ce'] = 4,  -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
     },
     NECTAR_PER_BEE_IN_MILLILITER = 0.05,           -- 50ul (mikroliter)
     BEE_FLIGHTS_PER_HOUR = 2.0,
