@@ -4,33 +4,34 @@
   <version>1.0.0.0</version>
   <title>
     <en>Bees Revamp</en>
-    <de>Überarbeitete Bienen</de>
   </title>
   <description>
     <en><![CDATA[
   With this mod, the bees in Farming Simulator 22 become more realistic and a bit more complex but also more productive.
 
-  All values and changes are scientifically proven and/or perhaps slightly adjusted so that they do not completely kill the fun of the game. The focus will always be on having fun.
+All values and changes are scientifically proven and/or perhaps slightly adjusted so that they do not completely kill the fun of the game. The focus will always be on having fun.
 
-  Most questions can be answered by the in-game help of this mod.
+Most questions can be answered by the in-game help of this mod.
 
-  - Two states of a colony (young colony and economic colony)
-  - Only the economic colony produces honey
-  - Bees collect nectar
-  - Bees only collect when the weather is good
-  - Nectar is converted into honey
-  - Bees eat nectar
-  - Range of the beehives has been increased
-  - Pollination performance improved
-  - Beehive has a variable number of bees
-  - Swarming season is between Mar-Jul
-  - Prices of the beehives have been adjusted
-  - Honey sales price has been adjusted
-  - Precision farming compatible
+- Two states of a colony (young colony and economic colony)
+- Only the economic colony produces honey
+- Bees collect nectar
+- Bees only collect when the weather is good
+- Nectar is converted into honey
+- Bees eat nectar
+- Range of the beehives has been increased
+- Pollination performance improved
+- Beehive has a variable number of bees
+- Swarming season is between Mar-Jul
+- Prices of the beehives have been adjusted
+- Honey sales price has been adjusted
+- Precision farming compatible
 
-  Currently no multiplayer support.
+Currently no multiplayer support.
 
-  For more information, help, and reporting issues please visit <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
+Yield bonus for: Canola, Sunflower, Alfalfa, Clover, Buckwheat, Phacelia and Silphie
+
+For more information, help, and reporting issues please visit <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
 ]]></en>
     <de><![CDATA[
 Mit dieser Mod werden die Bienen im Landwirtschafts-Simulator 22 realistischer und auch etwas komplexer aber dafür auch ertragreicher.
@@ -54,6 +55,8 @@ Bitte schau Dir die Ingame-Hilfe zu dieser Mod an. Sie kann die meisten Fragen b
 - Precision Farming kompatibel
 
 Aktuell kein Multiplayer support.
+
+Ertragsbonus für: Raps, Sonnenblume, Luzerne, Klee, Buchweizen, Phacelia und Silphie
 
 Weitere Informationen, Hilfe und Probleme melden findest Du unter <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
 ]]></de>

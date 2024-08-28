@@ -19,8 +19,8 @@
     <e k="beesrevamp_placeablebeehiveextended_info_title_hives" v="Völker"/>
     <e k="beesrevamp_beehivesystemextended_info_influenced_by_bees" v="Beeinflusst von Bienen"/>
     <e k="beesrevamp_beehivesystemextended_info_bee_bonus" v="Bonus durch Bienen"/>
-    <e k="beesrevamp_beehivesystemextended_info_influenced_hive_singular" v="W.Volk"/>
-    <e k="beesrevamp_beehivesystemextended_info_influenced_hive_plural" v="W.Völker"/>
+    <e k="beesrevamp_beehivesystemextended_info_influenced_hive_singular" v="Wirt.Volk"/>
+    <e k="beesrevamp_beehivesystemextended_info_influenced_hive_plural" v="Wirt.Völker"/>
     <e k="beesrevamp_beehivesystemextended_info_title_bee_bonus_is_shrinking" v="Überversorgt!"/>
     <e k="beesrevamp_beehivesystemextended_info_bee_bonus_is_shrinking" v="Bienen Bonus schrumpft"/>
 
