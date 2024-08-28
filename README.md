@@ -15,7 +15,7 @@
 <h3 align="center"><u>FS22_BeesRevamp</u></h3>
 
 <p align="center">
-    With this mod, the bees in Farming Simulator 22 become more realistic and a bit more complex but also more productive.<br />
+    With this mod, bees in Farming Simulator 22 become more realistic and a bit more complex but also more productive.<br />
     All values and changes are scientifically proven and/or perhaps slightly adjusted so that they do not completely kill the fun of the game. The focus will always be on having fun.<br />
     Most questions can be answered by the in-game help of this mod.
 </p>
