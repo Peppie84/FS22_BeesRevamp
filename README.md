@@ -3,16 +3,35 @@
 <div align="center">
 
 [![FarmingSimulator-22](https://img.shields.io/badge/FarmingSimulator-22-blue?style=flat-square)](https://www.farming-simulator.com/)
+[![Modhub Version](https://img.shields.io/badge/Modhub-v1.0.0.0-green?style=flat-square)](https://google.de)
 [![GitHub issues](https://img.shields.io/github/issues/Peppie84/FS22_BeesRevamp?style=plastic)](https://github.com/Peppie84/FS22_BeesRevamp/issues)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
+[![Last commit](https://img.shields.io/github/last-commit/Peppie84/FS22_BeesRevamp?style=flat-square&color=important)](https://github.com/Peppie84/FS22_BeesRevamp/commits/development)
+[![Top language](https://img.shields.io/github/languages/top/Peppie84/FS22_BeesRevamp?style=flat-square&color=blueviolet)](https://github.com/search?q=repo%3APeppie84%FS22_BeesRevamp++language%3ALua&type=code)
+
 
 <img src="documents/mod_icon.jpg" style="width: 128px;">
 
 <h3 align="center"><u>FS22_BeesRevamp</u></h3>
 
 <p align="center">
-    TBD
+    With this mod, the bees in Farming Simulator 22 become more realistic and a bit more complex but also more productive.<br />
+    All values and changes are scientifically proven and/or perhaps slightly adjusted so that they do not completely kill the fun of the game. The focus will always be on having fun.<br />
+    Most questions can be answered by the in-game help of this mod.
 </p>
 
+</div>
+
+<div align='center'>
+    <img src="documents/screen1-v1.0.0.0.png" style="width: 40%;">
+    <img src="documents/screen2-v1.0.0.0.png" style="width: 40%;">
+    <br />
+    <img src="documents/screen3-v1.0.0.0.png" style="width: 40%;">
+    <img src="documents/screen4-v1.0.0.0.png" style="width: 40%;">
+    <br />
+    <img src="documents/screen5-v1.0.0.0.png" style="width: 40%;">
+    <img src="documents/screen6-v1.0.0.0.png" style="width: 40%;">
+    <br />
 </div>
 
 ## Features
