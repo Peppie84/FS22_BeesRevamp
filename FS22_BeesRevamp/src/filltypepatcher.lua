@@ -7,7 +7,7 @@
 -- https://github.com/Peppie84/FS22_BeesRevamp
 --
 FillTypePatcher = {
-    REAL_PRICE_PERLITER = 5.42 -- €
+    REAL_PRICE_PERLITER = 6.42 -- €
 }
 
 ---Patches the honey pricePerLiter with new base price
