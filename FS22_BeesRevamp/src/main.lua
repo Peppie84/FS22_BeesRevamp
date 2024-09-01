@@ -71,6 +71,10 @@ local function load(mission)
                 ['yieldBonus'] = 0.10,
                 ['hivesPerHa'] = 8
             },
+            ['CLOVERGRASS']    = {
+                ['yieldBonus'] = 0.10,
+                ['hivesPerHa'] = 8
+            },
             ['BUCKWHEAT'] = {
                 ['yieldBonus'] = 0.25,
                 ['hivesPerHa'] = 4.5
