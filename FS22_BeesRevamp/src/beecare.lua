@@ -298,7 +298,7 @@ end
 function BeeCare:decideToSwarm()
     g_brUtils:logDebug('BeeCare.descideToSwarm')
     local spec = self.spec_beecare
-    local currentPeriod = spec.environment.currentPeriod
+    local currentPeriod = g_brUtils:getStockPeriod()
 
     if currentPeriod > 1 and currentPeriod <= 5 and not spec.swarmed and spec.state == BeeCare.STATES.ECONOMIC_HIVE and spec.monthlyPressureCheck == false then
         local random = math.random()
@@ -314,11 +314,7 @@ function BeeCare:getBeePopulation()
     local specBeeHiveExtended = self.spec_beehiveextended
     local spec = self.spec_beecare
 
-    local period = spec.environment.currentPeriod
-    if g_modIsLoaded['FS22_TerraLifePlus'] then
-        period = math.floor(spec.environment.currentPeriod * 0.25) + 1
-    end
-
+    local period = g_brUtils:getStockPeriod()
     local growthFactor = g_currentMission.beehiveSystem:getGrowthFactor(period);
     local beePopulation = spec.bees * math.abs(growthFactor)
 

@@ -75,7 +75,7 @@ end
 ---TODO
 ---@return string
 function BrUtils:getCurrentDayYearString()
-    return 'Y' .. g_currentMission.environment.currentYear .. 'M' .. g_currentMission.environment.currentPeriod .. 'D0'
+    return 'Y' .. g_currentMission.environment.currentYear .. 'M' .. self:getStockPeriod() .. 'D0'
 end
 
 ---TODO
@@ -83,6 +83,18 @@ end
 ---@return string
 function BrUtils:getModText(text)
     return g_i18n:getText(text, self.MOD_NAME)
+end
+
+---TODO
+---@return number
+function BrUtils:getStockPeriod()
+    local period = g_currentMission.environment.currentPeriod
+
+    if g_modIsLoaded['FS22_TerraLifePlus'] then
+        period = math.floor(period * 0.25) + 1
+    end
+
+    return period
 end
 
 g_brUtils = BrUtils;
