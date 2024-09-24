@@ -314,7 +314,12 @@ function BeeCare:getBeePopulation()
     local specBeeHiveExtended = self.spec_beehiveextended
     local spec = self.spec_beecare
 
-    local growthFactor = g_currentMission.beehiveSystem:getGrowthFactor(spec.environment.currentPeriod);
+    local period = spec.environment.currentPeriod
+    if g_modIsLoaded['FS22_TerraLifePlus'] then
+        period = math.floor(spec.environment.currentPeriod * 0.25) + 1
+    end
+
+    local growthFactor = g_currentMission.beehiveSystem:getGrowthFactor(period);
     local beePopulation = spec.bees * math.abs(growthFactor)
 
     return (specBeeHiveExtended:getBeehiveHiveCount() * beePopulation) - 1 -- minus the queen :P
