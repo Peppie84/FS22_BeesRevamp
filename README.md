@@ -10,7 +10,7 @@
 [![Top language](https://img.shields.io/github/languages/top/Peppie84/FS22_BeesRevamp?style=flat-square&color=blueviolet)](https://github.com/search?q=repo%3APeppie84%FS22_BeesRevamp++language%3ALua&type=code)
 
 
-<img src="documents/mod_icon.jpg" style="width: 128px;">
+<img src="documents/mod_icon.jpg">
 
 <h3 align="center"><u>FS22_BeesRevamp</u></h3>
 
