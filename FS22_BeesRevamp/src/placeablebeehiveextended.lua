@@ -134,8 +134,6 @@ end
 ---PlaceableBeehiveExtended:onLoad
 ---@param savegame table
 function PlaceableBeehiveExtended:onLoad(savegame)
-    g_brUtils:logDebug('PlaceableBeehiveExtended.onLoad')
-
     self.spec_beehiveextended = self[('spec_%s.'):format(PlaceableBeehiveExtended.MOD_NAME) .. 'beehiveextended']
 
     local xmlFile = self.xmlFile
@@ -173,7 +171,7 @@ function PlaceableBeehiveExtended:onLoad(savegame)
     g_messageCenter:subscribe(MessageType.HOUR_CHANGED, PlaceableBeehiveExtended.onHourChanged, self)
 end
 
----TODO
+---PlaceableBeehiveExtended:updateActionRadius
 ---@param radius number
 function PlaceableBeehiveExtended:updateActionRadius(radius)
     local specBeehive = self.spec_beehive
@@ -183,7 +181,7 @@ function PlaceableBeehiveExtended:updateActionRadius(radius)
     specBeehive.infoTableRange.text = g_i18n:formatNumber(specBeehive.actionRadius, 0) .. 'm'
 end
 
----TODO
+---PlaceableBeehiveExtended:onHourChanged
 function PlaceableBeehiveExtended:onHourChanged()
     g_brUtils:logDebug('PlaceableBeehiveExtended.onHourChanged')
     local specBeeHive = self.spec_beehive
@@ -217,13 +215,11 @@ end
 
 ---PlaceableBeehiveExtended:onWeatherChanged
 function PlaceableBeehiveExtended:onWeatherChanged()
-    g_brUtils:logDebug('PlaceableBeehiveExtended.onWeatherChanged')
     g_currentMission.beehiveSystem:updateBeehivesState();
 end
 
 ---PlaceableBeehiveExtended:onDelete
 function PlaceableBeehiveExtended:onDelete()
-    g_brUtils:logDebug('PlaceableBeehiveExtended.onDelete')
     local spec = self.spec_beehiveextended
 
     g_messageCenter:unsubscribe(MessageType.WEATHER_CHANGED, self)
@@ -233,13 +229,14 @@ end
 ---@param superFunc function
 ---@return number
 function PlaceableBeehiveExtended:getHoneyAmountToSpawn(superFunc)
-    g_brUtils:logDebug('PlaceableBeehiveExtended.getHoneyAmountToSpawn')
     local specBeeHive = self.spec_beehive
     local specBeeCare = self.spec_beecare
     local spec = self.spec_beehiveextended
 
+    g_brUtils:logDebug('timeAdjustment: %s', tostring(spec.environment.timeAdjustment))
+
     ---
-    --- Nectar into Honey!
+    --- Transform nectar into honey!
     if specBeeHive.isProductionActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
         if spec.nectar > 0 then
             local houseBees = specBeeCare:getBeePopulation() * PlaceableBeehiveExtended.HOUSE_BEES_PERCENTAGE
@@ -267,23 +264,8 @@ end
 ---PlaceableBeehiveExtended:getBeehiveHiveCount
 function PlaceableBeehiveExtended:getBeehiveHiveCount()
     local spec = self.spec_beehiveextended
+
     return math.max(spec.hiveCount, 1)
-end
-
----PlaceableBeehiveExtended:getBeehiveInfluenceFactor
----@param superFunc function
----@param wx number
----@param wz number
----@return number
-function PlaceableBeehiveExtended:getBeehiveInfluenceFactor(superFunc, wx, wz)
-    local spec = self.spec_beehive
-    local distanceToPointSquared = MathUtil.getPointPointDistanceSquared(spec.wx, spec.wz, wx, wz)
-
-    if distanceToPointSquared <= spec.actionRadiusSquared then
-        return 1 - distanceToPointSquared * 0.85 / spec.actionRadiusSquared
-    end
-
-    return 0
 end
 
 ---PlaceableBeehiveExtended:updateNectar
@@ -303,9 +285,8 @@ function PlaceableBeehiveExtended:updateNectar(nectar)
     spec:updateNectarInfoTable()
 end
 
----TODO
+---PlaceableBeehiveExtended:updateNectarInfoTable
 function PlaceableBeehiveExtended:updateNectarInfoTable()
-
     local spec = self.spec_beehiveextended
 
     spec.infoTableNectar.text = string.format(

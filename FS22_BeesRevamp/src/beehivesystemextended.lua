@@ -27,6 +27,7 @@ function BeehiveSystemExtended.new(mission, beehivePatchMeta, customMt)
 
     self.beehiveInfluenceFactorAtHiveCount = 0
     self.fieldUpdateCache = FruitType.UNKNOWN
+    self.lastFieldUpdateCache = 0
     self.beehivePatchMeta = beehivePatchMeta
 
     self:addFieldInfoExtension()
@@ -52,9 +53,6 @@ function BeehiveSystemExtended:updateState()
     if isWinterSeason then
         self.isProductionActive = false
     end
-
-    g_brUtils:logDebug('- CurrentFxActive: %s', self.isFxActive)
-    g_brUtils:logDebug('- CurrentIsProductionActive: %s', self.isProductionActive)
 end
 
 ---Get the growth factor of the hive, based on the given month
@@ -128,13 +126,6 @@ function BeehiveSystemExtended:getBeehiveInfluenceFactorAt(wx, wz)
         return 0
     end
 
-    g_brUtils:logDebug('- LAST_FRUIT_INDEX: %s', tostring(lastFruitIndex))
-    g_brUtils:logDebug('- totalFieldArea: %s', tostring(totalFieldArea))
-    g_brUtils:logDebug('- beeYieldBonusPercentage: %s', tostring(fruitType.beeYieldBonusPercentage))
-    g_brUtils:logDebug('- beehiveCount: %s', tostring(beehiveCount))
-    g_brUtils:logDebug('- result: %s',
-        tostring((beehiveCount / (totalFieldArea * fruitYieldBonus.hivesPerHa))))
-
     local beeYieldBonus = (beehiveCount / (totalFieldArea * fruitYieldBonus.hivesPerHa))
     local beeYieldBonusFixer = 0
 
@@ -198,6 +189,8 @@ function BeehiveSystemExtended:addFieldInfoExtension()
             PlayerHUDUpdater.fieldAddFruit,
             function(updater, data, box)
                 self.fieldUpdateCache = data.fruitTypeMax or FruitType.UNKNOWN
+                self.lastFieldUpdateCache = g_currentMission.environment.timeUpdateTime
+
                 local fruitTypeIndex = data.fruitTypeMax
                 if fruitTypeIndex == nil then
                     return
@@ -249,14 +242,21 @@ function BeehiveSystemExtended:updateFieldInfoOverPopulation(fieldInfo, startWor
         return nil
     end
 
-    local beeOverPopulateFixer = g_currentMission.beehiveSystem.OVER_POPULATION_INDEX_BY_FIELDID[farmLand.id]
-
-    if beeOverPopulateFixer == nil then
+    local fruitTypeIndex = self.fieldUpdateCache
+    if fruitTypeIndex == nil or fruitTypeIndex == FruitType.UNKNOWN then
         return nil
     end
 
-    if beeOverPopulateFixer <= 0 then
-       return nil
+    local fruitType = g_fruitTypeManager:getFruitTypeByIndex(fruitTypeIndex)
+
+    if not self:hasFruitTypeYieldBonus(fruitType.name) then
+        return nil
+    end
+
+    local beeOverPopulateFixer = g_currentMission.beehiveSystem.OVER_POPULATION_INDEX_BY_FIELDID[farmLand.id]
+
+    if beeOverPopulateFixer == nil or beeOverPopulateFixer <= 0 then
+        return nil
     end
 
     local value = g_brUtils:getModText('beesrevamp_beehivesystemextended_info_bee_bonus_is_shrinking')
@@ -275,18 +275,23 @@ end
 ---@param heightWorldZ any
 ---@param isColorBlindMode any
 function BeehiveSystemExtended:updateFieldInfoDisplayBeeBonus(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, isColorBlindMode)
-    if g_farmlandManager:getOwnerIdAtWorldPosition(startWorldX, startWorldZ) ~= self.mission.player.farmId then
+    local player = self.mission.player
+    if g_farmlandManager:getOwnerIdAtWorldPosition(startWorldX, startWorldZ) ~= player.farmId then
+        return nil
+    end
+
+    if (g_currentMission.environment.timeUpdateTime-self.lastFieldUpdateCache) > 1000 then
         return nil
     end
 
     local fruitTypeIndex = self.fieldUpdateCache
     if fruitTypeIndex == nil or fruitTypeIndex == FruitType.UNKNOWN then
-        return
+        return nil
     end
 
     local fruitType = g_fruitTypeManager:getFruitTypeByIndex(fruitTypeIndex)
     local fruitYieldBonus = self:getYieldBonusByFruitName(fruitType.name)
-    local player = g_currentMission.player
+
     local beeHiveYieldBonusAtPlayerPosition = g_currentMission.beehiveSystem:getBeehiveInfluenceFactorAt(
         player.baseInformation.lastPositionX,
         player.baseInformation.lastPositionZ
@@ -302,20 +307,6 @@ function BeehiveSystemExtended:updateFieldInfoDisplayBeeBonus(fieldInfo, startWo
 
     -- value, color, additionalValue
     return value, KeyValueInfoHUDBox.COLOR.TEXT_DEFAULT, nil
-end
-
----Returns the PATCHLIST_YIELD_BONUS table entry for the given fruitName. A 0-value table is returned when no entry is found.
----@param fruitName string Fruit name
----@return table {yieldBonus, hivesPerHa}
-function BeehiveSystemExtended:getYieldBonusByFruitName(fruitName)
-    local defaultYieldBonus = { ['yieldBonus'] = 0, ['hivesPerHa'] = 0 }
-
-    local fruitYieldBonus = self.beehivePatchMeta.PATCHLIST_YIELD_BONUS[fruitName:upper()]
-    if fruitYieldBonus == nil then
-        return defaultYieldBonus
-    end
-
-    return fruitYieldBonus
 end
 
 ---BeehiveSystemExtended:updateFieldInfoDisplayInfluenced
@@ -352,16 +343,16 @@ function BeehiveSystemExtended:updateFieldInfoDisplayInfluenced(fieldInfo, start
         g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)
     )
 
-    return value, KeyValueInfoHUDBox.COLOR.TEXT_DEFAULT, nil, nil
+    return value, KeyValueInfoHUDBox.COLOR.TEXT_DEFAULT, nil
 end
 
----comment
+---BeehiveSystemExtended:fieldAddFruit
 ---@param data table
 ---@param box table InfoBox
 function BeehiveSystemExtended:fieldAddFruit(data, box)
 
     local player = g_currentMission.player
-    if g_farmlandManager:getOwnerIdAtWorldPosition(player.baseInformation.lastPositionX, player.baseInformation.lastPositionZ) ~= g_currentMission.player.farmId then
+    if g_farmlandManager:getOwnerIdAtWorldPosition(player.baseInformation.lastPositionX, player.baseInformation.lastPositionZ) ~= player.farmId then
         return
     end
 
@@ -408,19 +399,27 @@ function BeehiveSystemExtended:fieldAddFruit(data, box)
     box:addLine(labelInfluencedByBees, string.format('%s ' .. labelInfluencedHives, g_i18n:formatNumber(beeHiveInfluencedHiveCount, 0)))
     box:addLine(labelBeeBonus, string.format('+ %s %%', g_i18n:formatNumber(beeHiveYieldBonusAtPlayerPosition * 100, 2)))
 
-    if beeOverPopulateFixer ~= nil then
-        if beeOverPopulateFixer > 0 then
-            box:addLine(g_brUtils:getModText('beesrevamp_beehivesystemextended_info_title_bee_bonus_is_shrinking'), g_brUtils:getModText('beesrevamp_beehivesystemextended_info_bee_bonus_is_shrinking'), true)
-        end
+    if beeOverPopulateFixer ~= nil and beehiveSystemExtended:hasFruitTypeYieldBonus(fruitType.name) and beeOverPopulateFixer > 0 then
+        box:addLine(g_brUtils:getModText('beesrevamp_beehivesystemextended_info_title_bee_bonus_is_shrinking'), g_brUtils:getModText('beesrevamp_beehivesystemextended_info_bee_bonus_is_shrinking'), true)
     end
 end
 
----BeehiveSystemExtended:updateFieldInfo
----@param posX number
----@param posZ number
----@param rotY number
-function BeehiveSystemExtended:updateFieldInfo(posX, posZ, rotY)
-    if self.requestedFieldData then
-        return
+---Returns the PATCHLIST_YIELD_BONUS table entry for the given fruitName. A 0-value table is returned when no entry is found.
+---@param fruitName string Fruit name
+---@return table {yieldBonus, hivesPerHa}
+function BeehiveSystemExtended:getYieldBonusByFruitName(fruitName)
+    local defaultYieldBonus = { ['yieldBonus'] = 0, ['hivesPerHa'] = 0 }
+
+    local fruitYieldBonus = self.beehivePatchMeta.PATCHLIST_YIELD_BONUS[fruitName:upper()]
+    if fruitYieldBonus == nil then
+        return defaultYieldBonus
     end
+
+    return fruitYieldBonus
+end
+
+---BeehiveSystemExtended:hasFruitTypeYieldBonus
+---@param fruitName string Fruit name
+function BeehiveSystemExtended:hasFruitTypeYieldBonus(fruitName)
+    return (self.beehivePatchMeta.PATCHLIST_YIELD_BONUS[fruitName:upper()] ~= nil)
 end

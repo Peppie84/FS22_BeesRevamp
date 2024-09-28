@@ -130,6 +130,8 @@ end
 
 --- Initialize the mod
 local function init()
+    BrUtils.DEBUG_MODE = true
+
     Mission00.load = Utils.prependedFunction(Mission00.load, load)
     Mission00.delete = Utils.appendedFunction(FSBaseMission.delete, unload)
 

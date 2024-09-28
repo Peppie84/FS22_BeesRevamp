@@ -72,20 +72,21 @@ function BrUtils:logWarning(messageFormat, ...)
     self:log(BrUtils.SEVERITY.WARNING, messageFormat, ...)
 end
 
----TODO
+---BrUtils:getCurrentDayYearString
 ---@return string
 function BrUtils:getCurrentDayYearString()
     return 'Y' .. g_currentMission.environment.currentYear .. 'M' .. self:getStockPeriod() .. 'D0'
 end
 
----TODO
+---BrUtils:getModText
 ---@param text string
 ---@return string
 function BrUtils:getModText(text)
     return g_i18n:getText(text, self.MOD_NAME)
 end
 
----TODO
+---Get the current period. If TerraLife is enabled, translate the
+---weeks into the period.
 ---@return number
 function BrUtils:getStockPeriod()
     local period = g_currentMission.environment.currentPeriod
