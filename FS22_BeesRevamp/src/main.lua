@@ -71,6 +71,10 @@ local function load(mission)
                 ['yieldBonus'] = 0.10,
                 ['hivesPerHa'] = 8
             },
+            ['CLOVERGRASS']    = {
+                ['yieldBonus'] = 0.10,
+                ['hivesPerHa'] = 8
+            },
             ['BUCKWHEAT'] = {
                 ['yieldBonus'] = 0.25,
                 ['hivesPerHa'] = 4.5
@@ -80,6 +84,10 @@ local function load(mission)
                 ['hivesPerHa'] = 4
             },
             ['SILPHIE']   = {
+                ['yieldBonus'] = 0.50,
+                ['hivesPerHa'] = 4
+            },
+            ['MUSTARD']   = {
                 ['yieldBonus'] = 0.50,
                 ['hivesPerHa'] = 4
             },
@@ -122,7 +130,7 @@ end
 
 --- Initialize the mod
 local function init()
-    BrUtils.DEBUG_MODE = false
+    BrUtils.DEBUG_MODE = true
 
     Mission00.load = Utils.prependedFunction(Mission00.load, load)
     Mission00.delete = Utils.appendedFunction(FSBaseMission.delete, unload)

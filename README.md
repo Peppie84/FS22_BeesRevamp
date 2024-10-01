@@ -3,19 +3,19 @@
 <div align="center">
 
 [![FarmingSimulator-22](https://img.shields.io/badge/FarmingSimulator-22-blue?style=flat-square)](https://www.farming-simulator.com/)
-[![Modhub Version](https://img.shields.io/badge/Modhub-v1.0.0.0-green?style=flat-square)](https://google.de)
+[![Modhub Version](https://img.shields.io/badge/Modhub-v1.0.0.0-green?style=flat-square)](https://www.farming-simulator.com/mod.php?mod_id=298737)
 [![GitHub issues](https://img.shields.io/github/issues/Peppie84/FS22_BeesRevamp?style=plastic)](https://github.com/Peppie84/FS22_BeesRevamp/issues)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
 [![Last commit](https://img.shields.io/github/last-commit/Peppie84/FS22_BeesRevamp?style=flat-square&color=important)](https://github.com/Peppie84/FS22_BeesRevamp/commits/development)
 [![Top language](https://img.shields.io/github/languages/top/Peppie84/FS22_BeesRevamp?style=flat-square&color=blueviolet)](https://github.com/search?q=repo%3APeppie84%FS22_BeesRevamp++language%3ALua&type=code)
 
 
-<img src="documents/mod_icon.jpg" style="width: 128px;">
+<img src="documents/mod_icon.jpg" style="width: 170px;">
 
 <h3 align="center"><u>FS22_BeesRevamp</u></h3>
 
 <p align="center">
-    With this mod, the bees in Farming Simulator 22 become more realistic and a bit more complex but also more productive.<br />
+    With this mod, bees in Farming Simulator 22 become more realistic and a bit more complex but also more productive.<br />
     All values and changes are scientifically proven and/or perhaps slightly adjusted so that they do not completely kill the fun of the game. The focus will always be on having fun.<br />
     Most questions can be answered by the in-game help of this mod.
 </p>
@@ -35,70 +35,31 @@
 </div>
 
 ## Features
- - Aktuelle Honigproduktion:
-	- lvl1 = (( litersHoneyPerDay="5") / 24) * kehrwert von TageProPeriod
- 	- lvl5 = ((litersHoneyPerDay="495") / 24 ) * kehrwert von TageProPeriod
- - Honigproduktion nur zwischen März und Okt
- ```
- Mär=1
- Apr=2
- Mai=3
- Jun=4
- Jul=5
- Aug=6
- Sep=7
- Okt=8
- Nov=9
- Dez=10
- Jan=11
- Feb=12
- ```
- - Produktionsleistung über das Jahr anpassen:
- ```
-Mär=0.75
-Apr=1.25
-Mai=1.50
-Jun=2.00
-Jul=1.50
-Aug=1.25
-Sep=0.75
-Okt=0.50
-Nov=-0.5
-Dez=-0.5
-Jan=-0.5
-Feb=-0.5
- ```
- - Bienen fliegen ab 10 Grad zwischen März und Okt
- - Bienen können sterben. Effekt: es kommt kein Honig mehr + Infohud die Info ausgeben
- 	- Wenn die Bienen gestorben sind, dann muss ein neuer Kasten gekauft werden
- - Zwischen März und Juni muss man einmal pro Period an den Kasten und einen Aktionsknopf drücken = Schwarmkontrolle
- 	- Macht man das nicht, wird der BeeGrothFactor halbiert für das aktuelle Jahr. Im neuen Jahr wird dieser Wert wieder zurückgesetzt.
- - Schwarm darstellen? Den man wie ein EasterEgg aufsammeln kann?
- - Honig muss man auch einkaufen können, damit sie im Winter nicht verhungern. Honig muss auf den PalettSpawner abgelegt werden
-	- Hier sollte man nur Sirup/Melasse oder Sugar-Water kaufen können
- - Im Okt muss mit Oxalsäure behandelt werden, sonst sterben die Bienen im März
- - Name der Oxsalsäure: Oxu SIM 22
- - PricePerLiter kann über FruiteTypeManager geändert werden, nach dem Load Befehl!
- 	- 13.15€ pro Liter
- - Reichweite erhöhen, 150m sind zu wenig!
- - Im FieldInfo Hud anzeigen wie viel Hives influenced sind und wie viel %Bonus es gibt
-	- Muss irgendwie gecached werden, da es sonst zu oft aufgerufen wird!
-	- oder bei nicht influenced fruits direkt ein defualt raushauen
-	- eventuell wenn man auf dem Feld läuft, alle 10pixel oder so
- - An den Fruchtkalender könnte man neben dem Fruchtnamen eine kleine Biene einblenden, damit man weiß welche Frucht von Bienen profitiert.
- - Hilfe-system für Real-Bees mod einplanen
+- Two states of a colony (young colony and economic colony)
+- Only the economic colony produces honey
+- Bees collect nectar
+- Bees only collect when the weather is good
+- Nectar is converted into honey
+- Bees eat nectar
+- Range of the beehives has been increased
+- Pollination performance improved
+- Beehive has a variable number of bees
+- Swarming season is between Mar-Jul
+- Prices of the beehives have been adjusted
+- Honey sales price has been adjusted
+- Precision farming compatible
 
 
- ## Aktuelle Umsetzung:
- Siehe TODO.md
+## Current development:
+See TODO.md
 
 ---
 
- ## Current Beehivesystem
- The beehivesystem class is the main controller for all beehives. It controls the flying bee animation (fx) and also the honey production.
+## Current Beehivesystem
+The beehivesystem class is the main controller for all beehives. It controls the flying bee animation (fx) and also the honey production.
 
- ### Honey production
- | |Honey per Period|Honey per Hour|Placeable Price|
+### Honey production
+| |Honey per Period|Honey per Hour|Placeable Price|
 |---|:---:|:---:|:---:|
 | BeeHive LVL1 | 5 | 0.2083¯ | 1100 |
 | BeeHive LVL2 | 20 | 0.8333¯ | 4400 |
@@ -140,17 +101,17 @@ For a single box hive, the defined `Beehive groth factor` simulates the growing/
  | | Period |Factor|
 |---|---|:---:|
 | Spring | Mar | 0.75 |
-| Spring | Apr | 1.25 |
-| Spring | May | 1.50 |
-| Summer | Jun | 2.00 |
-| Summer | Jul | 1.50 |
-| Summer | Aug | 1.25 |
-| Fall | Sep | 0.75 |
-| Fall | Oct | 0.50 |
-| Fall | Nov | -.50 |
-| Winter | Dec | -.50 |
-| Winter | Jan | -.50 |
-| Winter | Feb | -.50 |
+| Spring | Apr | 1.50 |
+| Spring | May | 2.25 |
+| Summer | Jun | 3.20 |
+| Summer | Jul | 2.80 |
+| Summer | Aug | 2.00 |
+| Fall | Sep | 1.50 |
+| Fall | Oct | 0.75 |
+| Fall | Nov | -0.50 |
+| Winter | Dec | -0.50 |
+| Winter | Jan | -0.50 |
+| Winter | Feb | -0.50 |
 
 ### Beehive behavior
 
@@ -162,10 +123,8 @@ For a single box hive, the defined `Beehive groth factor` simulates the growing/
 | IsWinterPeriod | - | x (HoneyPerHour * reciprocal(DaysPerPeriod)) * BeehiveGrowthFactor |
 
 
-
-
 # Helps
-- global auf das Beehive system zugreifen:
+- Accessing global to the beehive system:
 ```
 g_currentMission.beehiveSystem
 ```
@@ -175,10 +134,16 @@ g_currentMission.beehiveSystem
 ## Spezialisierungen
 
 ### PlaceableBeehiveExtended
-Registrierte Methoden:
- - getBeehiveHiveCount
- - updateActionRadius
- - updateNectar
+Placable related functions.
+Registered methods:
+ - **getBeehiveHiveCount()**<br />
+ Get the current beehive count for this placeable
+ - **updateActionRadius(number)**<br />
+ Set the flying radius to a new value. Currently set to 500. Basegame ~150
+ - **updateNectar(number)**<br />
+ Update the current nectar value by the given number of nectar in liter.
+ - **updateNectarInfoTable()**<br />
+ Refreshs the nectar info text for the placeable
 
 ### BeeCare
 In der BeeCare Spezialisierung geht um das Wohl der Bienen. Hier wird gesteuert ob Schwarmkontrolle gemacht werden muss, die Aktion wird hier gesteuert, die Winterbehandlung, die Anzahl der Binen pro Volk (Hive).
@@ -194,7 +159,7 @@ Registrierte Methoden:
 ### BeehiveSystemExtended
 
 # Copyright
-Copyright (c) 2023 [Dennis Schmitt](https://github.com/peppie84).
+Copyright (c) 2023-2024 [Dennis Schmitt](https://github.com/peppie84).
 All rights reserved.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

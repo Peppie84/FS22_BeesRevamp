@@ -113,8 +113,6 @@ end
 
 ---comment
 function BeeCare:updateInfoTables()
-    g_brUtils:logDebug('BeeCare.updateInfoTables')
-
     local spec = self.spec_beecare
 
     spec.infoTablePopulation = {
@@ -167,8 +165,6 @@ end
 
 ---Will be called on placing a hive
 function BeeCare:onFinalizePlacement()
-    g_brUtils:logDebug('BeeCare.onFinalizePlacement')
-
     local spec = self.spec_beecare
 
     -- skip onFinalizePlacement if we're just in loading
@@ -185,8 +181,6 @@ end
 ---Initialize beecare for this bee hive
 ---@param savegame table
 function BeeCare:onLoad(savegame)
-    g_brUtils:logDebug('BeeCare.onLoad')
-
     self.spec_beecare = self[('spec_%s.beecare'):format(BeeCare.MOD_NAME)]
     self.spec_beehiveextended = self[('spec_%s.beehiveextended'):format(PlaceableBeehiveExtended.MOD_NAME)]
 
@@ -218,7 +212,6 @@ end
 
 ---TODO
 function BeeCare:onHourChanged()
-    g_brUtils:logDebug('BeeCare.onHourChanged')
     local spec = self.spec_beecare
     local currentHour = spec.environment.currentHour
     local isAfternoon = currentHour >= 12 and currentHour <= 15
@@ -237,8 +230,6 @@ end
 ---will die due to high varroa mite infection otherwise
 ---transformn to an economic hive
 function BeeCare:onYearChanged()
-    g_brUtils:logDebug('BeeCare.onYearChanged')
-
     local spec = self.spec_beecare
     local specBeeHiveExtended = self.spec_beehiveextended
     local currentYear = spec.environment.currentYear - 1
@@ -276,7 +267,6 @@ end
 ---to let them swarm! Otherwise roll the swarmPressure with
 ---a 75% chance, only between MAR-JUL
 function BeeCare:onPeriodChanged()
-    g_brUtils:logDebug('BeeCare.onPeriodChanged')
     local spec = self.spec_beecare
     spec.monthlyPressureCheck = false
 
@@ -296,9 +286,8 @@ end
 
 ---TODO
 function BeeCare:decideToSwarm()
-    g_brUtils:logDebug('BeeCare.descideToSwarm')
     local spec = self.spec_beecare
-    local currentPeriod = spec.environment.currentPeriod
+    local currentPeriod = g_brUtils:getStockPeriod()
 
     if currentPeriod > 1 and currentPeriod <= 5 and not spec.swarmed and spec.state == BeeCare.STATES.ECONOMIC_HIVE and spec.monthlyPressureCheck == false then
         local random = math.random()
@@ -314,7 +303,8 @@ function BeeCare:getBeePopulation()
     local specBeeHiveExtended = self.spec_beehiveextended
     local spec = self.spec_beecare
 
-    local growthFactor = g_currentMission.beehiveSystem:getGrowthFactor(spec.environment.currentPeriod);
+    local period = g_brUtils:getStockPeriod()
+    local growthFactor = g_currentMission.beehiveSystem:getGrowthFactor(period);
     local beePopulation = spec.bees * math.abs(growthFactor)
 
     return (specBeeHiveExtended:getBeehiveHiveCount() * beePopulation) - 1 -- minus the queen :P
@@ -333,7 +323,6 @@ end
 
 ---Clean up by onDelete
 function BeeCare:onDelete()
-    g_brUtils:logDebug('BeeCare.onDelete')
 
     g_messageCenter:unsubscribe(MessageType.PERIOD_CHANGED, self)
     g_messageCenter:unsubscribe(MessageType.YEAR_CHANGED, self)
@@ -341,14 +330,12 @@ end
 
 ---On nearby hive enter
 function BeeCare:onInfoTriggerEnter()
-    g_brUtils:logDebug('BeeCare.onInfoTriggerEnter')
     local spec = self.spec_beecare
     g_currentMission.activatableObjectsSystem:addActivatable(spec.activatable)
 end
 
 ---On nearby hive leaves
 function BeeCare:onInfoTriggerLeave()
-    g_brUtils:logDebug('BeeCare.onInfoTriggerLeave')
     local spec = self.spec_beecare
     g_currentMission.activatableObjectsSystem:removeActivatable(spec.activatable)
 end
@@ -377,7 +364,6 @@ end
 ---the flying bees with other conditions
 ---@param overwrittenFunc function
 function BeeCare:updateBeehiveState(overwrittenFunc)
-    g_brUtils:logDebug('BeeCare.updateBeehiveState')
     local spec = self.spec_beecare
     local specBeeHive = self.spec_beehive
 
