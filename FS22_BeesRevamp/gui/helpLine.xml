@@ -58,6 +58,10 @@
         <text text="$l10n_beesrevamp_helpline_page_4_paragraph_2_text" />
         <image filename="gui/helpline/helplineAtlas.png" uvs="274px 589px 274px 218px" />
       </paragraph>
+      <paragraph>
+        <text text="$l10n_beesrevamp_helpline_page_4_paragraph_3_text" />
+        <image filename="gui/helpline/helplineAtlas.png" uvs="548px 589px 274px 218px" />
+      </paragraph>
     </page>
     <page title="$l10n_beesrevamp_helpline_page_5">
       <paragraph>

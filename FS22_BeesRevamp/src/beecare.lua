@@ -8,7 +8,7 @@
 -- https://github.com/Peppie84/FS22_BeesRevamp
 --
 BeeCare = {
-    MOD_NAME = g_currentModName or "unknown",
+    MOD_NAME = g_currentModName or 'unknown',
     OXUSIM_FEATURE_DISABLE = true,
     DEFAULT_BEE_VALUE_MAX = 20000,
     DEFAULT_BEE_VALUE = 14000,
@@ -35,28 +35,29 @@ end
 ---@param placeableType table
 function BeeCare.registerFunctions(placeableType)
     g_brUtils:logDebug('BeeCare.registerFunctions')
-    SpecializationUtil.registerFunction(placeableType, "getBeePopulation", BeeCare.getBeePopulation)
-    SpecializationUtil.registerFunction(placeableType, "getHiveState", BeeCare.getHiveState)
-    SpecializationUtil.registerFunction(placeableType, "updateInfoTables", BeeCare.updateInfoTables)
-    SpecializationUtil.registerFunction(placeableType, "getCanInteract", BeeCare.getCanInteract)
-    SpecializationUtil.registerFunction(placeableType, "doSwarmControl", BeeCare.doSwarmControl)
-    SpecializationUtil.registerFunction(placeableType, "getSwarmControleNeeded", BeeCare.getSwarmControleNeeded)
+    SpecializationUtil.registerFunction(placeableType, 'getBeePopulation', BeeCare.getBeePopulation)
+    SpecializationUtil.registerFunction(placeableType, 'getHiveState', BeeCare.getHiveState)
+    SpecializationUtil.registerFunction(placeableType, 'updateInfoTables', BeeCare.updateInfoTables)
+    SpecializationUtil.registerFunction(placeableType, 'getCanInteract', BeeCare.getCanInteract)
+    SpecializationUtil.registerFunction(placeableType, 'doSwarmControl', BeeCare.doSwarmControl)
+    SpecializationUtil.registerFunction(placeableType, 'getSwarmControleNeeded', BeeCare.getSwarmControleNeeded)
+    SpecializationUtil.registerFunction(placeableType, 'decideToSwarm', BeeCare.decideToSwarm)
 end
 
 ---registerEventListeners
 ---@param placeableType table
 function BeeCare.registerEventListeners(placeableType)
     g_brUtils:logDebug('BeeCare.registerEventListeners')
-    SpecializationUtil.registerEventListener(placeableType, "onLoad", BeeCare)
-    SpecializationUtil.registerEventListener(placeableType, "onDelete", BeeCare)
-    SpecializationUtil.registerEventListener(placeableType, "onFinalizePlacement", BeeCare)
-    SpecializationUtil.registerEventListener(placeableType, "onInfoTriggerEnter", BeeCare)
-    SpecializationUtil.registerEventListener(placeableType, "onInfoTriggerLeave", BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onLoad', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onDelete', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onFinalizePlacement', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onInfoTriggerEnter', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onInfoTriggerLeave', BeeCare)
 end
 
 function BeeCare.registerOverwrittenFunctions(placeableType)
-    SpecializationUtil.registerOverwrittenFunction(placeableType, "updateInfo", BeeCare.updateInfo)
-    SpecializationUtil.registerOverwrittenFunction(placeableType, "updateBeehiveState", BeeCare.updateBeehiveState)
+    SpecializationUtil.registerOverwrittenFunction(placeableType, 'updateInfo', BeeCare.updateInfo)
+    SpecializationUtil.registerOverwrittenFunction(placeableType, 'updateBeehiveState', BeeCare.updateBeehiveState)
 end
 
 -------------------------------------------------------------------------------
@@ -76,6 +77,7 @@ function BeeCare.registerSavegameXMLPaths(schema, basePath)
     schema:register(XMLValueType.BOOL, basePath .. '#swarmed', 'Is hive swarmed')
     schema:register(XMLValueType.BOOL, basePath .. '#swarmPressure', 'Has hive swarm pressure')
     schema:register(XMLValueType.INT, basePath .. '#state', 'Current state of the hive')
+    schema:register(XMLValueType.BOOL, basePath .. '#monthlyPressureCheck', 'This month checked to swarm')
     schema:setXMLSpecializationType()
 end
 
@@ -89,6 +91,7 @@ function BeeCare:loadFromXMLFile(xmlFile, key)
     spec.swarmed = xmlFile:getBool(key .. '#swarmed', spec.swarmed)
     spec.swarmPressure = xmlFile:getBool(key .. '#swarmPressure', spec.swarmPressure)
     spec.state = xmlFile:getInt(key .. '#state', spec.state)
+    spec.monthlyPressureCheck = xmlFile:getBool(key .. '#monthlyPressureCheck', spec.monthlyPressureCheck)
     spec:updateInfoTables()
 end
 
@@ -102,6 +105,7 @@ function BeeCare:saveToXMLFile(xmlFile, key, usedModNames)
     xmlFile:setBool(key .. '#swarmed', spec.swarmed)
     xmlFile:setBool(key .. '#swarmPressure', spec.swarmPressure)
     xmlFile:setInt(key .. '#state', spec.state)
+    xmlFile:setBool(key .. '#monthlyPressureCheck', spec.monthlyPressureCheck)
 end
 
 -------------------------------------------------------------------------------
@@ -109,8 +113,6 @@ end
 
 ---comment
 function BeeCare:updateInfoTables()
-    g_brUtils:logDebug('BeeCare.updateInfoTables')
-
     local spec = self.spec_beecare
 
     spec.infoTablePopulation = {
@@ -121,7 +123,9 @@ function BeeCare:updateInfoTables()
         )
     }
 
+    spec.infoTableSwarm = nil
     if spec.swarmPressure then
+        g_brUtils:logDebug('spec.swarmPressure = %s', tostring(spec.swarmPressure))
         local swarmTextLabel = spec.swarmPressure and
             'beesrevamp_beecare_common_state_on' or
             'beesrevamp_beecare_common_state_off'
@@ -161,8 +165,6 @@ end
 
 ---Will be called on placing a hive
 function BeeCare:onFinalizePlacement()
-    g_brUtils:logDebug('BeeCare.onFinalizePlacement')
-
     local spec = self.spec_beecare
 
     -- skip onFinalizePlacement if we're just in loading
@@ -179,8 +181,6 @@ end
 ---Initialize beecare for this bee hive
 ---@param savegame table
 function BeeCare:onLoad(savegame)
-    g_brUtils:logDebug('BeeCare.onLoad')
-
     self.spec_beecare = self[('spec_%s.beecare'):format(BeeCare.MOD_NAME)]
     self.spec_beehiveextended = self[('spec_%s.beehiveextended'):format(PlaceableBeehiveExtended.MOD_NAME)]
 
@@ -195,6 +195,7 @@ function BeeCare:onLoad(savegame)
     spec.state = BeeCare.STATES.YOUNG_HIVE
     spec.swarmed = false
     spec.swarmPressure = false
+    spec.monthlyPressureCheck = false
 
     spec.infoTablePopulation = nil
     spec.infoTableSwarm = nil
@@ -206,14 +207,29 @@ function BeeCare:onLoad(savegame)
 
     g_messageCenter:subscribe(MessageType.PERIOD_CHANGED, BeeCare.onPeriodChanged, self)
     g_messageCenter:subscribe(MessageType.YEAR_CHANGED, BeeCare.onYearChanged, self)
+    g_messageCenter:subscribe(MessageType.HOUR_CHANGED, BeeCare.onHourChanged, self)
+end
+
+---TODO
+function BeeCare:onHourChanged()
+    local spec = self.spec_beecare
+    local currentHour = spec.environment.currentHour
+    local isAfternoon = currentHour >= 12 and currentHour <= 15
+    local isSunIn = spec.environment.isSunOn
+
+    if spec.environment.daysPerPeriod > 1 and spec.monthlyPressureCheck == false and isAfternoon and isSunIn then
+        spec:decideToSwarm()
+        if spec.swarmPressure then
+            spec.monthlyPressureCheck = true
+        end
+        spec:updateInfoTables()
+    end
 end
 
 ---On Year changed, check oxucare was made else the hive
 ---will die due to high varroa mite infection otherwise
 ---transformn to an economic hive
 function BeeCare:onYearChanged()
-    g_brUtils:logDebug('BeeCare.onYearChanged')
-
     local spec = self.spec_beecare
     local specBeeHiveExtended = self.spec_beehiveextended
     local currentYear = spec.environment.currentYear - 1
@@ -251,8 +267,8 @@ end
 ---to let them swarm! Otherwise roll the swarmPressure with
 ---a 75% chance, only between MAR-JUL
 function BeeCare:onPeriodChanged()
-    g_brUtils:logDebug('BeeCare.onPeriodChanged')
     local spec = self.spec_beecare
+    spec.monthlyPressureCheck = false
 
     if spec.swarmPressure then
         spec.swarmed = true
@@ -260,15 +276,25 @@ function BeeCare:onPeriodChanged()
         spec.bees = spec.bees * 0.5
     end
 
-    local currentPeriod = spec.environment.currentPeriod
-    if currentPeriod >= 1 and currentPeriod <= 6 and not spec.swarmed and spec.state == BeeCare.STATES.ECONOMIC_HIVE then
+    if spec.environment.daysPerPeriod <= 1 then
+        self:decideToSwarm()
+        spec.monthlyPressureCheck = true
+    end
+
+    spec:updateInfoTables()
+end
+
+---TODO
+function BeeCare:decideToSwarm()
+    local spec = self.spec_beecare
+    local currentPeriod = g_brUtils:getStockPeriod()
+
+    if currentPeriod > 1 and currentPeriod <= 5 and not spec.swarmed and spec.state == BeeCare.STATES.ECONOMIC_HIVE and spec.monthlyPressureCheck == false then
         local random = math.random()
         if random <= 0.75 then
             spec.swarmPressure = true
         end
     end
-
-    spec:updateInfoTables()
 end
 
 ---Get the current bee population
@@ -277,7 +303,8 @@ function BeeCare:getBeePopulation()
     local specBeeHiveExtended = self.spec_beehiveextended
     local spec = self.spec_beecare
 
-    local growthFactor = g_currentMission.beehiveSystem:getGrowthFactor(spec.environment.currentPeriod);
+    local period = g_brUtils:getStockPeriod()
+    local growthFactor = g_currentMission.beehiveSystem:getGrowthFactor(period);
     local beePopulation = spec.bees * math.abs(growthFactor)
 
     return (specBeeHiveExtended:getBeehiveHiveCount() * beePopulation) - 1 -- minus the queen :P
@@ -296,7 +323,6 @@ end
 
 ---Clean up by onDelete
 function BeeCare:onDelete()
-    g_brUtils:logDebug('BeeCare.onDelete')
 
     g_messageCenter:unsubscribe(MessageType.PERIOD_CHANGED, self)
     g_messageCenter:unsubscribe(MessageType.YEAR_CHANGED, self)
@@ -304,14 +330,12 @@ end
 
 ---On nearby hive enter
 function BeeCare:onInfoTriggerEnter()
-    g_brUtils:logDebug('BeeCare.onInfoTriggerEnter')
     local spec = self.spec_beecare
     g_currentMission.activatableObjectsSystem:addActivatable(spec.activatable)
 end
 
 ---On nearby hive leaves
 function BeeCare:onInfoTriggerLeave()
-    g_brUtils:logDebug('BeeCare.onInfoTriggerLeave')
     local spec = self.spec_beecare
     g_currentMission.activatableObjectsSystem:removeActivatable(spec.activatable)
 end
@@ -340,7 +364,6 @@ end
 ---the flying bees with other conditions
 ---@param overwrittenFunc function
 function BeeCare:updateBeehiveState(overwrittenFunc)
-    g_brUtils:logDebug('BeeCare.updateBeehiveState')
     local spec = self.spec_beecare
     local specBeeHive = self.spec_beehive
 

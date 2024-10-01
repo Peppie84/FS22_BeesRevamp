@@ -18,7 +18,7 @@
     - [x] Das Verhältnis Nektar zu Honig ist 3:1
 - [x] Nektar/Honig wird stündlich konsumiert pro Biene
     - [x] Konsum entspricht etwa 16kg auf 5000 Bienen für 6 Monate. (Für die Winterphase)
-        - [] Aktuelle Umsetzung nochmal prüfen!
+        - [x] Aktuelle Umsetzung nochmal prüfen!
     - [] Wenn Nektar=0 muss noch der Verbrauch vom Spawner eingebaut werden
 - [x] Honig wird nur im Wirtschaftsvolk produziert
 - [x] Reichweite erhöhen, 15m-150m sind zu wenig!
@@ -31,7 +31,7 @@
     - [x] Schwarmlustig Wahrscheinlichkeit mit 75% pro Monat
     - [x] Aktionsknopf einbauen
 - [] Im Okt muss mit Oxalsäure behandelt werden, sonst sterben die Bienen im März. Name der Oxsalsäure: Oxu SIM 22
-    - [x] Sterben der Bienen im März
+    - [x] Sterben der Bienen im März (derzeit deaktiviert)
     - [] Mit Oxalsäure behandeln
 - [] Wenn der Honig auf 0 fällt im Winter müssen die Bienen sterben
 - [x] Beim platzieren der Bienen soll ein Random-Faktor für die anzahl der Bienen benutzt werden.
@@ -65,7 +65,7 @@
 ### Todos gewachsen durch die Entwicklung
 - [x] Entfernungsberechnung prüfen
 - [] Vor der ersten Stunde, nach aktivieren der Mod, ist der Verkaufspreis-Chart falsch, weil er den alten Wert anzeigt. Hier sollte man mal prüfen ob man ein refresh Table auslösen kann
-- [] Alle Zeichenketten in Singlequotes
+- [x] Alle Zeichenketten in Singlequotes
 - [x] Sollen große Hives (10+) auch das 10 fache an Schwärme haben? - Nein
     - Dann müsste man 10 fach Schwarmkontrolle machen
     - Dann müsste 10 fach behandelt werden
