@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 - Reduced load while playing with precision farming and calculating the field info
 
-## [1.0.0.0] - {waiting-for-modhub}
+## [1.0.0.0] - 2024-10-01
 - Initial Release
 
 ## [0.0.3.0] - 2024-08-24

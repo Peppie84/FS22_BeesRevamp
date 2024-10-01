@@ -3,7 +3,7 @@
 <div align="center">
 
 [![FarmingSimulator-22](https://img.shields.io/badge/FarmingSimulator-22-blue?style=flat-square)](https://www.farming-simulator.com/)
-[![Modhub Version](https://img.shields.io/badge/Modhub-v1.0.0.0-green?style=flat-square)](https://google.de)
+[![Modhub Version](https://img.shields.io/badge/Modhub-v1.0.0.0-green?style=flat-square)](https://www.farming-simulator.com/mod.php?mod_id=298737)
 [![GitHub issues](https://img.shields.io/github/issues/Peppie84/FS22_BeesRevamp?style=plastic)](https://github.com/Peppie84/FS22_BeesRevamp/issues)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
 [![Last commit](https://img.shields.io/github/last-commit/Peppie84/FS22_BeesRevamp?style=flat-square&color=important)](https://github.com/Peppie84/FS22_BeesRevamp/commits/development)
