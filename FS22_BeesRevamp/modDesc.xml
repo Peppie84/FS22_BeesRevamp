@@ -70,6 +70,38 @@ Zusätzlich unterstützte Bienenstöcke:
 
 Weitere Informationen, Hilfe und Probleme melden findest Du unter <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
 ]]></de>
+    <it><![CDATA[
+Con questa mod, le api in Farming Simulator 22 diventano più realistiche e un po' più complesse ma anche più produttive.
+
+Tutti i valori e le modifiche sono scientificamente provati e/o forse leggermente regolati in modo che non uccidano completamente il divertimento del gioco. L'obiettivo sarà sempre il divertimento.
+
+La maggior parte delle domande può essere risolta dall'aiuto in-game di questa mod.
+
+- Due stati di una colonia (colonia giovane e colonia economica)
+- Solo la colonia economica produce miele
+- Le api raccolgono nettare
+- Le api raccolgono solo quando il tempo è buono
+- Il nettare viene convertito in miele
+- Le api mangiano nettare
+- La portata degli alveari è stata aumentata
+- Prestazioni di impollinazione migliorate
+- L'alveare ha un numero variabile di api
+- La stagione dello sciame è tra Mar-Lug
+- I prezzi degli alveari sono stati regolati
+- Il prezzo di vendita del miele è stato regolato
+- Compatibile con precision farming
+- Compatibile con TerraLife
+
+Attualmente nessun supporto multiplayer.
+
+Bonus di resa per: Colza, Girasole, Erba Medica, Trifoglio, Grano Saraceno, Facelia, Silphie, Senape e Erba di Trifoglio
+
+Alveari aggiuntivi supportati:
+- Pacchetto di Alveari di BarT
+- Alveare di Legno per Api di Fr€d Fra-Cassés
+
+Per ulteriori informazioni, aiuto e segnalazione di problemi, visita <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
+]]></it>
   </description>
   <iconFilename>icon_BeesRevamp.dds</iconFilename>
   <multiplayer supported="false" />
