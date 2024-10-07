@@ -32,23 +32,18 @@ local function load(mission)
         CATEGORY = 'BEEHIVES',
         SPECIES = 'placeable',
         PATCHLIST_PRICES = {
-            ['d7294ff6f5e42e624c40a2df4eeec060'] = 200,   -- Stock lvl 1
-            ['215ebd1eab110e0bf84b958df9cf6695'] = 400,   -- Stock lvl 2
-            ['5f1492c2fa8a3535890ab4edf04e5912'] = 500,   -- Stock lvl 3
-            ['aa843f40070ca949ed4e4461d15d89ef'] = 4000,  -- Stock lvl 4
+            ['d7294ff6f5e42e624c40a2df4eeec060'] = 200,    -- Stock lvl 1
+            ['215ebd1eab110e0bf84b958df9cf6695'] = 400,    -- Stock lvl 2
+            ['5f1492c2fa8a3535890ab4edf04e5912'] = 500,    -- Stock lvl 3
+            ['aa843f40070ca949ed4e4461d15d89ef'] = 4000,   -- Stock lvl 4
             ['9375e364a873f2614c7f30c716781051'] = 16000,  -- Stock lvl 5
-            ['3a4a10c57e06959d5c51a920ec432a80'] = 450,   -- https://farming-simulator.com/mod.php?mod_id=258373&title=fs2022
-            ['98cdfe4ea9e2f01dac978f2892daef26'] = 200,   -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
-            ['c4011d0e68dc43435cd5ba4c042365ce'] = 1150,  -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
-            ['5f8c5339e645b43380da721a356ca8b7'] = 450,   -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
-        },
-        PATCHLIST_HIVE_COUNT = {
-            ['d7294ff6f5e42e624c40a2df4eeec060'] = 1,  -- Stock lvl 1
-            ['215ebd1eab110e0bf84b958df9cf6695'] = 1,  -- Stock lvl 2
-            ['5f1492c2fa8a3535890ab4edf04e5912'] = 1,  -- Stock lvl 3
-            ['aa843f40070ca949ed4e4461d15d89ef'] = 10, -- Stock lvl 4
-            ['9375e364a873f2614c7f30c716781051'] = 33, -- Stock lvl 5
-            ['c4011d0e68dc43435cd5ba4c042365ce'] = 4,  -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
+            ['3a4a10c57e06959d5c51a920ec432a80'] = 450,    -- https://farming-simulator.com/mod.php?mod_id=258373&title=fs2022
+            ['98cdfe4ea9e2f01dac978f2892daef26'] = 200,    -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
+            ['c4011d0e68dc43435cd5ba4c042365ce'] = 1150,   -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
+            ['5f8c5339e645b43380da721a356ca8b7'] = 450,    -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
+            ['4b9a66f00ce22d729192c5d6cc9bbffd'] = 2800,   -- https://farming-simulator.com/mod.php?mod_id=249920&title=fs2022
+            ['79d09dea1ea492013c71e700f6373914'] = 3200,   -- https://farming-simulator.com/mod.php?mod_id=249920&title=fs2022
+            ['e3b9a825935dc483bff8d905ef16580a'] = 17000,  -- https://farming-simulator.com/mod.php?mod_id=259091&title=fs2022
         },
         PATCHLIST_YIELD_BONUS = {
             ['CANOLA']    = {
