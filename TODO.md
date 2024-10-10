@@ -60,6 +60,8 @@
     - [x] Status des Volkes wird bei onYearChanged immer auf Wirtschaftsvolk gesetzt, so muss nichts berechnet werden
     - [x] Der Status wird mit abgespeichert
 - [x] BeeBonus muss eventuell beim ernten neu eingerechnet werden, wegen den Hives/ha. - Muss geprüft werden
+- [x] Multiplayer
+
 
 
 ### Todos gewachsen durch die Entwicklung
