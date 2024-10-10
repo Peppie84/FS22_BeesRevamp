@@ -72,6 +72,11 @@ function PlaceableBeehiveExtended.registerEventListeners(placeableType)
     g_brUtils:logDebug('PlaceableBeehiveExtended.registerEventListeners')
     SpecializationUtil.registerEventListener(placeableType, 'onLoad', PlaceableBeehiveExtended)
     SpecializationUtil.registerEventListener(placeableType, 'onDelete', PlaceableBeehiveExtended)
+    SpecializationUtil.registerEventListener(placeableType, 'onReadUpdateStream', PlaceableBeehiveExtended)
+	SpecializationUtil.registerEventListener(placeableType, 'onWriteUpdateStream', PlaceableBeehiveExtended)
+    SpecializationUtil.registerEventListener(placeableType, 'onReadStream', PlaceableBeehiveExtended)
+	SpecializationUtil.registerEventListener(placeableType, 'onWriteStream', PlaceableBeehiveExtended)
+    SpecializationUtil.registerEventListener(placeableType, 'onUpdate', PlaceableBeehiveExtended)
 end
 
 function PlaceableBeehiveExtended.registerOverwrittenFunctions(placeableType)
@@ -127,9 +132,59 @@ function PlaceableBeehiveExtended:saveToXMLFile(xmlFile, key, usedModNames)
     xmlFile:setFloat(key .. '.nectar', spec.nectar)
 end
 
+-------------------------------------------------------------------------------
+--- Multiplayer
+
+function PlaceableBeehiveExtended:onReadUpdateStream(streamId, connection)
+    g_brUtils:logDebug('PlaceableBeehiveExtended:onReadUpdateStream')
+    local spec = self.spec_beehiveextended
+
+	spec.nectar = streamReadFloat32(streamId)
+
+    g_brUtils:logDebug('Nectar: %s', tostring(spec.nectar))
+
+    spec:updateNectarInfoTable()
+end
+
+function PlaceableBeehiveExtended:onWriteUpdateStream(streamId, connection)
+    g_brUtils:logDebug('PlaceableBeehiveExtended:onWriteUpdateStream')
+    local spec = self.spec_beehiveextended
+
+    g_brUtils:logDebug('Nectar: %s', tostring(spec.nectar))
+
+	streamWriteFloat32(streamId, spec.nectar)
+end
+
+
+function PlaceableBeehiveExtended:onReadStream(streamId, connection)
+    g_brUtils:logDebug('PlaceableBeehiveExtended:onReadStream')
+	local spec = self.spec_beehiveextended
+
+	spec.nectar = streamReadFloat32(streamId)
+
+    g_brUtils:logDebug('Nectar: %s', tostring(spec.nectar))
+
+    spec:updateNectarInfoTable()
+end
+
+function PlaceableBeehiveExtended:onWriteStream(streamId, connection)
+    g_brUtils:logDebug('PlaceableBeehiveExtended:onWriteStream')
+	local spec = self.spec_beehiveextended
+
+    g_brUtils:logDebug('Nectar: %s', tostring(spec.nectar))
+
+	streamWriteFloat32(streamId, spec.nectar)
+end
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------
 
+function PlaceableBeehiveExtended:onUpdate()
+    g_brUtils:logDebug('PlaceableBeehiveExtended:onUpdate')
+    local spec = self.spec_beehiveextended
+
+    spec:updateNectarInfoTable()
+end
 
 ---PlaceableBeehiveExtended:onLoad
 ---@param savegame table
@@ -152,6 +207,7 @@ function PlaceableBeehiveExtended:onLoad(savegame)
     spec.environment = g_currentMission.environment
     spec.nectar = 0
     spec.hiveCount = tostring(hiveCount)
+    spec.dirtyFlag = self:getNextDirtyFlag()
 
     spec:updateActionRadius(500);
 
@@ -185,44 +241,50 @@ end
 function PlaceableBeehiveExtended:onHourChanged()
     g_brUtils:logDebug('PlaceableBeehiveExtended.onHourChanged')
     local specBeeHive = self.spec_beehive
-    local specBeeCare = self.spec_beecare
-    local spec = self.spec_beehiveextended
+    if self.isServer then
+        local specBeeCare = self.spec_beecare
+        local spec = self.spec_beehiveextended
 
-    ---
-    --- Produce Nectar!
-    if specBeeHive.isFxActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
-        local flyingBees = specBeeCare:getBeePopulation() * PlaceableBeehiveExtended.FLYING_BEES_PERCENTAGE
-        local nectarInMlPerHour = flyingBees * PlaceableBeehiveExtended.NECTAR_PER_BEE_IN_MILLILITER *
-            PlaceableBeehiveExtended.BEE_FLIGHTS_PER_HOUR
-        local nectarInLiterPerHour = nectarInMlPerHour / 1000
+        ---
+        --- Produce Nectar!
+        if specBeeHive.isFxActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
+            local flyingBees = specBeeCare:getBeePopulation() * PlaceableBeehiveExtended.FLYING_BEES_PERCENTAGE
+            local nectarInMlPerHour = flyingBees * PlaceableBeehiveExtended.NECTAR_PER_BEE_IN_MILLILITER *
+                PlaceableBeehiveExtended.BEE_FLIGHTS_PER_HOUR
+            local nectarInLiterPerHour = nectarInMlPerHour / 1000
 
-        g_brUtils:logDebug('Produce.Nectar: ' .. nectarInLiterPerHour)
+            g_brUtils:logDebug('Produce.Nectar: ' .. nectarInLiterPerHour)
 
-        spec:updateNectar(nectarInLiterPerHour)
+            spec:updateNectar(nectarInLiterPerHour)
+        end
+
+        ---
+        --- Consume Nectar/Honey!
+        local bees = specBeeCare:getBeePopulation()
+        local honeyForBeesPerMonth = (bees * PlaceableBeehiveExtended.BEE_HONEY_CONSUMATION_PER_MONTH) /
+            PlaceableBeehiveExtended.RATIO_HONEY_LITER_TO_NECTAR
+        local honeyForBeesPerHour = honeyForBeesPerMonth / 24
+
+        g_brUtils:logDebug('Consume.Nectar: ' .. honeyForBeesPerHour)
+
+        spec:updateNectar(-honeyForBeesPerHour)
     end
-
-    ---
-    --- Consume Nectar/Honey!
-    local bees = specBeeCare:getBeePopulation()
-    local honeyForBeesPerMonth = (bees * PlaceableBeehiveExtended.BEE_HONEY_CONSUMATION_PER_MONTH) /
-        PlaceableBeehiveExtended.RATIO_HONEY_LITER_TO_NECTAR
-    local honeyForBeesPerHour = honeyForBeesPerMonth / 24
-
-    g_brUtils:logDebug('Consume.Nectar: ' .. honeyForBeesPerHour)
-
-    spec:updateNectar(-honeyForBeesPerHour)
 end
 
 ---PlaceableBeehiveExtended:onWeatherChanged
 function PlaceableBeehiveExtended:onWeatherChanged()
-    g_currentMission.beehiveSystem:updateBeehivesState();
+    local spec = self.spec_beehiveextended
+
+    if self.isServer then
+        g_currentMission.beehiveSystem:updateBeehivesState();
+        self:raiseDirtyFlags(spec.dirtyFlag)
+    end
 end
 
 ---PlaceableBeehiveExtended:onDelete
 function PlaceableBeehiveExtended:onDelete()
-    local spec = self.spec_beehiveextended
-
     g_messageCenter:unsubscribe(MessageType.WEATHER_CHANGED, self)
+    g_messageCenter:unsubscribe(MessageType.HOUR_CHANGED, self)
 end
 
 ---PlaceableBeehiveExtended:getHoneyAmountToSpawn
@@ -273,13 +335,18 @@ end
 function PlaceableBeehiveExtended:updateNectar(nectar)
     local spec = self.spec_beehiveextended
 
-    if nectar <= 0 and spec.nectar <= 0 then
-        return
-    end
+    if self.isServer then
+        if nectar <= 0 and spec.nectar <= 0 then
+            return
+        end
 
-    spec.nectar = spec.nectar + (nectar * spec.environment.timeAdjustment)
-    if spec.nectar < 0 then
-        spec.nectar = 0
+        spec.nectar = spec.nectar + (nectar * spec.environment.timeAdjustment)
+        if spec.nectar < 0 then
+            spec.nectar = 0
+        end
+
+        self:raiseDirtyFlags(spec.dirtyFlag)
+        self:raiseActive()
     end
 
     spec:updateNectarInfoTable()

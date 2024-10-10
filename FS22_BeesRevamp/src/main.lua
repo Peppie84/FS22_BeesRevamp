@@ -11,10 +11,11 @@ local modDirectory = g_currentModDirectory or ''
 ---@type string name of the mod.
 local modName = g_currentModName or 'unknown'
 
----@type table current manual attach instance
+---@type table current beehive system extended instance
 local modEnvironment
 
 source(modDirectory .. 'src/brutils.lua')
+source(modDirectory .. 'src/event/swarmcontrolevent.lua')
 source(modDirectory .. 'src/activatables/swarmcontrolactivatable.lua')
 source(modDirectory .. 'src/beehivesystemextended.lua')
 source(modDirectory .. 'src/storeitempatcher.lua')

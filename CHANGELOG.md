@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 - Reduced load while playing with precision farming and calculating the field info
 - Added translation for IT by FirenzeIT - for [#7](https://github.com/Peppie84/FS22_BeesRevamp/issues/7)
+- Added multiplayer functionality - for [#5](https://github.com/Peppie84/FS22_BeesRevamp/issues/5)
 
 ## [1.0.0.0] - 2024-10-01
 - Initial Release

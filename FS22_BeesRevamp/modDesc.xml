@@ -28,8 +28,6 @@ Most questions can be answered by the in-game help of this mod.
 - Precision farming compatible
 - TerraLife compatible
 
-Currently no multiplayer support.
-
 Yield bonus for: Canola, Sunflower, Alfalfa, Clover, Buckwheat, Phacelia, Silphie, Mustard and Clover gras
 
 Additional supported bee hives:
@@ -59,8 +57,6 @@ Bitte schau Dir die Ingame-Hilfe zu dieser Mod an. Sie kann die meisten Fragen b
 - Honigverkaufspreis wurde angepasst
 - Precision Farming kompatibel
 - TerraLife kompatibel
-
-Aktuell kein Multiplayer support.
 
 Ertragsbonus für: Raps, Sonnenblume, Luzerne, Klee, Buchweizen, Phacelia, Silphie, Senf und Kleegras
 
@@ -92,8 +88,6 @@ La maggior parte delle domande può essere risolta dall'aiuto in-game di questa 
 - Compatibile con precision farming
 - Compatibile con TerraLife
 
-Attualmente nessun supporto multiplayer.
-
 Bonus di resa per: Colza, Girasole, Erba Medica, Trifoglio, Grano Saraceno, Facelia, Silphie, Senape e Erba di Trifoglio
 
 Alveari aggiuntivi supportati:
@@ -104,7 +98,7 @@ Per ulteriori informazioni, aiuto e segnalazione di problemi, visita <a href='ht
 ]]></it>
   </description>
   <iconFilename>icon_BeesRevamp.dds</iconFilename>
-  <multiplayer supported="false" />
+  <multiplayer supported="true" />
   <extraSourceFiles>
     <sourceFile filename="src/main.lua" />
   </extraSourceFiles>
