@@ -14,12 +14,18 @@
 PlaceableBeehiveExtended = {
     MOD_NAME = g_currentModName or 'unknown',
     PATCHLIST_HIVE_COUNT_ON_RUNTIME = {
-        ['d7294ff6f5e42e624c40a2df4eeec060'] = 1,  -- Stock lvl 1
-        ['215ebd1eab110e0bf84b958df9cf6695'] = 1,  -- Stock lvl 2
-        ['5f1492c2fa8a3535890ab4edf04e5912'] = 1,  -- Stock lvl 3
-        ['aa843f40070ca949ed4e4461d15d89ef'] = 10, -- Stock lvl 4
-        ['9375e364a873f2614c7f30c716781051'] = 33, -- Stock lvl 5
-        ['c4011d0e68dc43435cd5ba4c042365ce'] = 4,  -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
+        ['d7294ff6f5e42e624c40a2df4eeec060'] = 1,   -- Stock lvl 1
+        ['215ebd1eab110e0bf84b958df9cf6695'] = 1,   -- Stock lvl 2
+        ['5f1492c2fa8a3535890ab4edf04e5912'] = 1,   -- Stock lvl 3
+        ['aa843f40070ca949ed4e4461d15d89ef'] = 10,  -- Stock lvl 4
+        ['9375e364a873f2614c7f30c716781051'] = 33,  -- Stock lvl 5
+        ['c4011d0e68dc43435cd5ba4c042365ce'] = 4,   -- https://farming-simulator.com/mod.php?mod_id=242870&title=fs2022
+        ['79d09dea1ea492013c71e700f6373914'] = 10,  -- https://farming-simulator.com/mod.php?mod_id=249920&title=fs2022
+        ['4b9a66f00ce22d729192c5d6cc9bbffd'] = 7,   -- https://farming-simulator.com/mod.php?mod_id=249920&title=fs2022
+        ['c32ad3e06dee5b2e143b966375b0ff53'] = 3,   -- https://farming-simulator.com/mod.php?mod_id=277202&title=fs2022
+        ['255e4787d645ae4f8edc3555487c6572'] = 8,   -- https://farming-simulator.com/mod.php?mod_id=243337&title=fs2022
+        ['e3b9a825935dc483bff8d905ef16580a'] = 33,  -- https://farming-simulator.com/mod.php?mod_id=259091&title=fs2022
+        ['778abd40c811b423ed2e0d91af9ef3b7'] = 22,  -- https://farming-simulator.com/mod.php?mod_id=225503&title=fs2022
     },
     NECTAR_PER_BEE_IN_MILLILITER = 0.05,           -- 50ul (mikroliter)
     BEE_FLIGHTS_PER_HOUR = 2.0,
@@ -199,6 +205,7 @@ function PlaceableBeehiveExtended:onLoad(savegame)
         hiveCount = 1 -- default
         -- Patch to runtime
         local i3dMd5HashFilename = getMD5(xmlFile:getValue('placeable.base.filename', 'no-i3d-filename'))
+        g_brUtils:logDebug('MD5 Placeable Name: %s of %s', tostring(i3dMd5HashFilename), tostring(xmlFile:getValue('placeable.base.filename', 'no-i3d-filename')))
         if PlaceableBeehiveExtended.PATCHLIST_HIVE_COUNT_ON_RUNTIME[i3dMd5HashFilename] ~= nil then
             hiveCount = PlaceableBeehiveExtended.PATCHLIST_HIVE_COUNT_ON_RUNTIME[i3dMd5HashFilename]
         end
