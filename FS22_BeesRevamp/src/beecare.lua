@@ -53,6 +53,11 @@ function BeeCare.registerEventListeners(placeableType)
     SpecializationUtil.registerEventListener(placeableType, 'onFinalizePlacement', BeeCare)
     SpecializationUtil.registerEventListener(placeableType, 'onInfoTriggerEnter', BeeCare)
     SpecializationUtil.registerEventListener(placeableType, 'onInfoTriggerLeave', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onReadUpdateStream', BeeCare)
+	SpecializationUtil.registerEventListener(placeableType, 'onWriteUpdateStream', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onReadStream', BeeCare)
+	SpecializationUtil.registerEventListener(placeableType, 'onWriteStream', BeeCare)
+    SpecializationUtil.registerEventListener(placeableType, 'onUpdate', BeeCare)
 end
 
 function BeeCare.registerOverwrittenFunctions(placeableType)
@@ -106,6 +111,106 @@ function BeeCare:saveToXMLFile(xmlFile, key, usedModNames)
     xmlFile:setBool(key .. '#swarmPressure', spec.swarmPressure)
     xmlFile:setInt(key .. '#state', spec.state)
     xmlFile:setBool(key .. '#monthlyPressureCheck', spec.monthlyPressureCheck)
+end
+
+-------------------------------------------------------------------------------
+--- Multiplayer
+
+function BeeCare:onReadUpdateStream(streamId, timestamp, connection)
+    g_brUtils:logDebug('BeeCare:onReadUpdateStream')
+    local spec = self.spec_beecare
+
+    if connection:getIsServer() then
+        spec.bees = streamReadUInt16(streamId)
+        spec.state = streamReadUInt8(streamId)
+        spec.lastOxucare = streamReadString(streamId)
+        spec.placedDay = streamReadString(streamId)
+        spec.swarmed = streamReadBool(streamId)
+        spec.swarmPressure = streamReadBool(streamId)
+        spec.monthlyPressureCheck = streamReadBool(streamId)
+
+        g_brUtils:logDebug('Bees: %s', tostring(spec.bees))
+        g_brUtils:logDebug('State: %s', tostring(spec.state))
+        g_brUtils:logDebug('lastOxucare: %s', tostring(spec.lastOxucare))
+        g_brUtils:logDebug('placedDay: %s', tostring(spec.placedDay))
+        g_brUtils:logDebug('swarmed: %s', tostring(spec.swarmed))
+        g_brUtils:logDebug('swarmPressure: %s', tostring(spec.swarmPressure))
+        g_brUtils:logDebug('monthlyPressureCheck: %s', tostring(spec.monthlyPressureCheck))
+
+        spec:updateInfoTables()
+    end
+end
+
+function BeeCare:onWriteUpdateStream(streamId, connection, dirtyMask)
+    g_brUtils:logDebug('BeeCare:onWriteUpdateStream')
+    local spec = self.spec_beecare
+
+    if not connection:getIsServer() then
+        g_brUtils:logDebug('Bees: %s', tostring(spec.bees))
+        g_brUtils:logDebug('State: %s', tostring(spec.state))
+        g_brUtils:logDebug('lastOxucare: %s', tostring(spec.lastOxucare))
+        g_brUtils:logDebug('placedDay: %s', tostring(spec.placedDay))
+        g_brUtils:logDebug('swarmed: %s', tostring(spec.swarmed))
+        g_brUtils:logDebug('swarmPressure: %s', tostring(spec.swarmPressure))
+        g_brUtils:logDebug('monthlyPressureCheck: %s', tostring(spec.monthlyPressureCheck))
+
+        streamWriteUInt16(streamId, spec.bees)
+        streamWriteUInt8(streamId, spec.state)
+        streamWriteString(streamId, spec.lastOxucare)
+        streamWriteString(streamId, spec.placedDay)
+        streamWriteBool(streamId, spec.swarmed)
+        streamWriteBool(streamId, spec.swarmPressure)
+        streamWriteBool(streamId, spec.monthlyPressureCheck)
+    end
+end
+
+
+function BeeCare:onReadStream(streamId, connection)
+    g_brUtils:logDebug('BeeCare:onReadStream')
+    local spec = self.spec_beecare
+
+    if connection:getIsServer() then
+        spec.bees = streamReadUInt16(streamId)
+        spec.state = streamReadUInt8(streamId)
+        spec.lastOxucare = streamReadString(streamId)
+        spec.placedDay = streamReadString(streamId)
+        spec.swarmed = streamReadBool(streamId)
+        spec.swarmPressure = streamReadBool(streamId)
+        spec.monthlyPressureCheck = streamReadBool(streamId)
+
+        g_brUtils:logDebug('Bees: %s', tostring(spec.bees))
+        g_brUtils:logDebug('State: %s', tostring(spec.state))
+        g_brUtils:logDebug('lastOxucare: %s', tostring(spec.lastOxucare))
+        g_brUtils:logDebug('placedDay: %s', tostring(spec.placedDay))
+        g_brUtils:logDebug('swarmed: %s', tostring(spec.swarmed))
+        g_brUtils:logDebug('swarmPressure: %s', tostring(spec.swarmPressure))
+        g_brUtils:logDebug('monthlyPressureCheck: %s', tostring(spec.monthlyPressureCheck))
+
+        spec:updateInfoTables()
+    end
+end
+
+function BeeCare:onWriteStream(streamId, connection)
+    g_brUtils:logDebug('BeeCare:onWriteStream')
+    local spec = self.spec_beecare
+
+    if not connection:getIsServer() then
+        g_brUtils:logDebug('Bees: %s', tostring(spec.bees))
+        g_brUtils:logDebug('State: %s', tostring(spec.state))
+        g_brUtils:logDebug('lastOxucare: %s', tostring(spec.lastOxucare))
+        g_brUtils:logDebug('placedDay: %s', tostring(spec.placedDay))
+        g_brUtils:logDebug('swarmed: %s', tostring(spec.swarmed))
+        g_brUtils:logDebug('swarmPressure: %s', tostring(spec.swarmPressure))
+        g_brUtils:logDebug('monthlyPressureCheck: %s', tostring(spec.monthlyPressureCheck))
+
+        streamWriteUInt16(streamId, spec.bees)
+        streamWriteUInt8(streamId, spec.state)
+        streamWriteString(streamId, spec.lastOxucare)
+        streamWriteString(streamId, spec.placedDay)
+        streamWriteBool(streamId, spec.swarmed)
+        streamWriteBool(streamId, spec.swarmPressure)
+        streamWriteBool(streamId, spec.monthlyPressureCheck)
+    end
 end
 
 -------------------------------------------------------------------------------
@@ -167,20 +272,27 @@ end
 function BeeCare:onFinalizePlacement()
     local spec = self.spec_beecare
 
-    -- skip onFinalizePlacement if we're just in loading
-    if spec.placedDay ~= '' then
-        return
-    end
+    if self.isServer then
+        -- skip onFinalizePlacement if we're just in loading
+        if spec.placedDay ~= '' then
+            return
+        end
 
-    spec.bees = math.random(BeeCare.DEFAULT_BEE_VALUE_MIN, BeeCare.DEFAULT_BEE_VALUE)
-    spec.placedDay = g_brUtils:getCurrentDayYearString()
-    spec.state = BeeCare.STATES.YOUNG_HIVE
+        spec.bees = math.random(BeeCare.DEFAULT_BEE_VALUE_MIN, BeeCare.DEFAULT_BEE_VALUE)
+        spec.placedDay = g_brUtils:getCurrentDayYearString()
+        spec.state = BeeCare.STATES.YOUNG_HIVE
+
+        self:raiseDirtyFlags(spec.dirtyFlag)
+        self:raiseActive()
+    end
     spec:updateInfoTables()
 end
 
 ---Initialize beecare for this bee hive
 ---@param savegame table
 function BeeCare:onLoad(savegame)
+    g_brUtils:logDebug('BeeCare:onLoad')
+
     self.spec_beecare = self[('spec_%s.beecare'):format(BeeCare.MOD_NAME)]
     self.spec_beehiveextended = self[('spec_%s.beehiveextended'):format(PlaceableBeehiveExtended.MOD_NAME)]
 
@@ -196,14 +308,14 @@ function BeeCare:onLoad(savegame)
     spec.swarmed = false
     spec.swarmPressure = false
     spec.monthlyPressureCheck = false
+    spec.dirtyFlag = self:getNextDirtyFlag()
 
     spec.infoTablePopulation = nil
     spec.infoTableSwarm = nil
     spec.infoTableOxuSim = nil
     spec.infoTableState = nil
-    spec:updateInfoTables()
 
-    spec.dirtyFlag = self:getNextDirtyFlag()
+    spec:updateInfoTables()
 
     g_messageCenter:subscribe(MessageType.PERIOD_CHANGED, BeeCare.onPeriodChanged, self)
     g_messageCenter:subscribe(MessageType.YEAR_CHANGED, BeeCare.onYearChanged, self)
@@ -212,53 +324,75 @@ end
 
 ---TODO
 function BeeCare:onHourChanged()
+    g_brUtils:logDebug('BeeCare:onHourChanged')
     local spec = self.spec_beecare
-    local currentHour = spec.environment.currentHour
-    local isAfternoon = currentHour >= 12 and currentHour <= 15
-    local isSunIn = spec.environment.isSunOn
 
-    if spec.environment.daysPerPeriod > 1 and spec.monthlyPressureCheck == false and isAfternoon and isSunIn then
-        spec:decideToSwarm()
-        if spec.swarmPressure then
-            spec.monthlyPressureCheck = true
+    if self.isServer then
+        local currentHour = spec.environment.currentHour
+        local isAfternoon = currentHour >= 12 and currentHour <= 15
+        local isSunIn = spec.environment.isSunOn
+
+        if spec.environment.daysPerPeriod > 1 and spec.monthlyPressureCheck == false and isAfternoon and isSunIn then
+            spec:decideToSwarm()
+            if spec.swarmPressure then
+                spec.monthlyPressureCheck = true
+
+                self:raiseDirtyFlags(spec.dirtyFlag)
+                self:raiseActive()
+            end
         end
-        spec:updateInfoTables()
     end
+
+    spec:updateInfoTables()
 end
 
 ---On Year changed, check oxucare was made else the hive
 ---will die due to high varroa mite infection otherwise
 ---transformn to an economic hive
 function BeeCare:onYearChanged()
+    g_brUtils:logDebug('BeeCare:onYearChanged')
     local spec = self.spec_beecare
     local specBeeHiveExtended = self.spec_beehiveextended
     local currentYear = spec.environment.currentYear - 1
 
-    local oxuCareOnNov = 'Y' .. currentYear .. 'M9D0'
-    local oxuCareOnDec = 'Y' .. currentYear .. 'M10D0'
+    if self.isServer then
+        local oxuCareOnNov = 'Y' .. currentYear .. 'M9D0'
+        local oxuCareOnDec = 'Y' .. currentYear .. 'M10D0'
 
-    if BeeCare.OXUSIM_FEATURE_DISABLE == true then
-        spec.lastOxucare = oxuCareOnDec
+        if BeeCare.OXUSIM_FEATURE_DISABLE == true then
+            spec.lastOxucare = oxuCareOnDec
+        end
+
+        if spec.lastOxucare == nil or
+            spec.lastOxucare == '' or
+            not (spec.lastOxucare == oxuCareOnNov or
+                spec.lastOxucare == oxuCareOnDec) then
+            -- dead!!
+            spec.bees = 0
+            specBeeHiveExtended:updateActionRadius(0)
+            spec.state = BeeCare.STATES.DEAD
+            g_brUtils:logDebug('Dead!')
+        else
+            -- will transform to a full hive
+            spec.bees = math.random(BeeCare.DEFAULT_BEE_VALUE, BeeCare.DEFAULT_BEE_VALUE_MAX)
+            spec.state = BeeCare.STATES.ECONOMIC_HIVE
+            g_brUtils:logDebug('ECONOMIC_HIVE!')
+        end
+
+        spec.swarmed = false
+        spec.swarmPressure = false
+
+        self:raiseDirtyFlags(spec.dirtyFlag)
+        self:raiseActive()
     end
 
-    if spec.lastOxucare == nil or
-        spec.lastOxucare == '' or
-        not (spec.lastOxucare == oxuCareOnNov or
-            spec.lastOxucare == oxuCareOnDec) then
-        -- dead!!
-        spec.bees = 0
-        specBeeHiveExtended:updateActionRadius(0)
-        spec.state = BeeCare.STATES.DEAD
-        g_brUtils:logDebug('Dead!')
-    else
-        -- will transform to a full hive
-        spec.bees = math.random(BeeCare.DEFAULT_BEE_VALUE, BeeCare.DEFAULT_BEE_VALUE_MAX)
-        spec.state = BeeCare.STATES.ECONOMIC_HIVE
-        g_brUtils:logDebug('ECONOMIC_HIVE!')
-    end
+    spec:updateInfoTables()
+end
 
-    spec.swarmed = false
-    spec.swarmPressure = false
+---
+function BeeCare:onUpdate()
+    g_brUtils:logDebug('BeeCare:onUpdate')
+    local spec = self.spec_beecare
 
     spec:updateInfoTables()
 end
@@ -267,18 +401,25 @@ end
 ---to let them swarm! Otherwise roll the swarmPressure with
 ---a 75% chance, only between MAR-JUL
 function BeeCare:onPeriodChanged()
+    g_brUtils:logDebug('BeeCare:onPeriodChanged')
     local spec = self.spec_beecare
-    spec.monthlyPressureCheck = false
 
-    if spec.swarmPressure then
-        spec.swarmed = true
-        spec.swarmPressure = false
-        spec.bees = spec.bees * 0.5
-    end
+    if self.isServer then
+        spec.monthlyPressureCheck = false
 
-    if spec.environment.daysPerPeriod <= 1 then
-        self:decideToSwarm()
-        spec.monthlyPressureCheck = true
+        if spec.swarmPressure then
+            spec.swarmed = true
+            spec.swarmPressure = false
+            spec.bees = spec.bees * 0.5
+        end
+
+        if spec.environment.daysPerPeriod <= 1 then
+            self:decideToSwarm()
+            spec.monthlyPressureCheck = true
+        end
+
+        self:raiseDirtyFlags(spec.dirtyFlag)
+        self:raiseActive()
     end
 
     spec:updateInfoTables()
@@ -288,6 +429,10 @@ end
 function BeeCare:decideToSwarm()
     local spec = self.spec_beecare
     local currentPeriod = g_brUtils:getStockPeriod()
+
+    if not self.isServer then
+        return
+    end
 
     if currentPeriod > 1 and currentPeriod <= 5 and not spec.swarmed and spec.state == BeeCare.STATES.ECONOMIC_HIVE and spec.monthlyPressureCheck == false then
         local random = math.random()
@@ -320,12 +465,11 @@ function BeeCare:getHiveState()
     return spec.state
 end
 
-
 ---Clean up by onDelete
 function BeeCare:onDelete()
-
     g_messageCenter:unsubscribe(MessageType.PERIOD_CHANGED, self)
     g_messageCenter:unsubscribe(MessageType.YEAR_CHANGED, self)
+    g_messageCenter:unsubscribe(MessageType.HOUR_CHANGED, self)
 end
 
 ---On nearby hive enter
@@ -351,6 +495,10 @@ function BeeCare:doSwarmControl()
     local spec = self.spec_beecare
     spec.swarmPressure = false
     spec.infoTableSwarm = nil
+
+    self:raiseDirtyFlags(spec.dirtyFlag)
+    self:raiseActive()
+
     spec:updateInfoTables()
 end
 

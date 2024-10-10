@@ -34,10 +34,10 @@ end
 
 ---Do the swarm control on the beecare spec.
 function SwarmControlActivatable:run()
+    g_brUtils:logDebug('SwarmControlActivatable:run')
     if g_server ~= nil then
         self.beecare:doSwarmControl()
     else
-        ---TODO for Multiplayer!
-        ---g_client:getServerConnection():sendEvent(CUSTOM_EVENT.new(self.bale))
+        g_client:getServerConnection():sendEvent(SwarmControlEvent.new(self.beecare))
     end
 end
