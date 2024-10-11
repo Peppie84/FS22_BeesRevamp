@@ -283,8 +283,8 @@ function BeeCare:onFinalizePlacement()
         spec.state = BeeCare.STATES.YOUNG_HIVE
 
         self:raiseDirtyFlags(spec.dirtyFlag)
-        self:raiseActive()
     end
+    self:raiseActive()
     spec:updateInfoTables()
 end
 
@@ -338,11 +338,11 @@ function BeeCare:onHourChanged()
                 spec.monthlyPressureCheck = true
 
                 self:raiseDirtyFlags(spec.dirtyFlag)
-                self:raiseActive()
             end
         end
     end
 
+    self:raiseActive()
     spec:updateInfoTables()
 end
 
@@ -383,9 +383,9 @@ function BeeCare:onYearChanged()
         spec.swarmPressure = false
 
         self:raiseDirtyFlags(spec.dirtyFlag)
-        self:raiseActive()
     end
 
+    self:raiseActive()
     spec:updateInfoTables()
 end
 
@@ -419,9 +419,9 @@ function BeeCare:onPeriodChanged()
         end
 
         self:raiseDirtyFlags(spec.dirtyFlag)
-        self:raiseActive()
     end
 
+    self:raiseActive()
     spec:updateInfoTables()
 end
 

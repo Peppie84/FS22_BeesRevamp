@@ -247,11 +247,11 @@ end
 ---PlaceableBeehiveExtended:onHourChanged
 function PlaceableBeehiveExtended:onHourChanged()
     g_brUtils:logDebug('PlaceableBeehiveExtended.onHourChanged')
-    local specBeeHive = self.spec_beehive
-    if self.isServer then
-        local specBeeCare = self.spec_beecare
-        local spec = self.spec_beehiveextended
+    local spec = self.spec_beehiveextended
 
+    if self.isServer then
+        local specBeeHive = self.spec_beehive
+        local specBeeCare = self.spec_beecare
         ---
         --- Produce Nectar!
         if specBeeHive.isFxActive and specBeeCare.state == BeeCare.STATES.ECONOMIC_HIVE then
@@ -276,6 +276,9 @@ function PlaceableBeehiveExtended:onHourChanged()
 
         spec:updateNectar(-honeyForBeesPerHour)
     end
+
+    self:raiseDirtyFlags(spec.dirtyFlag)
+    self:raiseActive()
 end
 
 ---PlaceableBeehiveExtended:onWeatherChanged
@@ -286,6 +289,7 @@ function PlaceableBeehiveExtended:onWeatherChanged()
         g_currentMission.beehiveSystem:updateBeehivesState();
         self:raiseDirtyFlags(spec.dirtyFlag)
     end
+    self:raiseActive()
 end
 
 ---PlaceableBeehiveExtended:onDelete
