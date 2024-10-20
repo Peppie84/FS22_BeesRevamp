@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="80">
   <author>Peppie84</author>
-  <version>1.0.0.0</version>
+  <version>1.1.0.0</version>
   <title>
     <en>Bees Revamp</en>
   </title>
@@ -39,6 +39,13 @@ Additional supported bee hives:
 - Beehive With 3 Large Frames by doodoo
 - Beehouse by Ls_Dezign
 
+Changelog v1.1.0.0
+- Added multiplayer functionality
+- Reduced load while playing with precision farming and calculating the field info
+- Added translation for IT
+- Added support for more bee hive mods
+- Fixed a bug for conversion from TerraLife weeks in stock month for the last week in Feb
+
 For more information, help, and reporting issues please visit <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
 ]]></en>
     <de><![CDATA[
@@ -74,6 +81,13 @@ Zusätzlich unterstützte Bienenstöcke:
 - Bienenstock Mit 3 Grossen Zargen von doodoo
 - Bienenhaus von Ls_Dezign
 
+Changelog v1.1.0.0
+- Multiplayer funktionalität hinzugefügt
+- Veringert die Rechenlast zur Berechnung der Feldinfo mit PrecisionFarmin
+- Übersetzung für IT hinzugefügt
+- Es werden weitere Bienenmods unterstützt
+- Fehler bei der Umrechnung von TerraLife Wochen in Stock Monat behoben, der in der letzten Feb Woche geworfen wurde
+
 Weitere Informationen, Hilfe und Probleme melden findest Du unter <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
 ]]></de>
     <it><![CDATA[
@@ -108,6 +122,13 @@ Alveari aggiuntivi supportati:
 - Rimorchio per alveari di Maca
 - Arnia con 3 telaini grandi di doodoo
 - Apicoltura di Ls_Dezign
+
+Changelog v1.1.0.0
+- Aggiunta della funzionalità multigiocatore
+- Riduzione del carico durante il gioco dell'agricoltura di precisione e il calcolo delle informazioni sul campo
+- Aggiunta traduzione per IT
+- Aggiunto il supporto per altri modelli di alveare
+- Corretto un bug per la conversione da TerraLife delle settimane del mese di magazzino per l'ultima settimana di febbraio.
 
 Per ulteriori informazioni, aiuto e segnalazione di problemi, visita <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
 ]]></it>
