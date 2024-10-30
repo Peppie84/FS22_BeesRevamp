@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="80">
   <author>Peppie84</author>
-  <version>1.0.0.0</version>
+  <version>1.1.0.0</version>
   <title>
     <en>Bees Revamp</en>
   </title>
@@ -26,14 +26,25 @@ Most questions can be answered by the in-game help of this mod.
 - Prices of the beehives have been adjusted
 - Honey sales price has been adjusted
 - Precision farming compatible
-
-Currently no multiplayer support.
+- TerraLife compatible
 
 Yield bonus for: Canola, Sunflower, Alfalfa, Clover, Buckwheat, Phacelia, Silphie, Mustard and Clover gras
 
 Additional supported bee hives:
 - Pack Of Beehives by BarT
 - Wooden Hive For Bees by Fr€d Fra-Cassés
+- Beehives Pack by Zoli708
+- Beehouse by MefiuFs
+- Bee Hive Trailer by Maca
+- Beehive With 3 Large Frames by doodoo
+- Beehouse by Ls_Dezign
+
+Changelog v1.1.0.0
+- Added multiplayer functionality
+- Reduced load while playing with precision farming and calculating the field info
+- Added translation for IT
+- Added support for more bee hive mods
+- Fixed a bug for conversion from TerraLife weeks in stock month for the last week in Feb
 
 For more information, help, and reporting issues please visit <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
 ]]></en>
@@ -57,20 +68,73 @@ Bitte schau Dir die Ingame-Hilfe zu dieser Mod an. Sie kann die meisten Fragen b
 - Preise der Bienenstöcke wurden angepasst
 - Honigverkaufspreis wurde angepasst
 - Precision Farming kompatibel
-
-Aktuell kein Multiplayer support.
+- TerraLife kompatibel
 
 Ertragsbonus für: Raps, Sonnenblume, Luzerne, Klee, Buchweizen, Phacelia, Silphie, Senf und Kleegras
 
 Zusätzlich unterstützte Bienenstöcke:
-- Bienenstöcke by BarT
+- Bienenstöcke von BarT
 - Hölzerner Bienenstock Für Bienen von Fr€d Fra-Cassés
+- Bienenstock-Paket von Zoli708
+- Bienenhaus von MefiuFs
+- Bienenanhänger von Maca
+- Bienenstock Mit 3 Grossen Zargen von doodoo
+- Bienenhaus von Ls_Dezign
+
+Changelog v1.1.0.0
+- Multiplayer funktionalität hinzugefügt
+- Veringert die Rechenlast zur Berechnung der Feldinfo mit PrecisionFarmin
+- Übersetzung für IT hinzugefügt
+- Es werden weitere Bienenmods unterstützt
+- Fehler bei der Umrechnung von TerraLife Wochen in Stock Monat behoben, der in der letzten Feb Woche geworfen wurde
 
 Weitere Informationen, Hilfe und Probleme melden findest Du unter <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
 ]]></de>
+    <it><![CDATA[
+Con questa mod, le api in Farming Simulator 22 diventano più realistiche e un po' più complesse ma anche più produttive.
+
+Tutti i valori e le modifiche sono scientificamente provati e/o forse leggermente regolati in modo che non uccidano completamente il divertimento del gioco. L'obiettivo sarà sempre il divertimento.
+
+La maggior parte delle domande può essere risolta dall'aiuto in-game di questa mod.
+
+- Due stati di una colonia (colonia giovane e colonia economica)
+- Solo la colonia economica produce miele
+- Le api raccolgono nettare
+- Le api raccolgono solo quando il tempo è buono
+- Il nettare viene convertito in miele
+- Le api mangiano nettare
+- La portata degli alveari è stata aumentata
+- Prestazioni di impollinazione migliorate
+- L'alveare ha un numero variabile di api
+- La stagione dello sciame è tra Mar-Lug
+- I prezzi degli alveari sono stati regolati
+- Il prezzo di vendita del miele è stato regolato
+- Compatibile con precision farming
+- Compatibile con TerraLife
+
+Bonus di resa per: Colza, Girasole, Erba Medica, Trifoglio, Grano Saraceno, Facelia, Silphie, Senape e Erba di Trifoglio
+
+Alveari aggiuntivi supportati:
+- Pacchetto di Alveari di BarT
+- Alveare di Legno per Api di Fr€d Fra-Cassés
+- Pacchetto alveari di Zoli708
+- Apicoltura di MefiuFs
+- Rimorchio per alveari di Maca
+- Arnia con 3 telaini grandi di doodoo
+- Apicoltura di Ls_Dezign
+
+Changelog v1.1.0.0
+- Aggiunta della funzionalità multigiocatore
+- Riduzione del carico durante il gioco dell'agricoltura di precisione e il calcolo delle informazioni sul campo
+- Aggiunta traduzione per IT
+- Aggiunto il supporto per altri modelli di alveare
+- Corretto un bug per la conversione da TerraLife delle settimane del mese di magazzino per l'ultima settimana di febbraio.
+
+Per ulteriori informazioni, aiuto e segnalazione di problemi, visita <a href='https://github.com/Peppie84/FS22_BeesRevamp'>GitHub</a>.
+]]></it>
   </description>
   <iconFilename>icon_BeesRevamp.dds</iconFilename>
-  <multiplayer supported="false" />
+  <multiplayer supported="true" />
   <extraSourceFiles>
     <sourceFile filename="src/main.lua" />
   </extraSourceFiles>

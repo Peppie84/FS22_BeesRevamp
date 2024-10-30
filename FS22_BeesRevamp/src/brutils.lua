@@ -92,7 +92,7 @@ function BrUtils:getStockPeriod()
     local period = g_currentMission.environment.currentPeriod
 
     if g_modIsLoaded['FS22_TerraLifePlus'] then
-        period = math.floor(period * 0.25) + 1
+        period = math.min(12, math.ceil(period * 0.25))
     end
 
     return period
