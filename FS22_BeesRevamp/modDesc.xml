@@ -39,6 +39,9 @@ Additional supported bee hives:
 - Beehive With 3 Large Frames by doodoo
 - Beehouse by Ls_Dezign
 
+Changelog v1.1.0.1
+- Fixed Number to string conversion for formatting the nectar info for en and it language
+
 Changelog v1.1.0.0
 - Added multiplayer functionality
 - Reduced load while playing with precision farming and calculating the field info
@@ -81,6 +84,9 @@ Zusätzlich unterstützte Bienenstöcke:
 - Bienenstock Mit 3 Grossen Zargen von doodoo
 - Bienenhaus von Ls_Dezign
 
+Changelog v1.1.0.1
+- Konvertierung von Zahlen in Zeichenfolgen zum formatieren der Nectar-Informationen für die Sprachen EN und IT, behoben
+
 Changelog v1.1.0.0
 - Multiplayer funktionalität hinzugefügt
 - Veringert die Rechenlast zur Berechnung der Feldinfo mit PrecisionFarmin
@@ -122,6 +128,9 @@ Alveari aggiuntivi supportati:
 - Rimorchio per alveari di Maca
 - Arnia con 3 telaini grandi di doodoo
 - Apicoltura di Ls_Dezign
+
+Changelog v1.1.0.1
+- Conversione fissa da numero a stringa per formattare le informazioni di Nectar per le lingue EN e IT
 
 Changelog v1.1.0.0
 - Aggiunta della funzionalità multigiocatore
