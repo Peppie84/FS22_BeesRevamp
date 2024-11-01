@@ -369,7 +369,7 @@ function PlaceableBeehiveExtended:updateNectarInfoTable()
 
     spec.infoTableNectar.text = string.format(
         g_brUtils:getModText('beesrevamp_placeablebeehiveextended_info_nectar_format'),
-        g_i18n:formatNumber(spec.nectar, 2)
+        tostring(g_i18n:formatNumber(spec.nectar, 2))
     )
 end
 

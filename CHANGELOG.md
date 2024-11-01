@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+- Fixed Number to string conversion for formatting the nectar info for en and it language - for [#16](https://github.com/Peppie84/FS22_BeesRevamp/issues/16)
 
 ## [1.1.0.0] - 2024-10-29
 - Reduced load while playing with precision farming and calculating the field info
