@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
-## [1.1.0.1] - {waiting-for-mod-hub}
+## [1.1.0.1] - 2024-11-04
 - Fixed Number to string conversion for formatting the nectar info for en and it language - for [#16](https://github.com/Peppie84/FS22_BeesRevamp/issues/16)
 
 ## [1.1.0.0] - 2024-10-29
