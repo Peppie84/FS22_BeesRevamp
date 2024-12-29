@@ -6,7 +6,7 @@
     <e k="beesrevamp_beecare_info_title_swarm_pressure" v="分蜂压力"/>
     <e k="beesrevamp_beecare_info_title_bee_population" v="蜜蜂数量"/>
     <e k="beesrevamp_beecare_info_title_state" v="状态"/>
-    <e k="beesrevamp_beecare_info_bee_population_format" v="%s只蜜蜂"/>
+    <e k="beesrevamp_beecare_info_bee_population_format" v="%s 只蜜蜂"/>
     <e k="beesrevamp_beecare_do_swarm_control" v="执行分蜂控制"/>
     <e k="beesrevamp_beecare_state_economic_hive" v="经济蜂群"/>
     <e k="beesrevamp_beecare_state_young_hive" v="年轻蜂群"/>
@@ -15,7 +15,7 @@
     <e k="beesrevamp_beecare_common_state_on" v="是"/>
     <e k="beesrevamp_beecare_common_state_off" v="否"/>
     <e k="beesrevamp_placeablebeehiveextended_info_title_nectar" v="花蜜"/>
-    <e k="beesrevamp_placeablebeehiveextended_info_nectar_format" v="%s升"/>
+    <e k="beesrevamp_placeablebeehiveextended_info_nectar_format" v="%s 升"/>
     <e k="beesrevamp_placeablebeehiveextended_info_title_hives" v="蜂群"/>
     <e k="beesrevamp_beehivesystemextended_info_influenced_by_bees" v="受蜜蜂影响"/>
     <e k="beesrevamp_beehivesystemextended_info_bee_bonus" v="蜜蜂增益"/>
@@ -96,6 +96,8 @@
 串叶松香草               50%                4个蜂群/公顷
 芥菜               50%                          4个蜂群/公顷
 三叶草牧草           10%                       8个蜂群/公顷
+棉布               25%                        3个蜂群/公顷
+大豆               18%                        2个蜂群/公顷
 
 状态为‘年轻蜂群’的蜂群完全被排除在此计算之外。这防止了玩家在收获前短时间内将蜂群放置到田间以获得额外奖励。"/>
     <e k="beesrevamp_helpline_page_4_paragraph_2_text" v="田间信息现在会显示有多少蜂群接近田地，无论是您自己的还是其他玩家的蜂群，并显示可获得的产量奖励。"/>

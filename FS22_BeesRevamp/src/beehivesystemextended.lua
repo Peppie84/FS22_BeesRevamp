@@ -42,7 +42,7 @@ function BeehiveSystemExtended:updateState()
     self.isProductionActive = true
 
     local isRaining = environment.weather:getIsRaining()
-    local isTemperaturToFly = environment.weather:getCurrentTemperature() > 10
+    local isTemperaturToFly = environment.weather:getCurrentTemperature() >= 10
     local isSunOn = environment.isSunOn
     local isWinterSeason = environment.currentSeason == Environment.SEASON.WINTER
 
@@ -111,7 +111,18 @@ function BeehiveSystemExtended:getBeehiveInfluenceFactorAt(wx, wz)
         return 0
     end
 
-    local totalFieldArea = farmLand.totalFieldArea or farmLand.areaInHa
+    local fieldArea = 0
+    local totalFieldArea = farmLand.areaInHa or farmLand.totalFieldArea
+    local farmLandByFieldMapping = g_fieldManager.farmlandIdFieldMapping
+    if farmLandByFieldMapping[farmlandId] ~= nil then
+        for _, field in pairs(farmLandByFieldMapping[farmlandId]) do
+            fieldArea = fieldArea + field.fieldArea
+        end
+        if fieldArea > 0 then
+            totalFieldArea = fieldArea
+        end
+    end
+
     if totalFieldArea == nil then
         return 0
     end
