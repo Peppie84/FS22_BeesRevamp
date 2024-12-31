@@ -43,6 +43,7 @@ Changelog v1.2.0.0
 - Added translation for CZ and CS
 - Added Cotton and Soybean yield bonus for cross pollination
 - Fix reading the field area value and not using the land area
+- Placing new hives is only possible in spring or summer
 
 Changelog v1.1.0.1
 - Fixed Number to string conversion for formatting the nectar info for en and it language
@@ -93,6 +94,7 @@ Changelog v1.2.0.0
 - Übersetzung für CZ und CS hinzugefügt
 - Baumwolle und Sojabohnen Ertragsbonus für Kreuzbesteubung hinzugefügt
 - Korrektur das die Feldfläche benutzt wird statt der Landfläche
+- Platzierung neuer Bienenstöcke ist nur im Frühling oder Sommer möglich
 
 Changelog v1.1.0.1
 - Konvertierung von Zahlen in Zeichenfolgen zum formatieren der Nectar-Informationen für die Sprachen EN und IT, behoben
@@ -143,6 +145,7 @@ Changelog v1.2.0.0
 - Aggiunta traduzione per CZ e CS
 - Aggiunto bonus di resa di cotone e soia per impollinazione incrociata
 - Correzione della lettura del valore dell'area del campo e mancato utilizzo dell'area del terreno
+- L'inserimento di nuovi alveari è possibile solo in primavera o in estate
 
 Changelog v1.1.0.1
 - Conversione fissa da numero a stringa per formattare le informazioni di Nectar per le lingue EN e IT
