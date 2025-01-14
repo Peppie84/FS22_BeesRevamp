@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="80">
   <author>Peppie84</author>
-  <version>1.1.0.1</version>
+  <version>1.2.0.0</version>
   <title>
     <en>Bees Revamp</en>
   </title>
@@ -28,7 +28,7 @@ Most questions can be answered by the in-game help of this mod.
 - Precision farming compatible
 - TerraLife compatible
 
-Yield bonus for: Canola, Sunflower, Alfalfa, Clover, Buckwheat, Phacelia, Silphie, Mustard and Clover gras
+Yield bonus for: Canola, Sunflower, Alfalfa, Clover, Buckwheat, Phacelia, Silphie, Mustard, Clover gras, Cotton and Soybean
 
 Additional supported bee hives:
 - Pack Of Beehives by BarT
@@ -38,6 +38,12 @@ Additional supported bee hives:
 - Bee Hive Trailer by Maca
 - Beehive With 3 Large Frames by doodoo
 - Beehouse by Ls_Dezign
+
+Changelog v1.2.0.0
+- Added translation for CZ and CS
+- Added Cotton and Soybean yield bonus for cross pollination
+- Fix reading the field area value and not using the land area
+- Placing new hives is only possible in spring or summer
 
 Changelog v1.1.0.1
 - Fixed Number to string conversion for formatting the nectar info for en and it language
@@ -73,7 +79,7 @@ Bitte schau Dir die Ingame-Hilfe zu dieser Mod an. Sie kann die meisten Fragen b
 - Precision Farming kompatibel
 - TerraLife kompatibel
 
-Ertragsbonus für: Raps, Sonnenblume, Luzerne, Klee, Buchweizen, Phacelia, Silphie, Senf und Kleegras
+Ertragsbonus für: Raps, Sonnenblume, Luzerne, Klee, Buchweizen, Phacelia, Silphie, Senf, Kleegras, Baumwolle und Sojabohne
 
 Zusätzlich unterstützte Bienenstöcke:
 - Bienenstöcke von BarT
@@ -83,6 +89,12 @@ Zusätzlich unterstützte Bienenstöcke:
 - Bienenanhänger von Maca
 - Bienenstock Mit 3 Grossen Zargen von doodoo
 - Bienenhaus von Ls_Dezign
+
+Changelog v1.2.0.0
+- Übersetzung für CZ und CS hinzugefügt
+- Baumwolle und Sojabohnen Ertragsbonus für Kreuzbesteubung hinzugefügt
+- Korrektur das die Feldfläche benutzt wird statt der Landfläche
+- Platzierung neuer Bienenstöcke ist nur im Frühling oder Sommer möglich
 
 Changelog v1.1.0.1
 - Konvertierung von Zahlen in Zeichenfolgen zum formatieren der Nectar-Informationen für die Sprachen EN und IT, behoben
@@ -118,7 +130,7 @@ La maggior parte delle domande può essere risolta dall'aiuto in-game di questa 
 - Compatibile con precision farming
 - Compatibile con TerraLife
 
-Bonus di resa per: Colza, Girasole, Erba Medica, Trifoglio, Grano Saraceno, Facelia, Silphie, Senape e Erba di Trifoglio
+Bonus di resa per: Colza, Girasole, Erba Medica, Trifoglio, Grano Saraceno, Facelia, Silphie, Senape, Erba di Trifoglio, Cotone e Fagiolo di soia
 
 Alveari aggiuntivi supportati:
 - Pacchetto di Alveari di BarT
@@ -128,6 +140,12 @@ Alveari aggiuntivi supportati:
 - Rimorchio per alveari di Maca
 - Arnia con 3 telaini grandi di doodoo
 - Apicoltura di Ls_Dezign
+
+Changelog v1.2.0.0
+- Aggiunta traduzione per CZ e CS
+- Aggiunto bonus di resa di cotone e soia per impollinazione incrociata
+- Correzione della lettura del valore dell'area del campo e mancato utilizzo dell'area del terreno
+- L'inserimento di nuovi alveari è possibile solo in primavera o in estate
 
 Changelog v1.1.0.1
 - Conversione fissa da numero a stringa per formattare le informazioni di Nectar per le lingue EN e IT

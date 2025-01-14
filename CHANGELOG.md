@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+
+
+## [1.2.0.0] - 2025-01-14
 - Added translation for CZ by Maca-LSczechforum - for [#13](https://github.com/Peppie84/FS22_BeesRevamp/issues/13)
 - Added translation for CS by orangestar254 - for [#21](https://github.com/Peppie84/FS22_BeesRevamp/issues/21)
 - Added Cotton and Soybean yield bonus for cross pollination
